@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "1043346652466",
+    "project_id": "e-book-a4896",
+    "storage_bucket": "e-book-a4896.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043346652466:android:90fa4762810cbb218e2b2b",
+        "android_client_info": {
+          "package_name": "com.em.lkj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043346652466-c5ueppfeo937j7hfigo3d6j8qph8m5lj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPGTPBUDSMSHizPR-QGqrbmvO14jlBTEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043346652466-c5ueppfeo937j7hfigo3d6j8qph8m5lj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1043346652466-ot4tovr8niq9jiupc0knhs3d0u5403l5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ebookApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043346652466:android:7ff8021346af80008e2b2b",
+        "android_client_info": {
+          "package_name": "com.example.ebook_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043346652466-4g21aatn3jp13hip1lev3nkav336rv03.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ebook_app",
+            "certificate_hash": "83127b472043b01693d8ee29d154411c30bab3ac"
+          }
+        },
+        {
+          "client_id": "1043346652466-7p06lgon0e0j5nnkc9eb3usrr3nq60qj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ebook_app",
+            "certificate_hash": "b94b5b27d83f02b63ee90c426f30d0209fd8b008"
+          }
+        },
+        {
+          "client_id": "1043346652466-c5ueppfeo937j7hfigo3d6j8qph8m5lj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPGTPBUDSMSHizPR-QGqrbmvO14jlBTEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043346652466-c5ueppfeo937j7hfigo3d6j8qph8m5lj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1043346652466-ot4tovr8niq9jiupc0knhs3d0u5403l5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ebookApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
