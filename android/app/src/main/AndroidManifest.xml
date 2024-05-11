@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ebook_app">
+    package="com.example.ebook">
    <application
 
        android:label="ebookadminpanel"

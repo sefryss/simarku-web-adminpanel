@@ -17,8 +17,7 @@ import 'controller/category_controller.dart';
 import 'controller/data/LoginData.dart';
 import 'controller/story_controller.dart';
 
-
-RxInt selectedAction =0.obs;
+RxInt selectedAction = 0.obs;
 
 bool isLogin = false;
 ThemeController themeController = Get.put(ThemeController());
@@ -26,7 +25,7 @@ CategoryController categoryController = Get.put(CategoryController());
 AuthorController authorController = Get.put(AuthorController());
 StoryController storyController = Get.put(StoryController());
 
-RxString deviceID=''.obs;
+RxString deviceID = ''.obs;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -46,46 +45,38 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-
-
 // void configureApp() {
 //   setUrlStrategy(PathUrlStrategy());
 // }
-
 
 initFirebase() async {
   if (kIsWeb) {
     await Firebase.initializeApp(
         options: FirebaseOptions(
-            apiKey: "AIzaSyDbVIRvP2P72LktDtHY0HnfoKzBwfXqZFA",
-            authDomain: "e-book-a4896.firebaseapp.com",
-            projectId: "e-book-a4896",
-            storageBucket: "e-book-a4896.appspot.com",
-            messagingSenderId: "1043346652466",
-            appId: "1:1043346652466:web:7579322e78fbfb0f8e2b2b",
-            measurementId: "G-VERWQ13CLQ"
-        )
-    );
+            apiKey: "AIzaSyBZITKH9BMhc5zHkTVUFa843P_CG4Ys_Eg",
+            authDomain: "ebook-4d358.firebaseapp.com",
+            projectId: "ebook-4d358",
+            storageBucket: "ebook-4d358.appspot.com",
+            messagingSenderId: "52319249413",
+            appId: "1:52319249413:web:078a67869a1d175e61286c",
+            measurementId: "G-KX0SWDPN8N",
+            ));
   } else {
     await Firebase.initializeApp();
   }
-
 
   FirebaseMessaging.instance.getInitialMessage();
 
   FirebaseFunctions.instance.useFunctionsEmulator('localhost', 5001);
 
   FirebaseMessaging.instance.setAutoInitEnabled(true);
-
 }
-
 
 setScreenSize(
-    BuildContext context,
-    ) {
+  BuildContext context,
+) {
   ScreenUtil.init(context, designSize: Size(1440, 900));
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -111,13 +102,13 @@ class MyApp extends StatelessWidget {
           ],
           // locale: Locale("ar"," "),
           supportedLocales: [
-            Locale("en"," "),
+            Locale("en", " "),
             Locale("ar", " "),
           ],
           routes: appRoutes,
           themeMode: provider.themeMode,
           darkTheme: AppTheme.darkTheme,
-          initialRoute: isLogin?KeyUtil.homePage:KeyUtil.loginPage,
+          initialRoute: isLogin ? KeyUtil.homePage : KeyUtil.loginPage,
           // home: MyHomePag1e(title: ''),
         );
       },
@@ -447,12 +438,10 @@ class MyApp extends StatelessWidget {
 // }
 //
 
-
 class AppScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.mouse,
-    PointerDeviceKind.touch,
-  };
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.touch,
+      };
 }
-
