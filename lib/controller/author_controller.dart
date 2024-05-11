@@ -16,9 +16,7 @@ class AuthorController extends GetxController {
   TopAuthors? authorModel;
   HomeController? controller;
 
-  AuthorController({this.authorModel,this.controller});
-
-
+  AuthorController({this.authorModel, this.controller});
 
   TextEditingController nameController = TextEditingController();
   TextEditingController imageController = TextEditingController();
@@ -32,35 +30,27 @@ class AuthorController extends GetxController {
 
   final document = "text";
 
-
   QuillController descController = QuillController.basic();
 
   RxBool isLoading = false.obs;
   RxBool activeStatus = true.obs;
 
-
   @override
   void onInit() {
     super.onInit();
 
-    setAllDataFromAuthorModel(authorModel,true);
-
+    setAllDataFromAuthorModel(authorModel, true);
   }
-
-
 
   bool isStatus = true;
 
-
   setAllDataFromAuthorModel(TopAuthors? a, bool status) {
-
     isStatus = status;
 
     if (a != null) {
       authorModel = a;
 
       if (authorModel != null) {
-
         String fileName = authorModel!.image!.split('%2F').last;
 
         String file = fileName.split('?').first;
@@ -78,36 +68,26 @@ class AuthorController extends GetxController {
         youTubeController.text = authorModel!.youUrl ?? "";
         websiteController.text = authorModel!.webUrl ?? "";
 
-
-        if(authorModel!.desc!=null&& authorModel!.desc!.isNotEmpty){
-
+        if (authorModel!.desc != null && authorModel!.desc!.isNotEmpty) {
           final doc = Document()..insert(0, decode(authorModel!.desc ?? ""));
-          
+
           // Delta delta = new Delta()..insert(decode(authorModel!.desc!));
           // final doc = Document.fromDelta(delta);
-          descController = QuillController(document: doc, selection: TextSelection.collapsed(offset: 0));
+          descController = QuillController(
+              document: doc, selection: TextSelection.collapsed(offset: 0));
         }
         print("status----${activeStatus.value}");
       }
     }
-
-
-
   }
 
-  clearAuthData
-      (){
-
+  clearAuthData() {
     authorModel = null;
     controller = null;
-
-
-
 
     nameController = TextEditingController();
     imageController = TextEditingController();
     designationController = TextEditingController();
-
 
     facebookController = TextEditingController();
     instagramController = TextEditingController();
@@ -117,14 +97,11 @@ class AuthorController extends GetxController {
 
     // document = "text";
 
-
     descController = QuillController.basic();
 
-
     isLoading.value = false;
-    activeStatus.value= true;
+    activeStatus.value = true;
   }
-
 
   addAuthor(BuildContext context, HomeController controller,
       Function function) async {
@@ -137,8 +114,9 @@ class AuthorController extends GetxController {
       firebaseHistory.image = url;
       // firebaseHistory.audio = audioUrl;
       firebaseHistory.refId = controller.category.value;
-      firebaseHistory.index = await FirebaseData.getLastIndexFromTable(KeyTable.authorList);
-      firebaseHistory.desc = deltaToHtml(descController.document.toDelta().toJson());
+      firebaseHistory.index = await FirebaseData.getLastIndexFromAuthTable();
+      firebaseHistory.desc =
+          deltaToHtml(descController.document.toDelta().toJson());
       // firebaseHistory.desc = quillDeltaToHtml(descController.document.toDelta());
       // firebaseHistory.date = date.value;
       firebaseHistory.isActive = activeStatus.value;
@@ -166,18 +144,17 @@ class AuthorController extends GetxController {
     }
   }
 
-
   Future<String> uploadFile(XFile _image) async {
     try {
       final fileBytes = await _image.readAsBytes();
       var reference =
-      FirebaseStorage.instance.ref().child("files/${_image.name}");
+          FirebaseStorage.instance.ref().child("files/${_image.name}");
 
       UploadTask uploadTask = reference.putData(
           fileBytes,
           SettableMetadata(
               contentType:
-              "image/${getFileExtension(_image.name).replaceAll('.', '')}"));
+                  "image/${getFileExtension(_image.name).replaceAll('.', '')}"));
 
       return await getUrlFromTask(uploadTask);
     } catch (e) {
@@ -186,11 +163,10 @@ class AuthorController extends GetxController {
     }
   }
 
-
-  getUrlFromTask(  UploadTask  uploadTask)async{
+  getUrlFromTask(UploadTask uploadTask) async {
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {
       print("complete=====true");
-    // ignore: body_might_complete_normally_catch_error
+      // ignore: body_might_complete_normally_catch_error
     }).catchError((error) {
       print("error=====$error");
     });
@@ -198,6 +174,7 @@ class AuthorController extends GetxController {
 
     return url;
   }
+
   String getFileExtension(String fileName) {
     try {
       return "." + fileName.split('.').last;
@@ -208,80 +185,78 @@ class AuthorController extends GetxController {
 
   bool checkValidation(BuildContext context) {
     if (isNotEmpty(nameController.text)) {
-      if(isNotEmpty(designationController.text)){
-        if(isNotEmpty(descController.plainTextEditingValue.text.toString().trim())) {
-
+      if (isNotEmpty(designationController.text)) {
+        if (isNotEmpty(
+            descController.plainTextEditingValue.text.toString().trim())) {
           // if (isNotEmpty(audioUrl.value)) {
 
           if (isNotEmpty(imageController.text)) {
-
             if (!imageController.text.split(".").last.startsWith("svg")) {
-
-              if (isEmpty(facebookController.text) || hasValidUrl(facebookController.text)) {
-
-                if (isEmpty(instagramController.text) || hasValidUrl(instagramController.text)) {
-
-                  if (isEmpty(twitterController.text) || hasValidUrl(twitterController.text)) {
-
-                    if (isEmpty(youTubeController.text) || hasValidUrl(youTubeController.text)) {
-
-                      if (isEmpty(websiteController.text) || hasValidUrl(websiteController.text)) {
-
-
-                        if (!imageController.text.split(".").last.startsWith("svg")) {
-
+              if (isEmpty(facebookController.text) ||
+                  hasValidUrl(facebookController.text)) {
+                if (isEmpty(instagramController.text) ||
+                    hasValidUrl(instagramController.text)) {
+                  if (isEmpty(twitterController.text) ||
+                      hasValidUrl(twitterController.text)) {
+                    if (isEmpty(youTubeController.text) ||
+                        hasValidUrl(youTubeController.text)) {
+                      if (isEmpty(websiteController.text) ||
+                          hasValidUrl(websiteController.text)) {
+                        if (!imageController.text
+                            .split(".")
+                            .last
+                            .startsWith("svg")) {
                           isLoading(true);
                           return true;
-
-                        }else{
+                        } else {
                           showCustomToast(
-                              message: 'svg image not supported', title: 'Error', context: context);
+                              message: 'svg image not supported',
+                              title: 'Error',
+                              context: context);
                           return false;
                         }
-
-
-                      }else{
-
+                      } else {
                         showCustomToast(
-                            message: 'Website url not valid', title: 'Error', context: context);
+                            message: 'Website url not valid',
+                            title: 'Error',
+                            context: context);
                         return false;
-
                       }
-                    }else{
-
+                    } else {
                       showCustomToast(
-                          message: 'YouTube url not valid', title: 'Error', context: context);
+                          message: 'YouTube url not valid',
+                          title: 'Error',
+                          context: context);
                       return false;
-
                     }
-                  }else{
-
+                  } else {
                     showCustomToast(
-                        message: 'Twitter url not valid', title: 'Error', context: context);
+                        message: 'Twitter url not valid',
+                        title: 'Error',
+                        context: context);
                     return false;
-
                   }
-                }else{
-
+                } else {
                   showCustomToast(
-                      message: 'Instagram url not valid', title: 'Error', context: context);
+                      message: 'Instagram url not valid',
+                      title: 'Error',
+                      context: context);
                   return false;
-
                 }
-              }else{
-
+              } else {
                 showCustomToast(
-                    message: 'Facebook url not valid', title: 'Error', context: context);
+                    message: 'Facebook url not valid',
+                    title: 'Error',
+                    context: context);
                 return false;
-
               }
-            }else{
+            } else {
               showCustomToast(
-                  message: 'svg image not supported', title: 'Error', context: context);
+                  message: 'svg image not supported',
+                  title: 'Error',
+                  context: context);
               return false;
             }
-
-
           } else {
             showCustomToast(
                 message: 'Choose Image', title: 'Error', context: context);
@@ -293,14 +268,15 @@ class AuthorController extends GetxController {
           //       message: 'Choose Audio', title: 'Error', context: context);
           //   return false;
           // }
-
-        }else{
+        } else {
           showCustomToast(
-              message: 'Enter Description...', title: 'Error', context: context);
+              message: 'Enter Description...',
+              title: 'Error',
+              context: context);
 
           return false;
         }
-      }else{
+      } else {
         showCustomToast(
             message: 'Enter designation...', title: 'Error', context: context);
         return false;
@@ -319,9 +295,7 @@ class AuthorController extends GetxController {
   //   return html;
   // }
 
-
-  removeAllField(BuildContext context){
-
+  removeAllField(BuildContext context) {
     nameController.text = "";
     designationController.text = "";
     // descController.plainTextEditingValue.text = "";
@@ -330,33 +304,25 @@ class AuthorController extends GetxController {
 
   Uint8List webImage = Uint8List(10);
 
-
   RxBool isImageOffline = false.obs;
 
-
-  editAuthor(HomeController homeController,BuildContext context,Function function) async {
-
-
-
+  editAuthor(HomeController homeController, BuildContext context,
+      Function function) async {
     if (checkValidation(context)) {
+      String url = imageController.text;
 
-      String  url = imageController.text;
-
-      if(imageController.text != authorModel!.image!){
-        if(pickImage != null){
+      if (imageController.text != authorModel!.image!) {
+        if (pickImage != null) {
           url = await uploadFile(pickImage!);
         }
-
       }
 
       authorModel!.authorName = nameController.text;
 
-
-      if(pickImage != null){
+      if (pickImage != null) {
         print("called----if");
         authorModel!.image = url;
-      }else{
-
+      } else {
         print("called----else");
         authorModel!.image = authorModel!.image;
       }
@@ -364,12 +330,14 @@ class AuthorController extends GetxController {
       // authorModel!.image = url;
 
       authorModel!.refId = homeController.category.value;
-      authorModel!.desc = deltaToHtml(descController.document.toDelta().toJson());
+      authorModel!.desc =
+          deltaToHtml(descController.document.toDelta().toJson());
       // authorModel!.desc = quillDeltaToHtml(descController.document.toDelta());
       authorModel!.designation = designationController.text;
       authorModel!.isActive = activeStatus.value;
 
-      FirebaseData.updateData(context: context,
+      FirebaseData.updateData(
+          context: context,
           map: authorModel!.toJson(),
           tableName: KeyTable.authorList,
           doc: authorModel!.id!,
@@ -377,46 +345,32 @@ class AuthorController extends GetxController {
             isLoading(false);
             function();
             clearAuthData();
-
           });
     }
   }
 
-
-
-
-
-
-
-
   Future<String> uploadAudio() async {
-
-    try{
-
+    try {
       Uint8List fileBytes = result!.files.first.bytes!;
       String fileName = result!.files.first.name;
 
-      var reference =
-      FirebaseStorage.instance.ref().child('uploads/$fileName',);
+      var reference = FirebaseStorage.instance.ref().child(
+            'uploads/$fileName',
+          );
 
-      UploadTask  uploadTask= reference.putData(fileBytes, SettableMetadata(
-          contentType:
-          "audio/mpeg"));
+      UploadTask uploadTask = reference.putData(
+          fileBytes, SettableMetadata(contentType: "audio/mpeg"));
 
       return await getUrlFromTask(uploadTask);
-    }catch(e){
+    } catch (e) {
       return '';
     }
   }
-
-
-
 
   XFile? pickImage;
   final picker = ImagePicker();
   FilePickerResult? result;
   bool isSvg = false;
-
 
   imgFromGallery() async {
     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -424,10 +378,9 @@ class AuthorController extends GetxController {
     pickImage = image;
 
     if (image != null) {
-
       String file = image.name.split(".").last;
 
-      if(file == "svg"){
+      if (file == "svg") {
         isSvg = true;
       }
       imageController.text = pickImage!.name;
@@ -437,7 +390,4 @@ class AuthorController extends GetxController {
       isImageOffline(true);
     }
   }
-
-
-
 }

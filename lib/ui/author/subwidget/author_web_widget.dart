@@ -10,15 +10,17 @@ import '../../../util/constants.dart';
 import '../../common/common.dart';
 
 // ignore: must_be_immutable
-class AuthorWebWidget extends StatelessWidget{
-
+class AuthorWebWidget extends StatelessWidget {
   var _tapPosition;
-  AuthorWebWidget({required this.list,required this.queryText,required this.function,required this.onTapStatus});
+  AuthorWebWidget(
+      {required this.list,
+      required this.queryText,
+      required this.function,
+      required this.onTapStatus});
   final List<DocumentSnapshot> list;
   final RxString queryText;
-  final Function(Offset,TopAuthors) function;
+  final Function(Offset, TopAuthors) function;
   final Function onTapStatus;
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,59 +28,47 @@ class AuthorWebWidget extends StatelessWidget{
 
     return Expanded(
         child: Container(
-          child: Column(
-            children: [
-              getHeaderWidget(
-                  context),
-              Expanded(
-                  child: ListView
-                      .builder(
-                    // separatorBuilder: (context, index) {
-                    //   TopAuthors model =
-                    //   TopAuthors.fromFirestore(list[index]);
-                    //   return FutureBuilder<bool>(future: FirebaseData.checkCategoryExists(
-                    //       model.refId!),builder: (context, snapshot) {
-                    //     if (snapshot.data != null && snapshot.data!) {
-                    //       return separatorBuilder(
-                    //           context, queryText: queryText, value: model.authorName!);
-                    //     }
-                    //
-                    //     return Container();
-                    //   },);
-                    // },
-                    itemCount:
-                    list.length,
-                    itemBuilder:
-                        (context, index) {
-                      TopAuthors
-                      authorModel =
-                      TopAuthors.fromFirestore(
-                          list[
-                          index]);
+      child: Column(
+        children: [
+          getHeaderWidget(context),
+          Expanded(
+              child: ListView.builder(
+            // separatorBuilder: (context, index) {
+            //   TopAuthors model =
+            //   TopAuthors.fromFirestore(list[index]);
+            //   return FutureBuilder<bool>(future: FirebaseData.checkCategoryExists(
+            //       model.refId!),builder: (context, snapshot) {
+            //     if (snapshot.data != null && snapshot.data!) {
+            //       return separatorBuilder(
+            //           context, queryText: queryText, value: model.authorName!);
+            //     }
+            //
+            //     return Container();
+            //   },);
+            // },
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              TopAuthors authorModel = TopAuthors.fromFirestore(list[index]);
 
-                      return FutureBuilder<bool>(future: FirebaseData.checkCategoryExists(
-                          authorModel.refId!),builder: (context, snapshot) {
-                        if (snapshot.data != null && snapshot.data!) {
-                          return Obx(() {
-                            bool cell = true;
+              return FutureBuilder<bool>(
+                future: FirebaseData.checkCategoryExists(authorModel.refId!),
+                builder: (context, snapshot) {
+                  if (snapshot.data != null && snapshot.data!) {
+                    return Obx(() {
+                      bool cell = true;
 
-                            if (queryText
-                                .value
-                                .isNotEmpty &&
-                                !authorModel
-                                    .authorName!.toLowerCase()
-                                    .contains(
-                                    queryText
-                                        .value)) {
-                              cell = false;
-                            }
-                            return cell
-                                ? Stack(
-                                  children: [
-
-                                    Container(
-                              padding: padding,
-                              child: Row(
+                      if (queryText.value.isNotEmpty &&
+                          !authorModel.authorName!
+                              .toLowerCase()
+                              .contains(queryText.value)) {
+                        cell = false;
+                      }
+                      return cell
+                          ? Stack(
+                              children: [
+                                Container(
+                                  padding: padding,
+                                  child: Row(
                                     children: [
                                       // getHeaderCell(
                                       //     '${index + 1}',
@@ -92,21 +82,32 @@ class AuthorWebWidget extends StatelessWidget{
                                           height: 50.h,
                                           width: 50.h,
                                           child: ClipRRect(
-                                            borderRadius: BorderRadius
-                                                .circular(50.h / 2),
-                                            child: (authorModel.image!.isNotEmpty && authorModel.image!.split(".").last.startsWith("svg"))?Image.asset(Constants.placeImage,height: 50.h,width: 50.h,):Image(
-                                              width: 50.h,
-                                              height: 50.h,
-                                              image: NetworkImage(authorModel.image ?? ""),
-                                              fit: BoxFit.cover,
-                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(50.h / 2),
+                                            child: (authorModel
+                                                        .image!.isNotEmpty &&
+                                                    authorModel.image!
+                                                        .split(".")
+                                                        .last
+                                                        .startsWith("svg"))
+                                                ? Image.asset(
+                                                    Constants.placeImage,
+                                                    height: 50.h,
+                                                    width: 50.h,
+                                                  )
+                                                : Image(
+                                                    width: 50.h,
+                                                    height: 50.h,
+                                                    image: NetworkImage(
+                                                        authorModel.image ??
+                                                            ""),
+                                                    fit: BoxFit.cover,
+                                                  ),
                                           ),
                                         ),
                                       ),
-                                      getHeaderCell(
-                                          '${authorModel.authorName}',
-                                          context,
-                                          130),
+                                      getHeaderCell('${authorModel.authorName}',
+                                          context, 130),
                                       getHeaderCell(
                                           '${authorModel.designation}',
                                           context,
@@ -115,19 +116,21 @@ class AuthorWebWidget extends StatelessWidget{
                                       Expanded(
                                         flex: 1,
                                         child: getMaxLineFont(
-                                            context, removeAllHtmlTags(authorModel.desc ?? ""),
-                                            50, getFontColor(context),
+                                            context,
+                                            removeAllHtmlTags(
+                                                authorModel.desc ?? ""),
+                                            50,
+                                            getFontColor(context),
                                             3,
                                             fontWeight: FontWeight.w500,
-                                            textAlign: TextAlign
-                                                .start,txtHeight: 1.5.h),
+                                            textAlign: TextAlign.start,
+                                            txtHeight: 1.5.h),
                                       ),
                                       getHorizontalSpace(context, 10),
 
                                       SizedBox(
                                         width: 120.h,
-                                        child: getActiveDeActiveCell(
-                                            context,
+                                        child: getActiveDeActiveCell(context,
                                             authorModel.isActive!, authorModel),
                                       ),
                                       Stack(
@@ -138,52 +141,54 @@ class AuthorWebWidget extends StatelessWidget{
                                               textAlign: TextAlign.start),
                                           Positioned.fill(
                                               child: Center(
-                                                child: GestureDetector(
-                                                    onTapDown: _storePosition,
-                                                    onTap: () {
-                                                      function(
-                                                          _tapPosition, authorModel);
-                                                    },
-                                                    child: Icon(
-                                                      Icons.more_vert,
-                                                      color: getSubFontColor(
-                                                          context),
-                                                    )),
-                                              ))
+                                            child: GestureDetector(
+                                                onTapDown: _storePosition,
+                                                onTap: () {
+                                                  function(_tapPosition,
+                                                      authorModel);
+                                                },
+                                                child: Icon(
+                                                  Icons.more_vert,
+                                                  color:
+                                                      getSubFontColor(context),
+                                                )),
+                                          ))
                                         ],
                                       )
                                     ],
-                              ),
-                            ),
-
-                                    Positioned.fill(
-                                        child:
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Divider(
-                                            height: 0.5,
-                                            color: cell?getBorderColor(context):Colors.transparent,
-                                          ).marginSymmetric(vertical: 4.h),)
-                                    )
-
-                                  ],
-                                )
-                                : Container();
-                          });
-                        }
-                        return Container();
-                      },);
-                    },
-                  ))
-            ],
-          ),
-        ));
+                                  ),
+                                ),
+                                Positioned.fill(
+                                    child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Divider(
+                                    height: 0.5,
+                                    color: cell
+                                        ? getBorderColor(context)
+                                        : Colors.transparent,
+                                  ).marginSymmetric(vertical: 4.h),
+                                ))
+                              ],
+                            )
+                          : Container();
+                    });
+                  }
+                  return Container();
+                },
+              );
+            },
+          ))
+        ],
+      ),
+    ));
   }
+
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
   }
 
-  getActiveDeActiveCell(BuildContext context, bool isActive,TopAuthors authorModel) {
+  getActiveDeActiveCell(
+      BuildContext context, bool isActive, TopAuthors authorModel) {
     return InkWell(
       child: Container(
           width: 120.h,
@@ -193,7 +198,7 @@ class AuthorWebWidget extends StatelessWidget{
               isActive ? 'Active' : 'Deactive',
               isActive ? "#00A010".toColor() : "#FD3E3E".toColor(),
               isActive ? "#E7FFE8".toColor() : "#FFF2F2".toColor())),
-      onTap: (){
+      onTap: () {
         onTapStatus(authorModel);
       },
     );
@@ -213,7 +218,7 @@ class AuthorWebWidget extends StatelessWidget{
   getHeaderWidget(BuildContext context) {
     var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
     var decoration =
-    getDefaultDecoration(bgColor: getReportColor(context), radius: 0);
+        getDefaultDecoration(bgColor: getReportColor(context), radius: 0);
     return Container(
       padding: padding,
       decoration: decoration,
@@ -221,33 +226,27 @@ class AuthorWebWidget extends StatelessWidget{
         children: [
           // getHeaderCell('ID', context, 130),
           getHeaderCell('Image', context, 100),
-          getHeaderCell(
-              'Name',
-              context,
-              130),
+          getHeaderCell('Name', context, 130),
           getHeaderCell(
               'Designation'
-                  '',
+              '',
               context,
               150),
           getHorSpace(10.h),
           Expanded(child: getHeaderTitle(context, 'Description')),
-          getHeaderCell(
-              'Status',
-              context,
-              120),
+          getHeaderCell('Status', context, 120),
           getHeaderTitle(context, 'Action'),
         ],
       ),
     );
   }
+
   getHeaderCell(String title, BuildContext context, double width) {
     return Container(
         width: width.h,
         alignment: Alignment.centerLeft,
         child: getHeaderTitle(context, title));
   }
-
 
   getHeaderTitle(BuildContext context, String title) {
     return getMaxLineFont(context, title, 45, getFontColor(context), 1,
