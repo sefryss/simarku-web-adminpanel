@@ -1,5 +1,3 @@
-
-
 import 'package:client_information/client_information.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/data/FirebaseData.dart';
@@ -18,16 +16,11 @@ import 'key_table.dart';
 class LoginData {
   // static String id = "";
 
-
   static Future<bool> loginUsingEmailPassword(context,
       {email, password}) async {
-
     FirebaseAuth auth = FirebaseAuth.instance;
 
-
     print("email-----${email}");
-
-
 
     print("password-----${password}");
 
@@ -42,12 +35,10 @@ class LoginData {
       });
 
       return auth.currentUser != null;
-
     } on FirebaseAuthException catch (e) {
+      print(e.code);
       print("ecode----------${e.code}");
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
+      if (e.code == 'email-already-in-use') {
         if (auth.currentUser != null) {
           auth.currentUser != null;
         }
@@ -55,33 +46,29 @@ class LoginData {
             message: "The account already exists for that email.",
             context: context);
         return false;
-      }else if(e.code == "user-not-found"){
-        showCustomToast(context: context, message: "Email not correct");
+      } else if (e.code == "invalid-email") {
+        showCustomToast(context: context, message: "Email tidak valid");
         return false;
-      }else if(e.code == "wrong-password"){
-        showCustomToast(context: context, message: "Password does not match");
+      } else if (e.code == "wrong-password") {
+        showCustomToast(context: context, message: "Password tidak valid");
         return false;
-      }else{
-
+      } else if (e.code == "invalid-credential") {
         showCustomToast(
-            message: e.code,
-            context: context);
+            context: context, message: "Eamil atau Password tidak valid");
+        return false;
+      } else {
+        showCustomToast(message: e.code, context: context);
 
         // showCustomToast(
         //     message: "Something Wrong",
         //     context: context);
         return false;
       }
-
-
-
-
     } catch (e) {
       print("e------------$e");
 
       return false;
     }
-    return false;
   }
 
   static Future<bool> login(BuildContext context, {username, password}) async {
@@ -99,7 +86,6 @@ class LoginData {
 
     FirebaseAuth auth = FirebaseAuth.instance;
 
-
     print("isLogin--------${isLogin}");
 
     if (isLogin) {
@@ -108,7 +94,7 @@ class LoginData {
           .collection(KeyTable.adminData)
           .where(KeyTable.keyUserName, isEqualTo: username)
           .where(KeyTable.keyUid, isEqualTo: auth.currentUser!.uid)
-      // .where(keyPassword, isEqualTo: password)
+          // .where(keyPassword, isEqualTo: password)
           .get();
       print("username===${querySnapshot.size}");
 
@@ -129,7 +115,6 @@ class LoginData {
 
           selectedAction.value = actionDashBoard;
 
-
           selectedIndex.value = 0;
           // if(auth.currentUser!=null && !auth.currentUser!.email!.contains("demo")){
           PrefData.setLogin(true, element.id, true);
@@ -145,7 +130,6 @@ class LoginData {
       return false;
     }
   }
-
 
   static Future<bool> registerUsingEmailPassword(BuildContext context,
       {email, password}) async {
@@ -191,16 +175,12 @@ class LoginData {
     return false;
   }
 
-
-
-
   static Future<bool?> createAdmin(
       {username, password, context, function}) async {
     print("isRegister===fgfgfg");
 
     bool isRegister = await registerUsingEmailPassword(context,
         email: username, password: password);
-
 
     print("isRegister===$isRegister");
 
@@ -273,8 +253,6 @@ class LoginData {
     return false;
   }
 
-
-
   static logout({bool? isUpdate}) async {
     String loginId = await PrefData.getLoginId();
 
@@ -283,8 +261,7 @@ class LoginData {
           .collection(KeyTable.adminData)
           .doc(loginId)
           .update({
-
-        "isAccess":false
+        "isAccess": false
 
         // LoginData.keyActive: false,
       });
@@ -298,7 +275,6 @@ class LoginData {
     //   update();
     // }
   }
-
 
   static Future<bool> getDeviceId() async {
     String id = await PrefData.getLoginId();
@@ -319,7 +295,6 @@ class LoginData {
 
     // ignore: unnecessary_null_comparison
     if (snapshot != null) {
-
       print("sn--------${snapshot.data()}");
       AdminModel adminModel = AdminModel.fromFirestore(snapshot);
 
@@ -365,7 +340,6 @@ class LoginData {
     });
   }
 
-
   static Future<String> getDeviceIdentifier() async {
     ClientInformation info = await ClientInformation.fetch();
     print("info===${info.deviceId}");
@@ -377,8 +351,5 @@ class LoginData {
     //
     //
     // return deviceId ?? "";
-
-
-
   }
 }

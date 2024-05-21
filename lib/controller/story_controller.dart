@@ -1,7 +1,7 @@
-
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/controller/home_controller.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ebookadminpanel/controller/home_controller.dart';
+
 import 'package:ebookadminpanel/model/story_model.dart';
 import '../model/authors_model.dart';
 import '../theme/color_scheme.dart';
@@ -43,7 +43,7 @@ class StoryController extends GetxController {
 
   String oldCategory = '';
 
-  StoryController({this.storyModel,this.homeController});
+  StoryController({this.storyModel, this.homeController});
 
   final DateFormat formatter = DateFormat('dd/MM/yyyy');
 
@@ -59,31 +59,27 @@ class StoryController extends GetxController {
 
     // date(formatter.format(DateTime.now()));
     setAllDataFromStoryModel(storyModel!, homeController!);
-
   }
 
-
   getAuthors(List selectedList) async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(KeyTable.authorList).get();
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.authorList).get();
 
-
-    if(snapshot.docs.isNotEmpty && snapshot.size > 0){
-
+    if (snapshot.docs.isNotEmpty && snapshot.size > 0) {
       List<DocumentSnapshot> list = snapshot.docs;
 
-      for(int i = 0;i<list.length;i++){
-
-        if(selectedList.contains(list[i].id)){
-          selectedAuthorsNameList.add(TopAuthors.fromFirestore(list[i]).authorName!);
+      for (int i = 0; i < list.length; i++) {
+        if (selectedList.contains(list[i].id)) {
+          selectedAuthorsNameList
+              .add(TopAuthors.fromFirestore(list[i]).authorName!);
         }
-
       }
-
     }
 
-    authController.text = selectedAuthorsNameList.toString().replaceAll('[', '').replaceAll(']', '');
-
-
+    authController.text = selectedAuthorsNameList
+        .toString()
+        .replaceAll('[', '')
+        .replaceAll(']', '');
 
     // publisher.value = jsonDecode(storyModel!.publisher ?? "");
     //
@@ -92,23 +88,17 @@ class StoryController extends GetxController {
     //
     // print("selected---------publisher--${publisher.toString()}");
 
-
     print("selected-----------${selectedAuthorsNameList.toString()}");
     print("selected-----------${selectedAuthors.toString()}");
-
-
   }
 
-
   setAllDataFromStoryModel(StoryModel? s, HomeController controller) {
-
     print("called-----setData");
     homeController = controller;
     if (s != null) {
       storyModel = s;
 
       if (storyModel != null) {
-
         getAuthors(storyModel!.authId!);
 
         // String authName = await FirebaseData.getAuthName(refId: storyModel!.authId ?? "");
@@ -117,36 +107,33 @@ class StoryController extends GetxController {
 
         String file = fileName.split('?').first;
 
-
         String pdfFileName = storyModel!.pdf!.split('%2F').last;
 
         String pdfFile = pdfFileName.split('?').first;
 
-
-        if(storyModel!.pdf!.contains("firebase")){
+        if (storyModel!.pdf!.contains("firebase")) {
           homeController!.pdf.value = Constants.file;
         }
 
-        oldCategory='';
+        oldCategory = '';
         nameController.text = storyModel!.name!;
         imageController.text = file;
 
         homeController!.category.value = storyModel!.refId!;
         // homeController!.author.value = storyModel!.authId!;
 
-
         selectedAuthors.value = storyModel!.authId!;
 
         pdfUrl.value = pdfFile;
 
-        if(storyModel!.desc!=null&& storyModel!.desc!.isNotEmpty){
+        if (storyModel!.desc != null && storyModel!.desc!.isNotEmpty) {
           // Delta delta = new Delta()..insert(decode(storyModel!.desc!));
           // final doc = Document.fromDelta(delta);
           final doc = Document()..insert(0, decode(storyModel!.desc ?? ""));
 
-          descController = QuillController(document: doc, selection: TextSelection.collapsed(offset: 0));
+          descController = QuillController(
+              document: doc, selection: TextSelection.collapsed(offset: 0));
         }
-
 
         // var myJSON = jsonDecode(r'{"insert":"hello\n"}');
         // Delta delta = new Delta()..insert(decode(storyModel!.desc!));
@@ -157,35 +144,28 @@ class StoryController extends GetxController {
         //   selection: TextSelection.collapsed(offset: 0),
         // );
 
-
-
         // pdfUrl.value = storyModel!.pdf!;
 
-        oldCategory=nameController.text;
+        oldCategory = nameController.text;
 
         isPopular.value = storyModel!.isPopular!;
         isFeatured.value = storyModel!.isFeatured!;
 
         print("desc------_${storyModel!.desc}");
 
-
-
         // date(storyModel!.date);
         // customDate = formatter.parse(storyModel!.date!);
-
       }
     }
   }
 
-
-  clearStoryData(){
+  clearStoryData() {
     nameController = TextEditingController();
     imageController = TextEditingController();
     pdfController = TextEditingController();
     pdfUrl.value = '';
     pdfSize.value = '';
     webImage = Uint8List(10);
-
 
     authController = TextEditingController();
 
@@ -197,8 +177,8 @@ class StoryController extends GetxController {
 
     isImageOffline.value = false;
 
-     storyModel = null;
-     homeController = null;
+    storyModel = null;
+    homeController = null;
     isLoading.value = false;
     isPopular.value = true;
     isFeatured.value = true;
@@ -212,16 +192,17 @@ class StoryController extends GetxController {
       String url = await uploadFile(pickImage!);
       String pdfUrl = await uploadPdfFile();
 
-
       StoryModel firebaseHistory = new StoryModel();
       firebaseHistory.name = nameController.text;
       firebaseHistory.image = url;
-      firebaseHistory.pdf = (controller.pdf.value == Constants.url)?pdfController.text:pdfUrl;
+      firebaseHistory.pdf =
+          (controller.pdf.value == Constants.url) ? pdfController.text : pdfUrl;
       firebaseHistory.refId = controller.category.value;
       firebaseHistory.authId = selectedAuthors;
       // firebaseHistory.authId = controller.author.value;
       firebaseHistory.index = await FirebaseData.getLastIndexFromAuthTable();
-      firebaseHistory.desc = deltaToHtml(descController.document.toDelta().toJson());
+      firebaseHistory.desc =
+          deltaToHtml(descController.document.toDelta().toJson());
       // firebaseHistory.desc = quillDeltaToHtml(descController.document.toDelta());
       // firebaseHistory.date = date.value;
       firebaseHistory.isActive = true;
@@ -243,40 +224,33 @@ class StoryController extends GetxController {
     }
   }
 
-
-
   bool checkValidation(BuildContext context) {
     if (isNotEmpty(nameController.text)) {
-      if(isNotEmpty(descController.plainTextEditingValue.text.toString().trim())) {
-
+      if (isNotEmpty(
+          descController.plainTextEditingValue.text.toString().trim())) {
         if (isNotEmpty(pdfUrl.value)) {
-
           if (isNotEmpty(imageController.text)) {
-
-
             if (!imageController.text.split(".").last.startsWith("svg")) {
               isLoading(true);
               return true;
-            }else{
+            } else {
               showCustomToast(
-                  message: 'svg image not supported', title: 'Error', context: context);
+                  message: 'svg image not supported',
+                  title: 'Error',
+                  context: context);
               return false;
             }
-
-
           } else {
             showCustomToast(
                 message: 'Choose Image', title: 'Error', context: context);
             return false;
           }
-
         } else {
           showCustomToast(
               message: 'Choose File', title: 'Error', context: context);
           return false;
         }
-
-      }else{
+      } else {
         showCustomToast(
             message: 'Enter Story...', title: 'Error', context: context);
 
@@ -296,59 +270,58 @@ class StoryController extends GetxController {
   //   return html;
   // }
 
-  editCategory(HomeController homeController,BuildContext context,Function function) async {
-
+  editCategory(HomeController homeController, BuildContext context,
+      Function function) async {
     if (checkValidation(context)) {
+      String url = imageController.text;
 
-      String  url = imageController.text;
-
-      if(imageController.text != storyModel!.image!){
-
-        if(pickImage != null){
+      if (imageController.text != storyModel!.image!) {
+        if (pickImage != null) {
           url = await uploadFile(pickImage!);
         }
-
       }
 
-      if(pdfUrl.value != storyModel!.pdf!){
-
-        if(result != null){
+      if (pdfUrl.value != storyModel!.pdf!) {
+        if (result != null) {
           pdfUrl.value = await uploadPdfFile();
         }
-
       }
 
       storyModel!.name = nameController.text;
 
-      if(pickImage != null){
+      if (pickImage != null) {
         print("called----if");
         storyModel!.image = url;
-      }else{
-
+      } else {
         print("called----else");
         storyModel!.image = storyModel!.image;
       }
 
       // storyModel!.image = url;
 
-      if(result != null){
+      if (result != null) {
         storyModel!.pdf = pdfUrl.value;
-      }else{
+      } else {
         storyModel!.pdf = storyModel!.pdf;
       }
 
       // storyModel!.pdf = pdfUrl.value;
 
+      storyModel!.isPopular = isPopular.value;
+      storyModel!.isFeatured = isFeatured.value;
+
       storyModel!.refId = homeController.category.value;
 
-      storyModel!.desc = deltaToHtml(descController.document.toDelta().toJson());
+      storyModel!.desc =
+          deltaToHtml(descController.document.toDelta().toJson());
       // storyModel!.desc = quillDeltaToHtml(descController.document.toDelta());
       storyModel!.authId = selectedAuthors;
       // storyModel!.authId = homeController.author.value;
 
       // storyModel!.date = date.value;
 
-      FirebaseData.updateData(context: context,
+      FirebaseData.updateData(
+          context: context,
           map: storyModel!.toJson(),
           tableName: KeyTable.storyList,
           doc: storyModel!.id!,
@@ -357,11 +330,8 @@ class StoryController extends GetxController {
             function();
             clearStoryData();
           });
-
     }
-
   }
-
 
   Future<String> uploadFile(XFile _image) async {
     try {
@@ -383,20 +353,20 @@ class StoryController extends GetxController {
   }
 
   Future<String> uploadPdfFile() async {
-
-    try{
-
+    try {
       Uint8List fileBytes = result!.files.first.bytes!;
-
 
       String fileName = result!.files.first.name;
 
-      var reference =
-      FirebaseStorage.instance.ref().child('uploads/$fileName',);
+      var reference = FirebaseStorage.instance.ref().child(
+            'uploads/$fileName',
+          );
 
-      UploadTask  uploadTask = reference.putData(fileBytes, SettableMetadata(
-          contentType: "application/pdf",
-      ));
+      UploadTask uploadTask = reference.putData(
+          fileBytes,
+          SettableMetadata(
+            contentType: "application/pdf",
+          ));
       // TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {
       //   print("complete=====true");
       // }).catchError((error) {
@@ -406,23 +376,22 @@ class StoryController extends GetxController {
       // // String url = await taskSnapshot.ref.fullPath;
       //
       //
-      print("data===${ fileBytes.toString()}");
+      print("data===${fileBytes.toString()}");
       //
       // return utf8.decode(fileBytes);
       //
       //
       // // return fileBytes.toString();
       return await getUrlFromTask(uploadTask);
-    }catch(e){
+    } catch (e) {
       return '';
     }
   }
 
-
-  getUrlFromTask(  UploadTask  uploadTask)async{
+  getUrlFromTask(UploadTask uploadTask) async {
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {
       print("complete=====true");
-    // ignore: body_might_complete_normally_catch_error
+      // ignore: body_might_complete_normally_catch_error
     }).catchError((error) {
       print("error=====$error");
     });
@@ -434,8 +403,6 @@ class StoryController extends GetxController {
 
     return url;
   }
-
-
 
   String getFileExtension(String fileName) {
     try {
@@ -450,32 +417,29 @@ class StoryController extends GetxController {
   FilePickerResult? result;
 
   openFile() async {
-     result = await FilePicker.platform.pickFiles(type: FileType.custom,allowedExtensions: ['pdf'],allowMultiple: false,);
-
+    result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+      allowMultiple: false,
+    );
 
     if (result != null) {
-
       String fileName = result!.files.first.name;
 
       print("sfdfsdf==$fileName");
 
-      String size = getFileSizeString(bytes: result!.files.first.size,decimals: 1);
+      String size =
+          getFileSizeString(bytes: result!.files.first.size, decimals: 1);
 
       pdfUrl.value = fileName;
 
       pdfSize.value = size;
 
-
-
-
       print("Size-------_${size}");
-
-    }else{
+    } else {
       pdfUrl.value = '';
     }
-
   }
-
 
   static String getFileSizeString({required int bytes, int decimals = 0}) {
     if (bytes <= 0) return "0 Bytes";
@@ -492,11 +456,9 @@ class StoryController extends GetxController {
     pickImage = image;
 
     if (image != null) {
-
-
       String file = image.name.split(".").last;
 
-      if(file == "svg"){
+      if (file == "svg") {
         isSvg = true;
       }
       imageController.text = pickImage!.name;
@@ -507,28 +469,27 @@ class StoryController extends GetxController {
     }
   }
 
-
-  Future<void> showAuthorDialog(BuildContext context,HomeController home) async {
-
+  Future<void> showAuthorDialog(
+      BuildContext context, HomeController home) async {
     return showDialog(
         context: context,
         builder: (context) {
-
           print("auythLrn------_${home.authorList.length}");
           return AlertDialog(
-
-            title: getTextWidget(context,'Select Author',60,getFontColor(context),fontWeight: FontWeight.w700),
+            title: getTextWidget(
+                context, 'Select Author', 60, getFontColor(context),
+                fontWeight: FontWeight.w700),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.r),
             ),
             backgroundColor: getBackgroundColor(context),
-
             contentPadding: EdgeInsets.zero,
-
             content: Container(
-              padding: EdgeInsets.symmetric(horizontal: 25.h,vertical: 15.h),
-              width: Responsive.isDesktop(context) ||Responsive.isDesktop(context)? 450.h: 350.h,
-
+              padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
+              width:
+                  Responsive.isDesktop(context) || Responsive.isDesktop(context)
+                      ? 450.h
+                      : 350.h,
               child: ListView.builder(
                 shrinkWrap: true,
                 // itemCount: 10,
@@ -536,30 +497,33 @@ class StoryController extends GetxController {
                 itemBuilder: (context, index) {
                   return ListTile(
                     // title: getCustomFont("text", 18, getFontColor(context), 1),
-                    title: getCustomFont(home.authorList[index].authorName!, 14, getFontColor(context), 1),
+                    title: getCustomFont(home.authorList[index].authorName!, 14,
+                        getFontColor(context), 1),
                     trailing: Obx(() => Checkbox(
                         activeColor: getPrimaryColor(context),
                         checkColor: Colors.white,
-
                         onChanged: (checked) {
+                          print(
+                              "checked--------${selectedAuthors.contains(home.authorList[index].id!)}--------${checked}");
 
-                          print("checked--------${selectedAuthors.contains(home.authorList[index].id!)}--------${checked}");
-
-                          if(selectedAuthors.contains(home.authorList[index].id!)){
+                          if (selectedAuthors
+                              .contains(home.authorList[index].id!)) {
                             selectedAuthors.remove(home.authorList[index].id!);
-                            selectedAuthorsNameList.remove(home.authorList[index].authorName!);
-                          }else{
+                            selectedAuthorsNameList
+                                .remove(home.authorList[index].authorName!);
+                          } else {
                             selectedAuthors.add(home.authorList[index].id!);
-                            selectedAuthorsNameList.add(home.authorList[index].authorName!);
+                            selectedAuthorsNameList
+                                .add(home.authorList[index].authorName!);
                           }
 
                           print("selecteLen--------${selectedAuthors.length}");
 
                           // isChecked[index] = checked;
                           // _title = _getTitle();
-
                         },
-                        value: selectedAuthors.contains(home.authorList[index].id!))),
+                        value: selectedAuthors
+                            .contains(home.authorList[index].id!))),
                   );
                 },
               ),
@@ -569,11 +533,12 @@ class StoryController extends GetxController {
                 context,
                 'Submit',
                 isProgress: false,
-                    () {
+                () {
                   Get.back();
-                  authController.text = selectedAuthorsNameList.toString().replaceAll('[', '').replaceAll(']', '');
-
-
+                  authController.text = selectedAuthorsNameList
+                      .toString()
+                      .replaceAll('[', '')
+                      .replaceAll(']', '');
                 },
                 horPadding: 25.h,
                 horizontalSpace: 0,
@@ -581,7 +546,6 @@ class StoryController extends GetxController {
                 btnHeight: 40.h,
               )
             ],
-
           );
         });
   }

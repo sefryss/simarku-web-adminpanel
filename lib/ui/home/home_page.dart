@@ -45,7 +45,6 @@ class _HomePage extends State<HomePage> {
     super.initState();
 
     LoginData.getDeviceId();
-
   }
 
   @override
@@ -55,25 +54,26 @@ class _HomePage extends State<HomePage> {
 
     themeController.setThemeStatusBar(context);
     return WillPopScope(
-        child: CommonPage(widget: Container(
+        child: CommonPage(
+            widget: Container(
           child: Scaffold(
             key: _key,
             drawer: Responsive.isDesktop(context)
                 ? null
                 : SideMenu(function: (value) {
-              print("value------${value}");
-              changeAction(value);
+                    print("value------${value}");
+                    changeAction(value);
 
-              _key.currentState!.openEndDrawer();
+                    _key.currentState!.openEndDrawer();
 
-              // onTap(value);
-              // Navigator.pop(context);
-            }),
+                    // onTap(value);
+                    // Navigator.pop(context);
+                  }),
             backgroundColor: getBackgroundColor(context),
             appBar: AppBar(
               backgroundColor: getCardColor(context),
               title: getMaxLineFont(
-                  context, 'E-Books', 85, getPrimaryColor(context), 1,
+                  context, 'Simarku', 85, getPrimaryColor(context), 1,
                   customFont: Constants.headerFontsFamily,
                   fontWeight: FontWeight.w900),
               systemOverlayStyle: getBrightnessLight(),
@@ -81,15 +81,15 @@ class _HomePage extends State<HomePage> {
               toolbarHeight: 70.h,
               leading: Responsive.isDesktop(context)
                   ? Container(
-                width: 0,
-              )
+                      width: 0,
+                    )
                   : IconButton(
-                icon: Icon(
-                  Icons.sort_sharp,
-                  color: getPrimaryColor(context),
-                ),
-                onPressed: () => _key.currentState!.openDrawer(),
-              ),
+                      icon: Icon(
+                        Icons.sort_sharp,
+                        color: getPrimaryColor(context),
+                      ),
+                      onPressed: () => _key.currentState!.openDrawer(),
+                    ),
               leadingWidth: Responsive.isDesktop(context) ? 0 : 100.w,
               actions: [
                 Container(
@@ -108,10 +108,10 @@ class _HomePage extends State<HomePage> {
                           color: themeController.checkDarkTheme()
                               ? getPrimaryColor(context)
                               : getSubFontColor(context), onTap: () {
-                            if (!themeController.checkDarkTheme()) {
-                              themeController.changeTheme(context);
-                            }
-                          }),
+                        if (!themeController.checkDarkTheme()) {
+                          themeController.changeTheme(context);
+                        }
+                      }),
                       Container(
                         height: 20.h,
                         color: getBorderColor(context),
@@ -124,10 +124,10 @@ class _HomePage extends State<HomePage> {
                           color: themeController.checkDarkTheme()
                               ? getSubFontColor(context)
                               : getPrimaryColor(context), onTap: () {
-                            if (themeController.checkDarkTheme()) {
-                              themeController.changeTheme(context);
-                            }
-                          }),
+                        if (themeController.checkDarkTheme()) {
+                          themeController.changeTheme(context);
+                        }
+                      }),
                     ],
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 15.h),
@@ -142,13 +142,13 @@ class _HomePage extends State<HomePage> {
                     _showPopupMenu();
                   },
                   child: Container(
-                      alignment: Alignment.center,
-                      child: imageAsset(
-                          themeController.checkDarkTheme()
-                              ? 'profile_dark.png'
-                              : 'profile.png',
-                          height: 40.h,
-                          width: 40.h))
+                          alignment: Alignment.center,
+                          child: imageAsset(
+                              themeController.checkDarkTheme()
+                                  ? 'profile_dark.png'
+                                  : 'profile.png',
+                              height: 40.h,
+                              width: 40.h))
                       .marginSymmetric(horizontal: 20.h),
                 )
               ],
@@ -159,18 +159,18 @@ class _HomePage extends State<HomePage> {
                   children: [
                     Responsive.isDesktop(context)
                         ? SideMenu(
-                      function: (value) {
-                        _key.currentState!.openEndDrawer();
-                        changeAction(value);
-                      },
-                    )
+                            function: (value) {
+                              _key.currentState!.openEndDrawer();
+                              changeAction(value);
+                            },
+                          )
                         : Container(),
                     Expanded(
                         child: Container(
-                          color: getBackgroundColor(context),
-                          // child:  getTabWidget(),
-                          child: Obx(() => getTabWidget()),
-                        ))
+                      color: getBackgroundColor(context),
+                      // child:  getTabWidget(),
+                      child: Obx(() => getTabWidget()),
+                    ))
                   ],
                 ),
               ),
@@ -218,7 +218,6 @@ class _HomePage extends State<HomePage> {
 
       CategoryController categoryController = Get.put(CategoryController());
 
-
       categoryController.clearData();
 
       return AddCategoryScreen(function: () {
@@ -227,11 +226,9 @@ class _HomePage extends State<HomePage> {
     } else if (action == actionEditCategory) {
       PrefData.setAction(actionEditCategory);
 
-
       categoryController.categoryModel = homeController.categoryModel;
 
       categoryController.setAllCategoryDate(homeController.categoryModel);
-
 
       return AddCategoryScreen(
         function: () {
@@ -243,7 +240,6 @@ class _HomePage extends State<HomePage> {
       PrefData.setAction(actionAuthor);
       authorController.clearAuthData();
 
-
       return AuthorScreen(
         function: () {
           onBackClick();
@@ -253,13 +249,9 @@ class _HomePage extends State<HomePage> {
     } else if (action == actionAddAuthor) {
       PrefData.setAction(actionAddAuthor);
 
-
       AuthorController authorController = Get.put(AuthorController());
 
-
       authorController.clearAuthData();
-
-
 
       return AddAuthorScreen(
         function: () {
@@ -272,12 +264,10 @@ class _HomePage extends State<HomePage> {
 
       authorController.authorModel = homeController.authorModel;
 
-
-
-      if(authorController.isStatus){
-        authorController.setAllDataFromAuthorModel(homeController.authorModel,false);
+      if (authorController.isStatus) {
+        authorController.setAllDataFromAuthorModel(
+            homeController.authorModel, false);
       }
-
 
       return AddAuthorScreen(
         function: () {
@@ -297,7 +287,7 @@ class _HomePage extends State<HomePage> {
         },
       );
     } else if (action == actionAddStory) {
-        PrefData.setAction(actionAddStory);
+      PrefData.setAction(actionAddStory);
 
       StoryController storyController = Get.put(StoryController());
 
@@ -313,14 +303,13 @@ class _HomePage extends State<HomePage> {
     } else if (action == actionEditStory) {
       PrefData.setAction(actionEditStory);
 
-
       storyController.homeController = homeController;
       storyController.storyModel = homeController.storyModel;
 
-
       // if(!storyController.isBack.value){
 
-        storyController.setAllDataFromStoryModel(homeController.storyModel, homeController);
+      storyController.setAllDataFromStoryModel(
+          homeController.storyModel, homeController);
 
       // }
       return AddStoryScreen(
@@ -346,12 +335,11 @@ class _HomePage extends State<HomePage> {
       );
     } else if (action == actionAddSlider) {
       PrefData.setAction(actionAddSlider);
-        return AddSliderScreen(
-          function: () {
-            onBackClick();
-          },
-        );
-
+      return AddSliderScreen(
+        function: () {
+          onBackClick();
+        },
+      );
     } else if (action == actionStories) {
       PrefData.setAction(actionStories);
       return StoryScreen(function: () {
@@ -370,9 +358,8 @@ class _HomePage extends State<HomePage> {
     }
   }
 
-
   void _showPopupMenu() async {
-    double width = isWeb(context)?120.w:150.h;
+    double width = isWeb(context) ? 120.w : 150.h;
 
     double right = isWeb(context) ? 50.h : 15.h;
 
@@ -382,7 +369,6 @@ class _HomePage extends State<HomePage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
       color: getCardColor(context),
       items: [
-
         // PopupMenuItem<String>(
         //     child: Container(
         //       width: width,
@@ -464,8 +450,6 @@ class _HomePage extends State<HomePage> {
         //     ),
         //     value: 'Change Password'),
 
-
-
         PopupMenuItem<String>(
             child: Container(
               width: width,
@@ -486,36 +470,48 @@ class _HomePage extends State<HomePage> {
                   //       LoginData.sendLoginPage();
                   //     });
 
-
                   showDialog<void>(
                     context: context,
                     barrierDismissible: false,
                     // false = user must tap button, true = tap outside dialog
                     builder: (BuildContext dialogContext) {
-
                       return AlertDialog(
-                        title: getCustomFont("Log Out", getResizeFont(context, 70), getFontColor(context), 1,fontWeight: FontWeight.w600),
-                        content: getCustomFont("Are you sure want to Log out ?", getResizeFont(context, 50), getFontColor(context), 1),
+                        title: getCustomFont(
+                            "Log Out",
+                            getResizeFont(context, 70),
+                            getFontColor(context),
+                            1,
+                            fontWeight: FontWeight.w600),
+                        content: getCustomFont(
+                            "Are you sure want to Log out ?",
+                            getResizeFont(context, 50),
+                            getFontColor(context),
+                            1),
                         actions: <Widget>[
                           TextButton(
-                            child: getCustomFont("YES", getResizeFont(context, 50), getPrimaryColor(context), 1,fontWeight: FontWeight.w500),
+                            child: getCustomFont(
+                                "YES",
+                                getResizeFont(context, 50),
+                                getPrimaryColor(context),
+                                1,
+                                fontWeight: FontWeight.w500),
                             onPressed: () {
-                              Navigator.of(dialogContext)
-                                  .pop();
+                              Navigator.of(dialogContext).pop();
 
                               LoginData.sendLoginPage();
                             },
                           ),
                           TextButton(
-                            child:
-
-                            getCustomFont("NO", getResizeFont(context, 50), getPrimaryColor(context), 1,fontWeight: FontWeight.w500),
+                            child: getCustomFont(
+                                "NO",
+                                getResizeFont(context, 50),
+                                getPrimaryColor(context),
+                                1,
+                                fontWeight: FontWeight.w500),
                             onPressed: () {
-                              Navigator.of(dialogContext)
-                                  .pop();
+                              Navigator.of(dialogContext).pop();
 
-                              Navigator.of(dialogContext)
-                                  .pop();
+                              Navigator.of(dialogContext).pop();
 
                               // Dismiss alert dialog
                             },
@@ -529,8 +525,6 @@ class _HomePage extends State<HomePage> {
 
                   // loginController.logout();
                   // Get.toNamed(KeyUtil.loginWidget);
-
-
                 },
               ),
             ),
@@ -548,10 +542,10 @@ class _HomePage extends State<HomePage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-
             // getTextWidget(context, 'NO', 50, getPrimaryColor(context),
             //   fontWeight: FontWeight.w500,),
-            title: getTextWidget(context,'Change Password',70,getFontColor(context)),
+            title: getTextWidget(
+                context, 'Change Password', 70, getFontColor(context)),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.r),
             ),
@@ -560,21 +554,23 @@ class _HomePage extends State<HomePage> {
             contentPadding: EdgeInsets.zero,
 
             content: Container(
-              padding: EdgeInsets.symmetric(horizontal: 25.h,vertical: 15.h),
-              width: Responsive.isDesktop(context) ||Responsive.isDesktop(context)? 450.h: double.infinity,
-
+              padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
+              width:
+                  Responsive.isDesktop(context) || Responsive.isDesktop(context)
+                      ? 450.h
+                      : double.infinity,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Row(
                     children: [
-                      Expanded(child: getTextWidget(context,'Change Password',0,getFontColor(context)),),
-
-
+                      Expanded(
+                        child: getTextWidget(context, 'Change Password', 0,
+                            getFontColor(context)),
+                      ),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           Get.back();
                         },
                         child: Icon(
@@ -588,55 +584,44 @@ class _HomePage extends State<HomePage> {
                   SizedBox(
                     height: 25.h,
                   ),
-
                   Text(
                     'New Password',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
                         color: Colors.grey.shade600,
                         fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 8.h,
                   ),
-
-                  getTextFiledWidget(context, "New Password", _textFieldController,),
-
+                  getTextFiledWidget(
+                    context,
+                    "New Password",
+                    _textFieldController,
+                  ),
                   SizedBox(
                     height: 18.h,
                   ),
-
-
                   Text(
                     'Confirm Password',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
                         color: Colors.grey.shade600,
                         fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 8.h,
                   ),
-
-                  getTextFiledWidget(context, "Confirm Password", _textFieldController1,),
-
+                  getTextFiledWidget(
+                    context,
+                    "Confirm Password",
+                    _textFieldController1,
+                  ),
                   SizedBox(
                     height: 25.h,
                   ),
-
-
-
-
                   InkWell(
-                    onTap: (){
-
-
+                    onTap: () {
                       String password1 = _textFieldController.text;
                       String password2 = _textFieldController1.text;
                       if (isNotEmpty(password1) && isNotEmpty(password2)) {
@@ -646,35 +631,39 @@ class _HomePage extends State<HomePage> {
                                 password: password1,
                                 function: () {
                                   Get.back();
-                                }, context: context);
+                                },
+                                context: context);
                           } else {
-                            showCustomToast(context: context,message: "Password does not match");
+                            showCustomToast(
+                                context: context,
+                                message: "Password does not match");
                           }
                         } else {
-                          showCustomToast(context: context,message: "You must have 6 characters in your password");
+                          showCustomToast(
+                              context: context,
+                              message:
+                                  "You must have 6 characters in your password");
                         }
                       } else {
-                        showCustomToast(context: context,message: "Fill Detail..");
+                        showCustomToast(
+                            context: context, message: "Fill Detail..");
                       }
-
                     },
-
                     child: Container(
-                      height:55 ,
-
+                      height: 55,
                       width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                          color: primaryColor
-                      ),
-                      child: Center(child: getTextWidget(context, "Update", 35, Colors.white,fontWeight: FontWeight.w400)),
+                          color: primaryColor),
+                      child: Center(
+                          child: getTextWidget(
+                              context, "Update", 35, Colors.white,
+                              fontWeight: FontWeight.w400)),
                     ),
                   ),
-
                   SizedBox(
                     height: 25.h,
                   ),
-
                 ],
               ),
             ),

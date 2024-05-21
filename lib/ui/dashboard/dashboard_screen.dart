@@ -26,7 +26,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
   List<DashBoardData> dashboard = getDashboardData();
 
   HomeController homeController = Get.find();
@@ -36,7 +35,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setScreenSize(context);
 
     return SafeArea(
-      child: CommonPage(widget: Container(
+      child: CommonPage(
+          widget: Container(
         height: double.infinity,
         width: double.infinity,
         child: Column(
@@ -44,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             getVerticalSpace(context, 35),
             getTextWidget(context, 'DashBoard', 75, getFontColor(context),
-                fontWeight: FontWeight.w900)
+                    fontWeight: FontWeight.w900)
                 .marginSymmetric(horizontal: getDefaultHorSpace(context)),
             getVerticalSpace(context, 35),
             Expanded(
@@ -56,8 +56,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: kIsWeb
                                 ? (MediaQuery.of(context).size.width < 1338)
-                                ? 2
-                                : 3
+                                    ? 2
+                                    : 3
                                 : 2,
                             mainAxisExtent: 180.h,
                             mainAxisSpacing: kIsWeb ? 25.h : 20.h,
@@ -73,17 +73,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               "height is ================================= ${MediaQuery.of(context).size.height}");
 
                           double iconSize =
-                          (MediaQuery.of(context).size.width < 1338)
-                              ? 25.h
-                              : 40.h;
+                              (MediaQuery.of(context).size.width < 1338)
+                                  ? 25.h
+                                  : 40.h;
                           double fontSize =
-                          (MediaQuery.of(context).size.width < 1338)
-                              ? 15
-                              : 17.sp;
+                              (MediaQuery.of(context).size.width < 1338)
+                                  ? 15
+                                  : 17.sp;
                           double fontSize1 =
-                          (MediaQuery.of(context).size.width < 1338)
-                              ? 35
-                              : 40.h;
+                              (MediaQuery.of(context).size.width < 1338)
+                                  ? 35
+                                  : 40.h;
                           return Container(
                             decoration: BoxDecoration(
                                 boxShadow: [
@@ -91,7 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       offset: Offset(0, 16),
                                       blurRadius: 31,
                                       color:
-                                      Color(0XFFACBFC1).withOpacity(0.10))
+                                          Color(0XFFACBFC1).withOpacity(0.10))
                                 ],
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(16.h),
@@ -120,22 +120,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               overflow: TextOverflow.visible)),
                                       StreamBuilder<QuerySnapshot>(
                                         stream: (dashBoardData.isPopular ??
-                                            false)
+                                                false)
                                             ? FirebaseFirestore.instance
-                                            .collection(
-                                            dashBoardData.tableName!)
-                                            .where(KeyTable.isPopular,isEqualTo: true)
-                                            .snapshots()
+                                                .collection(
+                                                    dashBoardData.tableName!)
+                                                .where(KeyTable.isPopular,
+                                                    isEqualTo: true)
+                                                .snapshots()
                                             : (dashBoardData.isFeatured ??
-                                            false)
-                                            ? FirebaseFirestore.instance
-                                            .collection(dashBoardData
-                                            .tableName!).where(KeyTable.isFeatured,isEqualTo: true)
-                                            .snapshots()
-                                            : FirebaseFirestore.instance
-                                            .collection(dashBoardData
-                                            .tableName!)
-                                            .snapshots(),
+                                                    false)
+                                                ? FirebaseFirestore.instance
+                                                    .collection(dashBoardData
+                                                        .tableName!)
+                                                    .where(KeyTable.isFeatured,
+                                                        isEqualTo: true)
+                                                    .snapshots()
+                                                : FirebaseFirestore.instance
+                                                    .collection(dashBoardData
+                                                        .tableName!)
+                                                    .snapshots(),
                                         builder: (context1, snapshot) {
                                           print(
                                               "state===${snapshot.connectionState}");
@@ -151,8 +154,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             i = list.length;
                                           }
 
-                                          return getCustomFont('$i', fontSize1,
-                                              Colors.black, 1,
+                                          return getCustomFont(
+                                              '$i', fontSize1, Colors.black, 1,
                                               fontWeight: FontWeight.w700);
                                         },
                                       ),
@@ -162,15 +165,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 getVerSpace(28.h),
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     InkWell(
                                         onTap: () {
                                           changeAction(dashBoardData.action ??
                                               oldAction);
                                         },
-                                        child: getCustomFont("View All", getResizeFont(context, 50),
-                                            getFontColor(context), 1,
+                                        child: getCustomFont(
+                                            "View All",
+                                            getResizeFont(context, 50),
+                                            getFontColor(context),
+                                            1,
                                             fontWeight: FontWeight.w500)),
                                     InkWell(
                                       onTap: () {
@@ -209,7 +215,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     // required Function actionAddNew,
     // required Function actionViewAll
   }) {
-
     Widget subWidget = ClipRRect(
       borderRadius: BorderRadius.circular((getResizeRadius(context, 35))),
       child: Column(

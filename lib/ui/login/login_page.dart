@@ -30,16 +30,16 @@ class _LoginPage extends State<LoginPage> {
   Widget build(BuildContext context) {
     setScreenSize(context);
 
-
     print("called------loginPage");
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: (Get.isDarkMode)?getCardColor(context):getBackgroundColor(context),
+        backgroundColor: (Get.isDarkMode)
+            ? getCardColor(context)
+            : getBackgroundColor(context),
         body: SafeArea(
           child: Container(
             child: Row(
               children: [
-
                 // Visibility(child: Expanded(child: Container(
                 //
                 //   color: "#FFEDE9".toColor(),
@@ -70,19 +70,22 @@ class _LoginPage extends State<LoginPage> {
                 //
                 // )),visible: Responsive.isDesktop(context),),
 
-                Visibility(visible: Responsive.isDesktop(context),child: Expanded(child: Container())),
+                Visibility(
+                    visible: Responsive.isDesktop(context),
+                    child: Expanded(child: Container())),
 
                 Expanded(
-                  child: Obx(() => (isSignUp.value)?getSignUpView():getLoginView()),
+                  child: Obx(() =>
+                      (isSignUp.value) ? getSignUpView() : getLoginView()),
                   // flex: Responsive.isDesktop(context) ||
                   //         Responsive.isTablet(context)
                   //     ? 1
                   //     : 2,
                 ),
-                
-                Visibility(visible: Responsive.isDesktop(context),child: Expanded(child: Container()))
 
-
+                Visibility(
+                    visible: Responsive.isDesktop(context),
+                    child: Expanded(child: Container()))
               ],
             ),
           ),
@@ -95,20 +98,20 @@ class _LoginPage extends State<LoginPage> {
     );
   }
 
-
-  getLoginView(){
-
+  getLoginView() {
     print("called------loginPage----111");
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Card(
-          color: (Get.isDarkMode)?getBackgroundColor(context):getCardColor(context),
+          color: (Get.isDarkMode)
+              ? getBackgroundColor(context)
+              : getCardColor(context),
           elevation: 0,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  getResizeRadius(context, 25))),
+              borderRadius:
+                  BorderRadius.circular(getResizeRadius(context, 25))),
           margin: EdgeInsets.symmetric(vertical: 30.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -117,11 +120,11 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 30),
               Align(
                 alignment: Alignment.center,
-                child: getTextWidget(context, 'Login', 100, getFontColor(context),
+                child: getTextWidget(
+                    context, 'Login', 100, getFontColor(context),
                     fontWeight: FontWeight.bold,
                     customFont: Constants.headerFontsFamily),
               ),
-
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
@@ -131,8 +134,7 @@ class _LoginPage extends State<LoginPage> {
                 fontWeight: FontWeight.w500,
               ),
               getVerticalSpace(context, 15),
-              getDefaultTextFiledWidget(
-                  context, "Email", emailController),
+              getDefaultTextFiledWidget(context, "Email", emailController),
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
@@ -143,14 +145,13 @@ class _LoginPage extends State<LoginPage> {
               ),
               getVerticalSpace(context, 15),
               getPasswordTextFiledWidget(
-                  context, "Password", passwordController,onSubmit: (value){
+                  context, "Password", passwordController, onSubmit: (value) {
                 isProgress.value = true;
                 _login();
-
               }),
               getVerticalSpace(context, 30),
               Obx(() {
-                return getButtonWidget(context, 'Log In', () {
+                return getButtonWidget(context, 'Log Inn', () {
                   isProgress.value = true;
                   _login();
                 },
@@ -160,93 +161,89 @@ class _LoginPage extends State<LoginPage> {
                     textColor: Colors.white,
                     verticalSpace: 0);
               }),
-              // getVerticalSpace(context, 15),
-              //
-              // StreamBuilder<QuerySnapshot>(
-              //   stream: FirebaseFirestore.instance.collection(KeyTable.adminData).snapshots(),
-              //   builder: (context, snapshot) {
-              //
-              //     if(snapshot.data != null && snapshot.data!.size > 0){
-              //
-              //       print("sna-----------${snapshot.data}");
-              //
-              //       return Container();
-              //
-              //
-              //
-              //       // if(snapshot.connectionState == ConnectionState.active){
-              //       //   return Container();
-              //       // }else{
-              //       //   return Container();
-              //       // }
-              //
-              //     }else{
-              //       if(snapshot.connectionState == ConnectionState.active){
-              //         return Row(
-              //           mainAxisAlignment: MainAxisAlignment.center,
-              //           crossAxisAlignment: CrossAxisAlignment.center,
-              //           children: [
-              //             Text(
-              //               'Don\'t have an account?',
-              //               textAlign: TextAlign.center,
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .labelMedium!
-              //                   .copyWith(
-              //                   color: Colors.grey.shade600,
-              //                   fontWeight: FontWeight.w500),
-              //             ),
-              //
-              //             SizedBox(
-              //               width: 5.h,
-              //             ),
-              //             InkWell(
-              //               onTap: (){
-              //                 isSignUp.value = true;
-              //                 passwordController.text = "";
-              //                 emailController.text = "";
-              //                 confirmPasswordController.text = "";
-              //               },
-              //               child: Text(
-              //                 'Sign Up',
-              //                 textAlign: TextAlign.center,
-              //                 style: Theme.of(context)
-              //                     .textTheme
-              //                     .labelMedium!
-              //                     .copyWith(
-              //                     color: primaryColor,
-              //                     fontWeight: FontWeight.w600),
-              //               ),
-              //             ),
-              //           ],
-              //         );
-              //       }else{
-              //         return Container();
-              //       }
-              //     }
-              //
-              // },),
+              getVerticalSpace(context, 15),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection(KeyTable.adminData)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.data != null && snapshot.data!.size > 0) {
+                    print("sna-----------${snapshot.data}");
+
+                    return Container();
+
+                    // if(snapshot.connectionState == ConnectionState.active){
+                    //   return Container();
+                    // }else{
+                    //   return Container();
+                    // }
+                  } else {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Don\'t have an account?',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                    color: Colors.grey.shade600,
+                                    fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            width: 5.h,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              isSignUp.value = true;
+                              passwordController.text = "";
+                              emailController.text = "";
+                              confirmPasswordController.text = "";
+                            },
+                            child: Text(
+                              'Sign Up',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelMedium!
+                                  .copyWith(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }
+                },
+              ),
               getVerticalSpace(context, 30),
             ],
           ).paddingSymmetric(horizontal: 30.h),
         ),
       ],
-    ).marginSymmetric(horizontal: Responsive.isDesktop(context)?0.h:15.h);
+    ).marginSymmetric(horizontal: Responsive.isDesktop(context) ? 0.h : 15.h);
     // ).marginSymmetric(horizontal: Responsive.isDesktop(context)?200.h:15.h);
   }
 
-  getSignUpView(){
+  getSignUpView() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-
         Card(
-          color: (Get.isDarkMode)?getBackgroundColor(context):getCardColor(context),
+          color: (Get.isDarkMode)
+              ? getBackgroundColor(context)
+              : getCardColor(context),
           elevation: 0,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  getResizeRadius(context, 25))),
+              borderRadius:
+                  BorderRadius.circular(getResizeRadius(context, 25))),
           margin: EdgeInsets.symmetric(vertical: 30.h),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -255,7 +252,8 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 30),
               Align(
                 alignment: Alignment.center,
-                child: getTextWidget(context, 'Admin', 70, getFontColor(context),
+                child: getTextWidget(
+                    context, 'Admin', 70, getFontColor(context),
                     fontWeight: FontWeight.bold,
                     customFont: Constants.fontsFamily),
               ),
@@ -268,8 +266,7 @@ class _LoginPage extends State<LoginPage> {
                 fontWeight: FontWeight.w500,
               ),
               getVerticalSpace(context, 15),
-              getDefaultTextFiledWidget(
-                  context, "Email", emailController),
+              getDefaultTextFiledWidget(context, "Email", emailController),
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
@@ -280,12 +277,14 @@ class _LoginPage extends State<LoginPage> {
               ),
               getVerticalSpace(context, 15),
               getPasswordTextFiledWidget(
-                context, "Password", passwordController,onSubmit: (value){
-                isProgress.value = true;
-                // _login();
-
-              },),
-
+                context,
+                "Password",
+                passwordController,
+                onSubmit: (value) {
+                  isProgress.value = true;
+                  // _login();
+                },
+              ),
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
@@ -296,11 +295,14 @@ class _LoginPage extends State<LoginPage> {
               ),
               getVerticalSpace(context, 15),
               getPasswordTextFiledWidget(
-                context, "Confirm Password", confirmPasswordController,onSubmit: (value){
-                isProgress.value = true;
-                // _login();
-
-              },),
+                context,
+                "Confirm Password",
+                confirmPasswordController,
+                onSubmit: (value) {
+                  isProgress.value = true;
+                  // _login();
+                },
+              ),
               getVerticalSpace(context, 30),
               Obx(() {
                 return getButtonWidget(context, 'Create', () {
@@ -321,19 +323,15 @@ class _LoginPage extends State<LoginPage> {
                   Text(
                     'Already have an account?',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelMedium!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         color: Colors.grey.shade600,
                         fontWeight: FontWeight.w500),
                   ),
-
                   SizedBox(
                     width: 5.h,
                   ),
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       isSignUp.value = false;
 
                       passwordController.text = "";
@@ -343,27 +341,21 @@ class _LoginPage extends State<LoginPage> {
                     child: Text(
                       'Login',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelMedium!
-                          .copyWith(
-                          color: primaryColor,
-                          fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: primaryColor, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
               ),
               getVerticalSpace(context, 30),
-
-
-
             ],
           ).paddingSymmetric(horizontal: 30.h),
         ),
       ],
-    ).marginSymmetric(horizontal: Responsive.isDesktop(context)?0.h:15.h);
+    ).marginSymmetric(horizontal: Responsive.isDesktop(context) ? 0.h : 15.h);
     // ).marginSymmetric(horizontal: Responsive.isDesktop(context)?200.h:15.h);
   }
+
   getSideSpace() {
     return Responsive.isDesktop(context) || Responsive.isTablet(context)
         ? Expanded(
@@ -374,14 +366,9 @@ class _LoginPage extends State<LoginPage> {
   }
 
   void _login() async {
-
-    if(isNotEmpty(emailController.text)){
-
-
-      if(isNotEmpty(passwordController.text)){
-
-        bool isLoginComplete = await LoginData.login(
-            context,
+    if (isNotEmpty(emailController.text)) {
+      if (isNotEmpty(passwordController.text)) {
+        bool isLoginComplete = await LoginData.login(context,
             password: passwordController.text, username: emailController.text);
 
         if (isLoginComplete) {
@@ -389,89 +376,68 @@ class _LoginPage extends State<LoginPage> {
           Constants.pushPage(KeyUtil.homePage, function: (value) {});
           passwordController.text = '';
           emailController.text = '';
-
         } else {
           isProgress.value = false;
           // showCustomToast(
           //     message: "Something wrong", context: context, title: 'Error');
         }
-
-
-      }else{
+      } else {
         showCustomToast(context: context, message: "Please enter password");
         isProgress.value = false;
       }
-    }else{
+    } else {
       showCustomToast(context: context, message: "Please enter email");
       isProgress.value = false;
     }
-
   }
 
-
-  bool checkValidation(){
-    if(isNotEmpty(emailController.text) && isValidEmail(emailController.text)){
-
-
-
-        if(isNotEmpty(passwordController.text)){
-
-
-          if(passwordController.text.length >= 6){
-
-            if(passwordController.text == confirmPasswordController.text){
-
-              return true;
-
-            }else{
-              showCustomToast(context: context, message: "Password dose not match");
-              return false;
-            }
-
-          }else{
-            showCustomToast(context: context, message: "You must have 6 characters in your password");
+  bool checkValidation() {
+    if (isNotEmpty(emailController.text) &&
+        isValidEmail(emailController.text)) {
+      if (isNotEmpty(passwordController.text)) {
+        if (passwordController.text.length >= 6) {
+          if (passwordController.text == confirmPasswordController.text) {
+            return true;
+          } else {
+            showCustomToast(
+                context: context, message: "Password dose not match");
             return false;
           }
-
-        }else{
-          showCustomToast(context: context, message: "Enter Password");
+        } else {
+          showCustomToast(
+              context: context,
+              message: "You must have 6 characters in your password");
           return false;
         }
-
-    }else{
+      } else {
+        showCustomToast(context: context, message: "Enter Password");
+        return false;
+      }
+    } else {
       showCustomToast(context: context, message: "Email not valid");
       return false;
     }
   }
 
   void signUp() async {
+    if (checkValidation()) {
+      await LoginData.createAdmin(
+          password: passwordController.text,
+          username: emailController.text,
+          context: context,
+          function: () {
+            isProgress.value = false;
+            Constants.pushPage(KeyUtil.homePage, function: (value) {});
+            passwordController.text = '';
+            emailController.text = '';
+          });
 
-
-    if(checkValidation()){
-
-
-
-       await LoginData.createAdmin(
-
-          password: passwordController.text, username: emailController.text,context: context,function: (){
-
-        isProgress.value = false;
-        Constants.pushPage(KeyUtil.homePage, function: (value) {});
-        passwordController.text = '';
-        emailController.text = '';
-      });
-
-
-        isProgress.value = false;
-        // showCustomToast(
-        //     message: "Something wrong", context: context, title: 'Error');
-
-
-
+      isProgress.value = false;
+      // showCustomToast(
+      //     message: "Something wrong", context: context, title: 'Error');
     }
 
     isProgress.value = false;
-
 
     //
     // isProgress.value = false;
@@ -491,6 +457,5 @@ class _LoginPage extends State<LoginPage> {
     //         message: "Something wrong", context: context, title: 'Error');
     //   }
     // }
-
   }
 }

@@ -72,7 +72,8 @@ class SideMenu extends StatelessWidget {
                   ? "category_active.svg"
                   : "menu.svg",
               isSelected: i == actionAddCategory ||
-                  i == actionCategories ||i == actionEditCategory ||
+                  i == actionCategories ||
+                  i == actionEditCategory ||
                   checkAction(i, dummyActionCategories),
               isDropDown: true,
               isAddSelected: i == actionAddCategory,
@@ -108,9 +109,9 @@ class SideMenu extends StatelessWidget {
               // key: Key("selected ${selectedIndex}"),
               title: "Author",
               svgSrc: (i == actionAuthor ||
-                  i == actionEditAuthor ||
-                  i == actionAddAuthor ||
-                  checkAction(i, dummyActionAuthor))
+                      i == actionEditAuthor ||
+                      i == actionAddAuthor ||
+                      checkAction(i, dummyActionAuthor))
                   ? "user_active.svg"
                   : "user.svg",
               isSelected: i == actionAuthor ||
@@ -192,13 +193,13 @@ class SideMenu extends StatelessWidget {
                 function(actionHomeSlider);
               },
               pressAdd: () {
-
-                if(homeController.sliderList.length < 3){
+                if (homeController.sliderList.length < 3) {
                   function(actionAddSlider);
-                }else{
-                  showCustomToast(context: context, message: "you have already 3 slider added");
+                } else {
+                  showCustomToast(
+                      context: context,
+                      message: "you have already 3 slider added");
                 }
-
               },
               press: () {
                 function(actionHomeSlider);
@@ -206,8 +207,6 @@ class SideMenu extends StatelessWidget {
               },
               index: 3,
             ),
-
-
 
             // DrawerListTile(
             //   title: "Home Slider",
@@ -330,17 +329,21 @@ class DrawerExpansionTile extends StatelessWidget {
       // padding: EdgeInsets.symmetric(horizontal: 15.h),
 
       decoration: BoxDecoration(
-        // color: Colors.transparent,
-        color: isSelected
-            ? themeController.checkDarkTheme()
-                ? darkSubCardColor
-                : alphaColor
-            : Colors.transparent,
-        borderRadius: BorderRadius.all(
-          Radius.circular(getResizeRadius(context, 10)),
-        ),
-        border: (isSelected)?Border.fromBorderSide(BorderSide(color: getOpacityColor(context),width: 1.h,)):null
-      ),
+          // color: Colors.transparent,
+          color: isSelected
+              ? themeController.checkDarkTheme()
+                  ? darkSubCardColor
+                  : alphaColor
+              : Colors.transparent,
+          borderRadius: BorderRadius.all(
+            Radius.circular(getResizeRadius(context, 10)),
+          ),
+          border: (isSelected)
+              ? Border.fromBorderSide(BorderSide(
+                  color: getOpacityColor(context),
+                  width: 1.h,
+                ))
+              : null),
 
       child: Theme(
         data: Theme.of(context).copyWith(
@@ -374,8 +377,8 @@ class DrawerExpansionTile extends StatelessWidget {
                                     getResizeRadius(context, 12)))),
                       )
                     : SizedBox(
-                  width: 5.h,
-                ),
+                        width: 5.h,
+                      ),
                 getHorSpace(10.h),
                 Container(
                   height: 18.h,
@@ -479,19 +482,19 @@ class DrawerExpansionTile extends StatelessWidget {
                           children: [
                             isListSelected ?? false
                                 ? Container(
-                              margin: EdgeInsets.symmetric(vertical: 5.h),
-                              width: 5.h,
-                              decoration: BoxDecoration(
-                                  color: getPrimaryColor(context),
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(
-                                          getResizeRadius(context, 12)),
-                                      bottomRight: Radius.circular(
-                                          getResizeRadius(context, 12)))),
-                            )
+                                    margin: EdgeInsets.symmetric(vertical: 5.h),
+                                    width: 5.h,
+                                    decoration: BoxDecoration(
+                                        color: getPrimaryColor(context),
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(
+                                                getResizeRadius(context, 12)),
+                                            bottomRight: Radius.circular(
+                                                getResizeRadius(context, 12)))),
+                                  )
                                 : SizedBox(
-                              width: 5.h,
-                            ),
+                                    width: 5.h,
+                                  ),
                             getHorSpace(10.h),
                             imageAsset(
                               "list.png",
@@ -548,19 +551,19 @@ class DrawerExpansionTile extends StatelessWidget {
                           children: [
                             isAddSelected ?? false
                                 ? Container(
-                              margin: EdgeInsets.symmetric(vertical: 5.h),
-                              width: 5.h,
-                              decoration: BoxDecoration(
-                                  color: getPrimaryColor(context),
-                                  borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(
-                                          getResizeRadius(context, 12)),
-                                      bottomRight: Radius.circular(
-                                          getResizeRadius(context, 12)))),
-                            )
+                                    margin: EdgeInsets.symmetric(vertical: 5.h),
+                                    width: 5.h,
+                                    decoration: BoxDecoration(
+                                        color: getPrimaryColor(context),
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(
+                                                getResizeRadius(context, 12)),
+                                            bottomRight: Radius.circular(
+                                                getResizeRadius(context, 12)))),
+                                  )
                                 : SizedBox(
-                              width: 5.h,
-                            ),
+                                    width: 5.h,
+                                  ),
                             getHorSpace(10.h),
                             imageAsset(
                               "more.png",
