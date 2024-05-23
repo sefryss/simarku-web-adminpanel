@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -23,6 +24,7 @@ bool isLogin = false;
 ThemeController themeController = Get.put(ThemeController());
 CategoryController categoryController = Get.put(CategoryController());
 AuthorController authorController = Get.put(AuthorController());
+GenreController genreController = Get.put(GenreController());
 StoryController storyController = Get.put(StoryController());
 
 RxString deviceID = ''.obs;
@@ -53,14 +55,13 @@ initFirebase() async {
   if (kIsWeb) {
     await Firebase.initializeApp(
         options: FirebaseOptions(
-            apiKey: "AIzaSyBZITKH9BMhc5zHkTVUFa843P_CG4Ys_Eg",
-            authDomain: "ebook-4d358.firebaseapp.com",
-            projectId: "ebook-4d358",
-            storageBucket: "ebook-4d358.appspot.com",
-            messagingSenderId: "52319249413",
-            appId: "1:52319249413:web:078a67869a1d175e61286c",
-            measurementId: "G-KX0SWDPN8N",
-            ));
+      apiKey: "AIzaSyAysW8hFXTY0exHPrZy2lg97_AyXh0BtZg",
+      authDomain: "simarku-a8d45.firebaseapp.com",
+      projectId: "simarku-a8d45",
+      storageBucket: "simarku-a8d45.appspot.com",
+      messagingSenderId: "716875505153",
+      appId: "1:716875505153:web:d8420ac2f09d1e6a892a00",
+    ));
   } else {
     await Firebase.initializeApp();
   }

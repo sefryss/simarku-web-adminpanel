@@ -2,6 +2,9 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/home_controller.dart';
+import 'package:ebookadminpanel/main.dart';
+import 'package:ebookadminpanel/model/genre_model.dart';
+import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +14,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:ebookadminpanel/model/story_model.dart';
-import '../model/authors_model.dart';
 import '../theme/color_scheme.dart';
 import '../ui/common/common.dart';
 import '../util/constants.dart';
@@ -25,6 +27,8 @@ class StoryController extends GetxController {
   TextEditingController imageController = TextEditingController();
   TextEditingController pdfController = TextEditingController();
   TextEditingController authController = TextEditingController();
+  TextEditingController genreController = TextEditingController();
+  TextEditingController ownerController = TextEditingController();
   // RxString audioUrl = ''.obs;
   RxString pdfUrl = ''.obs;
   RxString pdfSize = ''.obs;
@@ -50,8 +54,12 @@ class StoryController extends GetxController {
   // RxString date = ''.obs;
   // DateTime customDate = DateTime.now();
 
-  RxList selectedAuthors = [].obs;
-  RxList selectedAuthorsNameList = [].obs;
+  // RxList selectedAuthors = [].obs;
+  // RxList selectedAuthorsNameList = [].obs;
+  RxList selectedGenre = [].obs;
+  RxList selectedGenreNameList = [].obs;
+  RxList selectedUser = [].obs;
+  RxList selectedUserNameList = [].obs;
 
   @override
   Future<void> onInit() async {
@@ -61,22 +69,52 @@ class StoryController extends GetxController {
     setAllDataFromStoryModel(storyModel!, homeController!);
   }
 
-  getAuthors(List selectedList) async {
+  // getAuthors(List selectedList) async {
+  //   QuerySnapshot snapshot =
+  //       await FirebaseFirestore.instance.collection(KeyTable.authorList).get();
+
+  //   if (snapshot.docs.isNotEmpty && snapshot.size > 0) {
+  //     List<DocumentSnapshot> list = snapshot.docs;
+
+  //     for (int i = 0; i < list.length; i++) {
+  //       if (selectedList.contains(list[i].id)) {
+  //         selectedAuthorsNameList
+  //             .add(TopAuthors.fromFirestore(list[i]).authorName!);
+  //       }
+  //     }
+  //   }
+
+  //   authController.text = selectedAuthorsNameList
+  //       .toString()
+  //       .replaceAll('[', '')
+  //       .replaceAll(']', '');
+
+  //   // publisher.value = jsonDecode(storyModel!.publisher ?? "");
+  //   //
+  //   //
+  //   // publisherController1.text = publisher.toString().replaceAll('[', '').replaceAll(']', '');
+  //   //
+  //   // print("selected---------publisher--${publisher.toString()}");
+
+  //   print("selected-----------${selectedAuthorsNameList.toString()}");
+  //   print("selected-----------${selectedAuthors.toString()}");
+  // }
+
+  getGenre(List selectedList) async {
     QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection(KeyTable.authorList).get();
+        await FirebaseFirestore.instance.collection(KeyTable.genreList).get();
 
     if (snapshot.docs.isNotEmpty && snapshot.size > 0) {
       List<DocumentSnapshot> list = snapshot.docs;
 
       for (int i = 0; i < list.length; i++) {
         if (selectedList.contains(list[i].id)) {
-          selectedAuthorsNameList
-              .add(TopAuthors.fromFirestore(list[i]).authorName!);
+          selectedGenreNameList.add(Genre.fromFirestore(list[i]).genre!);
         }
       }
     }
 
-    authController.text = selectedAuthorsNameList
+    genreController.text = selectedGenreNameList
         .toString()
         .replaceAll('[', '')
         .replaceAll(']', '');
@@ -88,8 +126,36 @@ class StoryController extends GetxController {
     //
     // print("selected---------publisher--${publisher.toString()}");
 
-    print("selected-----------${selectedAuthorsNameList.toString()}");
-    print("selected-----------${selectedAuthors.toString()}");
+    print("selected-----------${selectedGenreNameList.toString()}");
+    print("selected-----------${selectedGenre.toString()}");
+  }
+
+  getUser(List selectedList) async {
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.user).get();
+
+    if (snapshot.docs.isNotEmpty && snapshot.size > 0) {
+      List<DocumentSnapshot> list = snapshot.docs;
+
+      for (int i = 0; i < list.length; i++) {
+        if (selectedList.contains(list[i].id)) {
+          selectedUserNameList.add(UserModel.fromFirestore(list[i]).fullName!);
+        }
+      }
+    }
+
+    ownerController.text =
+        selectedUserNameList.toString().replaceAll('[', '').replaceAll(']', '');
+
+    // publisher.value = jsonDecode(storyModel!.publisher ?? "");
+    //
+    //
+    // publisherController1.text = publisher.toString().replaceAll('[', '').replaceAll(']', '');
+    //
+    // print("selected---------publisher--${publisher.toString()}");
+
+    print("selected-----------${selectedUserNameList.toString()}");
+    print("selected-----------${selectedUser.toString()}");
   }
 
   setAllDataFromStoryModel(StoryModel? s, HomeController controller) {
@@ -99,7 +165,8 @@ class StoryController extends GetxController {
       storyModel = s;
 
       if (storyModel != null) {
-        getAuthors(storyModel!.authId!);
+        // getAuthors(storyModel!.authId!);
+        getGenre(storyModel!.genreId!);
 
         // String authName = await FirebaseData.getAuthName(refId: storyModel!.authId ?? "");
 
@@ -122,7 +189,7 @@ class StoryController extends GetxController {
         homeController!.category.value = storyModel!.refId!;
         // homeController!.author.value = storyModel!.authId!;
 
-        selectedAuthors.value = storyModel!.authId!;
+        // selectedAuthors.value = storyModel!.authId!;
 
         pdfUrl.value = pdfFile;
 
@@ -168,9 +235,15 @@ class StoryController extends GetxController {
     webImage = Uint8List(10);
 
     authController = TextEditingController();
+    genreController = TextEditingController();
+    ownerController = TextEditingController();
 
-    selectedAuthors.value = [];
-    selectedAuthorsNameList.value = [];
+    // selectedAuthors.value = [];
+    // selectedAuthorsNameList.value = [];
+    selectedGenre.value = [];
+    selectedGenreNameList.value = [];
+    selectedUser.value = [];
+    selectedUserNameList.value = [];
 
     webFile = Uint8List(10);
     descController = QuillController.basic();
@@ -195,12 +268,16 @@ class StoryController extends GetxController {
       StoryModel firebaseHistory = new StoryModel();
       firebaseHistory.name = nameController.text;
       firebaseHistory.image = url;
-      firebaseHistory.pdf =
-          (controller.pdf.value == Constants.url) ? pdfController.text : pdfUrl;
+      firebaseHistory.pdf = (controller.pdf.value == Constants.physichBook)
+          ? pdfController.text
+          : pdfUrl;
       firebaseHistory.refId = controller.category.value;
-      firebaseHistory.authId = selectedAuthors;
+      // firebaseHistory.authId = selectedAuthors;
+      firebaseHistory.genreId = selectedGenre;
       // firebaseHistory.authId = controller.author.value;
       firebaseHistory.index = await FirebaseData.getLastIndexFromAuthTable();
+      firebaseHistory.index = await FirebaseData.getLastIndexFromGenreTable();
+      firebaseHistory.index = await FirebaseData.getLastIndexFromUserTable();
       firebaseHistory.desc =
           deltaToHtml(descController.document.toDelta().toJson());
       // firebaseHistory.desc = quillDeltaToHtml(descController.document.toDelta());
@@ -315,7 +392,8 @@ class StoryController extends GetxController {
       storyModel!.desc =
           deltaToHtml(descController.document.toDelta().toJson());
       // storyModel!.desc = quillDeltaToHtml(descController.document.toDelta());
-      storyModel!.authId = selectedAuthors;
+      // storyModel!.authId = selectedAuthors;
+      storyModel!.genreId = selectedGenre;
       // storyModel!.authId = homeController.author.value;
 
       // storyModel!.date = date.value;
@@ -469,15 +547,96 @@ class StoryController extends GetxController {
     }
   }
 
-  Future<void> showAuthorDialog(
+  // Future<void> showAuthorDialog(
+  //     BuildContext context, HomeController home) async {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         print("auythLrn------_${home.authorList.length}");
+  //         return AlertDialog(
+  //           title: getTextWidget(
+  //               context, 'Select Author', 60, getFontColor(context),
+  //               fontWeight: FontWeight.w700),
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(10.r),
+  //           ),
+  //           backgroundColor: getBackgroundColor(context),
+  //           contentPadding: EdgeInsets.zero,
+  //           content: Container(
+  //             padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
+  //             width:
+  //                 Responsive.isDesktop(context) || Responsive.isDesktop(context)
+  //                     ? 450.h
+  //                     : 350.h,
+  //             child: ListView.builder(
+  //               shrinkWrap: true,
+  //               // itemCount: 10,
+  //               itemCount: home.authorList.length,
+  //               itemBuilder: (context, index) {
+  //                 return ListTile(
+  //                   // title: getCustomFont("text", 18, getFontColor(context), 1),
+  //                   title: getCustomFont(home.authorList[index].authorName!, 14,
+  //                       getFontColor(context), 1),
+  //                   trailing: Obx(() => Checkbox(
+  //                       activeColor: getPrimaryColor(context),
+  //                       checkColor: Colors.white,
+  //                       onChanged: (checked) {
+  //                         print(
+  //                             "checked--------${selectedAuthors.contains(home.authorList[index].id!)}--------${checked}");
+
+  //                         if (selectedAuthors
+  //                             .contains(home.authorList[index].id!)) {
+  //                           selectedAuthors.remove(home.authorList[index].id!);
+  //                           selectedAuthorsNameList
+  //                               .remove(home.authorList[index].authorName!);
+  //                         } else {
+  //                           selectedAuthors.add(home.authorList[index].id!);
+  //                           selectedAuthorsNameList
+  //                               .add(home.authorList[index].authorName!);
+  //                         }
+
+  //                         print("selecteLen--------${selectedAuthors.length}");
+
+  //                         // isChecked[index] = checked;
+  //                         // _title = _getTitle();
+  //                       },
+  //                       value: selectedAuthors
+  //                           .contains(home.authorList[index].id!))),
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //           actions: [
+  //             getButtonWidget(
+  //               context,
+  //               'Submit',
+  //               isProgress: false,
+  //               () {
+  //                 Get.back();
+  //                 authController.text = selectedAuthorsNameList
+  //                     .toString()
+  //                     .replaceAll('[', '')
+  //                     .replaceAll(']', '');
+  //               },
+  //               horPadding: 25.h,
+  //               horizontalSpace: 0,
+  //               verticalSpace: 0,
+  //               btnHeight: 40.h,
+  //             )
+  //           ],
+  //         );
+  //       });
+  // }
+
+  Future<void> showGenreDialog(
       BuildContext context, HomeController home) async {
     return showDialog(
         context: context,
         builder: (context) {
-          print("auythLrn------_${home.authorList.length}");
+          print("genreList------_${home.genreList.length}");
           return AlertDialog(
             title: getTextWidget(
-                context, 'Select Author', 60, getFontColor(context),
+                context, 'Pilih Genre', 60, getFontColor(context),
                 fontWeight: FontWeight.w700),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.r),
@@ -493,37 +652,37 @@ class StoryController extends GetxController {
               child: ListView.builder(
                 shrinkWrap: true,
                 // itemCount: 10,
-                itemCount: home.authorList.length,
+                itemCount: home.genreList.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     // title: getCustomFont("text", 18, getFontColor(context), 1),
-                    title: getCustomFont(home.authorList[index].authorName!, 14,
+                    title: getCustomFont(home.genreList[index].genre!, 14,
                         getFontColor(context), 1),
                     trailing: Obx(() => Checkbox(
                         activeColor: getPrimaryColor(context),
                         checkColor: Colors.white,
                         onChanged: (checked) {
                           print(
-                              "checked--------${selectedAuthors.contains(home.authorList[index].id!)}--------${checked}");
+                              "checked--------${selectedGenre.contains(home.genreList[index].id!)}--------${checked}");
 
-                          if (selectedAuthors
-                              .contains(home.authorList[index].id!)) {
-                            selectedAuthors.remove(home.authorList[index].id!);
-                            selectedAuthorsNameList
-                                .remove(home.authorList[index].authorName!);
+                          if (selectedGenre
+                              .contains(home.genreList[index].id!)) {
+                            selectedGenre.remove(home.genreList[index].id!);
+                            selectedGenreNameList
+                                .remove(home.genreList[index].genre!);
                           } else {
-                            selectedAuthors.add(home.authorList[index].id!);
-                            selectedAuthorsNameList
-                                .add(home.authorList[index].authorName!);
+                            selectedGenre.add(home.genreList[index].id!);
+                            selectedGenreNameList
+                                .add(home.genreList[index].genre!);
                           }
 
-                          print("selecteLen--------${selectedAuthors.length}");
+                          print("selecteLen--------${selectedGenre.length}");
 
                           // isChecked[index] = checked;
                           // _title = _getTitle();
                         },
-                        value: selectedAuthors
-                            .contains(home.authorList[index].id!))),
+                        value:
+                            selectedGenre.contains(home.genreList[index].id!))),
                   );
                 },
               ),
@@ -535,7 +694,7 @@ class StoryController extends GetxController {
                 isProgress: false,
                 () {
                   Get.back();
-                  authController.text = selectedAuthorsNameList
+                  genreController.text = selectedGenreNameList
                       .toString()
                       .replaceAll('[', '')
                       .replaceAll(']', '');
@@ -548,5 +707,170 @@ class StoryController extends GetxController {
             ],
           );
         });
+  }
+
+  // Future<void> showUserDialog(BuildContext context, HomeController home) async {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         print("userList------_${home.userList.length}");
+  //         return AlertDialog(
+  //           title: getTextWidget(
+  //               context, 'Pilih Pemilik', 60, getFontColor(context),
+  //               fontWeight: FontWeight.w700),
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(10.r),
+  //           ),
+  //           backgroundColor: getBackgroundColor(context),
+  //           contentPadding: EdgeInsets.zero,
+  //           content: Container(
+  //             padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
+  //             width:
+  //                 Responsive.isDesktop(context) || Responsive.isDesktop(context)
+  //                     ? 450.h
+  //                     : 350.h,
+  //             child: ListView.builder(
+  //               shrinkWrap: true,
+  //               // itemCount: 10,
+  //               itemCount: home.userList.length,
+  //               itemBuilder: (context, index) {
+  //                 return ListTile(
+  //                   // title: getCustomFont("text", 18, getFontColor(context), 1),
+  //                   title: getCustomFont(home.userList[index].fullName, 14,
+  //                       getFontColor(context), 1),
+  //                   trailing: Obx(() => Checkbox(
+  //                       activeColor: getPrimaryColor(context),
+  //                       checkColor: Colors.white,
+  //                       onChanged: (checked) {
+  //                         print(
+  //                             "checked--------${selectedUser.contains(home.userList[index].id)}--------${checked}");
+
+  //                         if (selectedUser.contains(home.userList[index].id)) {
+  //                           selectedUser.remove(home.userList[index].id);
+  //                           selectedUserNameList
+  //                               .remove(home.userList[index].fullName);
+  //                         } else {
+  //                           selectedUser.add(home.userList[index].id);
+  //                           selectedUserNameList
+  //                               .add(home.userList[index].fullName);
+  //                         }
+
+  //                         print("selecteLen--------${selectedUser.length}");
+
+  //                         // isChecked[index] = checked;
+  //                         // _title = _getTitle();
+  //                       },
+  //                       value: selectedUser.contains(home.userList[index].id))),
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //           actions: [
+  //             getButtonWidget(
+  //               context,
+  //               'Submit',
+  //               isProgress: false,
+  //               () {
+  //                 Get.back();
+  //                 genreController.text = selectedGenreNameList
+  //                     .toString()
+  //                     .replaceAll('[', '')
+  //                     .replaceAll(']', '');
+  //               },
+  //               horPadding: 25.h,
+  //               horizontalSpace: 0,
+  //               verticalSpace: 0,
+  //               btnHeight: 40.h,
+  //             )
+  //           ],
+  //         );
+  //       });
+  // }
+
+  Future<void> showUserDialog(BuildContext context) async {
+    List<UserModel> userList = [];
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('Users').get();
+      userList = querySnapshot.docs
+          .map((doc) => UserModel.fromFirestore(doc))
+          .toList();
+    } catch (e) {
+      print('Error fetching user data: $e');
+    }
+
+    if (userList.isEmpty) {
+      showCustomToast(context: context, message: "No Data");
+      return;
+    }
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        // List<String> selectedUser = [];
+        // List<String> selectedUserNameList = [];
+
+        return AlertDialog(
+          title: getTextWidget(
+              context, 'Pilih Pemilik', 60, getFontColor(context),
+              fontWeight: FontWeight.w700),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          backgroundColor: getBackgroundColor(context),
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
+            width:
+                Responsive.isDesktop(context) || Responsive.isDesktop(context)
+                    ? 450.h
+                    : 350.h,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: userList.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: getCustomFont(
+                      userList[index].fullName, 14, getFontColor(context), 1),
+                  trailing: Obx(() => Checkbox(
+                        activeColor: getPrimaryColor(context),
+                        checkColor: Colors.white,
+                        onChanged: (checked) {
+                          if (selectedUser.contains(userList[index].id)) {
+                            selectedUser.remove(userList[index].id);
+                            selectedUserNameList
+                                .remove(userList[index].fullName);
+                          } else {
+                            selectedUser.add(userList[index].id);
+                            selectedUserNameList.add(userList[index].fullName);
+                          }
+                        },
+                        value: selectedUser.contains(userList[index].id),
+                      )),
+                );
+              },
+            ),
+          ),
+          actions: [
+            getButtonWidget(
+              context,
+              'Submit',
+              isProgress: false,
+              () {
+                // Get.back();
+                // genreController.text = selectedUserNameList
+                //   .toString()
+                //   .replaceAll('[', '')
+                //   .replaceAll(']', '');
+              },
+              horPadding: 25.h,
+              horizontalSpace: 0,
+              verticalSpace: 0,
+              btnHeight: 40.h,
+            )
+          ],
+        );
+      },
+    );
   }
 }

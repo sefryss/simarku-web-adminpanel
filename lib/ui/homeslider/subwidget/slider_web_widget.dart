@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -193,7 +194,7 @@ class SliderWebScreen extends StatelessWidget{
                                                     Expanded(flex: 3,child: FutureBuilder<QuerySnapshot>(
                                                       future:
                                                       FirebaseFirestore.instance.collection(
-                                                          KeyTable.authorList).get(),
+                                                          KeyTable.genreList).get(),
                                                       builder:
                                                           (context, snapshot1) {
                                                         if(snapshot1.data != null){
@@ -202,15 +203,15 @@ class SliderWebScreen extends StatelessWidget{
                                                           List<DocumentSnapshot> list = snapshot1.data!.docs;
 
 
-                                                          List authorList = storyModel.authId!;
-                                                          List<String> authorsName = [];
+                                                          List authorList = storyModel.genreId!;
+                                                          List<String> genreName = [];
 
 
                                                           for(int i = 0;i<list.length;i++){
 
                                                             if(authorList.contains(list[i].id)){
 
-                                                              authorsName.add(TopAuthors.fromFirestore(list[i]).authorName!);
+                                                              genreName.add(Genre.fromFirestore(list[i]).genre!);
 
                                                             }
 
@@ -218,7 +219,7 @@ class SliderWebScreen extends StatelessWidget{
 
                                                           return getHeaderTitle(
                                                             context,
-                                                              authorsName.toString().replaceAll('[', '').replaceAll(']', ''),
+                                                              genreName.toString().replaceAll('[', '').replaceAll(']', ''),
 
                                                               );
                                                         }else{

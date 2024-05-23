@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -150,15 +151,15 @@ class MobileWidget extends StatelessWidget{
                                                           List<DocumentSnapshot> list = snapshot.data!.docs;
 
 
-                                                          List authorList = storyModel.authId!;
-                                                          List<String> authorsName = [];
+                                                          List genreList = storyModel.genreId!;
+                                                          List<String> genreName = [];
 
 
                                                           for(int i = 0;i<list.length;i++){
 
-                                                            if(authorList.contains(list[i].id)){
+                                                            if(genreList.contains(list[i].id)){
 
-                                                              authorsName.add(TopAuthors.fromFirestore(list[i]).authorName!);
+                                                              genreName.add(Genre.fromFirestore(list[i]).genre!);
 
                                                             }
 
@@ -168,7 +169,7 @@ class MobileWidget extends StatelessWidget{
                                                               children: [
                                                                 getHeaderCell
                                                                   (
-                                                                    '${authorsName.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                                                    '${genreName.toString().replaceAll('[', '').replaceAll(']', '')}',
                                                                     context,
                                                                     200),
                                                               ],

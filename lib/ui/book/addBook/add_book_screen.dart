@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/controller/data/key_table.dart';
+import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -98,12 +101,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    itemSubTitle('Book Title', context),
+                                    itemSubTitle('Judul Buku', context),
                                     getVerticalSpace(context, 10),
                                     getTextFiledWidget(context, "Enter title..",
                                         storyController.nameController),
                                     getVerticalSpace(context, 30),
-                                    itemSubTitle('Select Category', context),
+                                    itemSubTitle('Pilih Kategori', context),
                                     getVerticalSpace(context, 10),
                                     Obx(() {
                                       return homeController
@@ -139,19 +142,19 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                             );
                                     }),
                                     getVerticalSpace(context, 30),
-                                    itemSubTitle('Select Author', context),
+                                    itemSubTitle('Pilih Genre', context),
                                     getVerticalSpace(context, 10),
-                                    getTextFiledWidget(context, "Author",
-                                        storyController.authController,
+                                    getTextFiledWidget(context, "Genre",
+                                        storyController.ownerController,
                                         isEnabled: false,
                                         child: InkWell(
                                           onTap: () {
                                             if (homeController
-                                                    .authorList.isNotEmpty &&
+                                                    .genreList.isNotEmpty &&
                                                 homeController
-                                                        .authorList.length >
+                                                        .genreList.length >
                                                     0) {
-                                              storyController.showAuthorDialog(
+                                              storyController.showGenreDialog(
                                                   context, homeController);
                                             } else {
                                               showCustomToast(
@@ -175,7 +178,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     context, 10)),
                                             child: getTextWidget(
                                               context,
-                                              'Select Author',
+                                              'Pilih Genre',
                                               40,
                                               getSubFontColor(context),
                                               customFont: "",
@@ -184,7 +187,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                           ),
                                         )),
                                     getVerticalSpace(context, 30),
-                                    itemSubTitle('Type', context),
+                                    itemSubTitle('Jenis Buku', context),
                                     getVerticalSpace(context, 10),
                                     Obx(() {
                                       return PDFDropDown(
@@ -201,18 +204,15 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                     getVerticalSpace(context, 30),
                                     Obx(() {
                                       return (homeController.pdf.value ==
-                                              Constants.url)
-                                          ? itemSubTitle('URL', context)
+                                              Constants.physichBook)
+                                          ? Text('')
                                           : itemSubTitle('Upload PDF', context);
                                     }),
                                     getVerticalSpace(context, 10),
                                     Obx(
                                       () => (homeController.pdf.value ==
-                                              Constants.url)
-                                          ? getTextFiledWidget(
-                                              context,
-                                              "Enter url..",
-                                              storyController.pdfController)
+                                              Constants.physichBook)
+                                          ? Container()
                                           : Obx(() => getTextFiledWidget(
                                               context,
                                               "No file chosen",
@@ -291,7 +291,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                           : Container();
                                     }),
                                     getVerticalSpace(context, 30),
-                                    itemSubTitle('Book Image', context),
+                                    itemSubTitle('Gambar Buku', context),
                                     getVerticalSpace(context, 10),
                                     getTextFiledWidget(
                                         context,
@@ -358,7 +358,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                       }),
                                     ),
                                     // getVerticalSpace(context, 30),
-                                    itemSubTitle('Description', context),
+                                    itemSubTitle('Sinopsis', context),
                                     getVerticalSpace(context, 10),
 
                                     Container(
@@ -432,7 +432,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                       ),
                                     ),
                                     getVerticalSpace(context, 30),
-                                    itemSubTitle('Is Featured?', context),
+                                    itemSubTitle('Is Recommended?', context),
                                     getVerticalSpace(context, 10),
                                     Container(
                                       height: 30.h,
@@ -460,7 +460,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            itemSubTitle('Book Title', context),
+                                            itemSubTitle('Judul Buku', context),
                                             getVerticalSpace(context, 10),
                                             getTextFiledWidget(
                                                 context,
@@ -475,7 +475,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             itemSubTitle(
-                                                'Select Category', context),
+                                                'Pilih Kategori', context),
                                             getVerticalSpace(context, 10),
                                             Obx(() {
                                               return homeController
@@ -523,24 +523,20 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             itemSubTitle(
-                                                'Select Author', context),
+                                                'Pilih Genre', context),
                                             getVerticalSpace(context, 10),
-                                            getTextFiledWidget(
-                                                context,
-                                                "Author",
-                                                storyController.authController,
+                                            getTextFiledWidget(context, "Genre",
+                                                storyController.genreController,
                                                 isEnabled: false,
                                                 child: InkWell(
                                                   onTap: () {
-                                                    if (homeController
-                                                            .authorList
+                                                    if (homeController.genreList
                                                             .isNotEmpty &&
-                                                        homeController
-                                                                .authorList
+                                                        homeController.genreList
                                                                 .length >
                                                             0) {
                                                       storyController
-                                                          .showAuthorDialog(
+                                                          .showGenreDialog(
                                                               context,
                                                               homeController);
                                                     } else {
@@ -572,7 +568,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                                     10)),
                                                     child: getTextWidget(
                                                       context,
-                                                      'Select Author',
+                                                      'Pilih Genre',
                                                       40,
                                                       getSubFontColor(context),
                                                       customFont: "",
@@ -593,7 +589,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            itemSubTitle('Type', context),
+                                            itemSubTitle('Jenis Buku', context),
                                             getVerticalSpace(context, 10),
                                             Obx(() {
                                               return PDFDropDown(
@@ -619,20 +615,16 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                             Obx(() {
                                               return (homeController
                                                           .pdf.value ==
-                                                      Constants.url)
-                                                  ? itemSubTitle('URL', context)
+                                                      Constants.physichBook)
+                                                  ? Text('')
                                                   : itemSubTitle(
                                                       'Upload PDF', context);
                                             }),
                                             getVerticalSpace(context, 10),
                                             Obx(
                                               () => (homeController.pdf.value ==
-                                                      Constants.url)
-                                                  ? getTextFiledWidget(
-                                                      context,
-                                                      "Enter url..",
-                                                      storyController
-                                                          .pdfController)
+                                                      Constants.physichBook)
+                                                  ? Container()
                                                   : Obx(() => getTextFiledWidget(
                                                       context,
                                                       "No file chosen",
@@ -723,7 +715,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            itemSubTitle('Book Image', context),
+                                            itemSubTitle(
+                                                'Gambar Buku', context),
                                             getVerticalSpace(context, 10),
                                             getTextFiledWidget(
                                                 context,
@@ -822,7 +815,73 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                             ],
                                           ),
                                         ),
-                                        Expanded(child: Container())
+                                        Expanded(
+                                            child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            itemSubTitle(
+                                                'Pilih Pemilik', context),
+                                            getVerticalSpace(context, 10),
+                                            getTextFiledWidget(
+                                                context,
+                                                "Pemilik",
+                                                storyController.ownerController,
+                                                isEnabled: false,
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    await storyController
+                                                        .showUserDialog(
+                                                            context);
+                                                    // if (homeController.genreList
+                                                    //         .isNotEmpty &&
+                                                    //     homeController.genreList
+                                                    //             .length >
+                                                    //         0) {
+                                                    //   storyController
+                                                    //       .showUserDialog(
+                                                    //           context,
+                                                    //           homeController);
+                                                    // } else {
+                                                    //   showCustomToast(
+                                                    //       context: context,
+                                                    //       message: "No Data");
+                                                    // }
+                                                  },
+                                                  child: Container(
+                                                    height: double.infinity,
+                                                    alignment: Alignment.center,
+                                                    margin: EdgeInsets.only(
+                                                        left: 8.h),
+                                                    // margin: EdgeInsets.all(7.h),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10.h,
+                                                            vertical: 5.h),
+                                                    decoration:
+                                                        getDefaultDecoration(
+                                                            bgColor:
+                                                                getReportColor(
+                                                                    context),
+                                                            borderColor:
+                                                                borderColor,
+                                                            radius:
+                                                                getResizeRadius(
+                                                                    context,
+                                                                    10)),
+                                                    child: getTextWidget(
+                                                      context,
+                                                      'Pilih Pemilik',
+                                                      40,
+                                                      getSubFontColor(context),
+                                                      customFont: "",
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                )),
+                                          ],
+                                        )),
                                       ],
                                     ),
                                     Row(
@@ -833,8 +892,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             getVerticalSpace(context, 30),
-                                            itemSubTitle(
-                                                'Description', context),
+                                            itemSubTitle('Sinopsis', context),
                                             getVerticalSpace(context, 10),
                                             Container(
                                               decoration: getDefaultDecoration(
@@ -941,7 +999,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 child: Column(
                                               children: [
                                                 itemSubTitle(
-                                                    'Is Featured?', context),
+                                                    'Is Recommended?', context),
                                                 getVerticalSpace(context, 10),
                                                 Container(
                                                   height: 30.h,

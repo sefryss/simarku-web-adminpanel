@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/model/genre_model.dart';
+import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,31 +20,28 @@ import '../../util/pref_data.dart';
 import 'key_table.dart';
 
 class FirebaseData {
-
-
   static createUser(
       {required bool isAdmin,
-        required String password,
-        required String username,
-        required Function function}) {
+      required String password,
+      required String username,
+      required Function function}) {
     FirebaseFirestore.instance.collection(KeyTable.adminData).add({
       KeyTable.keyUserName: username,
       KeyTable.keyPassword: password,
       KeyTable.keyDeviceId: deviceID.value,
       KeyTable.keyUid: FirebaseAuth.instance.currentUser!.uid,
       KeyTable.keyIsAdmin: isAdmin,
-      "isAccess":true
+      "isAccess": true
     }).then((value) {
       print("called-----function");
       function();
     });
   }
 
-
   static changePassword(
       {required String password,
-        required Function function,
-        required BuildContext context}) async {
+      required Function function,
+      required BuildContext context}) async {
     if (FirebaseAuth.instance.currentUser != null) {
       User? user = FirebaseAuth.instance.currentUser!;
 
@@ -63,7 +62,6 @@ class FirebaseData {
       });
     }
   }
-
 
   static insertData(
       {required var map,
@@ -107,9 +105,7 @@ class FirebaseData {
       required Function function,
       bool? isToast,
       required BuildContext context}) {
-
     print("tableName------${tableName}");
-
 
     FirebaseFirestore.instance
         .collection(tableName)
@@ -136,8 +132,8 @@ class FirebaseData {
         function: (doc) {
           FirebaseData.deleteData(
               tableName: KeyTable.sliderList, doc: doc, function: () {});
-          },
-          storyId: storyId);
+        },
+        storyId: storyId);
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(KeyTable.recentList)
@@ -148,7 +144,6 @@ class FirebaseData {
       function(querySnapshot.docs[0].id);
     }
   }
-
 
   static deleteSliderStory(
       {required BuildContext context,
@@ -179,7 +174,6 @@ class FirebaseData {
 
   static deleteBatch(
       Function function, String id, String tableName, String key) async {
-
     print("auth_id-----${key}");
     print("id-----${id}");
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -286,8 +280,8 @@ class FirebaseData {
       {String? collection}) async {
     print("doc===$docId");
     try {
-      var collectionRef = FirebaseFirestore.instance
-          .collection(collection == null ? KeyTable.keyCategoryTable : collection);
+      var collectionRef = FirebaseFirestore.instance.collection(
+          collection == null ? KeyTable.keyCategoryTable : collection);
 
       var doc = await collectionRef.doc(docId).get();
 
@@ -296,7 +290,6 @@ class FirebaseData {
       throw e;
     }
   }
-
 
   static Future<int> getCategoryRefId() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -338,7 +331,6 @@ class FirebaseData {
     }
   }
 
-
   static Future<int> getLastIndexFromAuthTable() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(KeyTable.authorList)
@@ -359,11 +351,52 @@ class FirebaseData {
     }
   }
 
+  static Future<int> getLastIndexFromGenreTable() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.genreList)
+        .orderBy(KeyTable.index, descending: true)
+        .get();
+
+    if (querySnapshot.size > 0) {
+      if (querySnapshot.docs.length > 0) {
+        List<DocumentSnapshot> list1 = querySnapshot.docs;
+        if (list1.length > 0) {
+          Genre genreModel = Genre.fromFirestore(list1[0]);
+          return (genreModel.index! + 1);
+        }
+      }
+      return 1;
+    } else {
+      return 1;
+    }
+  }
+
+  static Future<int> getLastIndexFromUserTable() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.user)
+        .orderBy(KeyTable.index, descending: true)
+        .get();
+
+    if (querySnapshot.size > 0) {
+      if (querySnapshot.docs.length > 0) {
+        List<DocumentSnapshot> list1 = querySnapshot.docs;
+        if (list1.length > 0) {
+          UserModel userModel = UserModel.fromFirestore(list1[0]);
+          return (userModel.index! + 1);
+        }
+      }
+      return 1;
+    } else {
+      return 1;
+    }
+  }
 
   static Future<String> getAuthName({required String refId}) async {
-
     print("called-----true");
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection(KeyTable.authorList).doc(refId).get();
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.authorList)
+        .doc(refId)
+        .get();
     print("called-----${snapshot.toString()}");
 
     TopAuthors topAuthors = TopAuthors.fromFirestore(snapshot);
@@ -375,19 +408,61 @@ class FirebaseData {
     return author;
   }
 
+ Future<void> getUserName({required String refId}) async {
+  try {
+    print("called-----true");
+
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.user) 
+        .doc(refId)
+        .get();
+
+    print("called-----${snapshot.exists}");
+
+    if (snapshot.exists) {
+      UserModel user = UserModel.fromFirestore(snapshot);
+      print("users-----${user}");
+
+      String userName = user.fullName;
+      print("User FullName: $userName");
+    } else {
+      throw Exception("User not found");
+    }
+  } catch (e) {
+    print('Error getting user name: $e');
+  }
+}
+
+  static Future<String> getGenre({required String refId}) async {
+    print("called-----true");
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.genreList)
+        .doc(refId)
+        .get();
+    print("called-----${snapshot.toString()}");
+
+    Genre genre = Genre.fromFirestore(snapshot);
+
+    print("genre-----${genre}");
+
+    String genreName = genre.genre ?? "";
+
+    return genreName;
+  }
+
   static deleteAuthorBatch(Function function, String id, String tableName,
       String key, BuildContext context) async {
-    print("auth_id-----auth-----${key}");
-    print("id-----auth-----${id}");
+    print("genre_id-----genre-----${key}");
+    print("id-----genre-----${id}");
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(tableName)
         .where(key, arrayContains: id)
-    // .where(key, isEqualTo: id)
+        // .where(key, isEqualTo: id)
         .get();
 
-    print("doc---------auth-----${querySnapshot.docs.length}");
+    print("doc---------genre-----${querySnapshot.docs.length}");
 
     // QuerySnapshot querySnapshot = await FirebaseFirestore.instance
     //     .collection(tableName)
@@ -400,31 +475,32 @@ class FirebaseData {
         for (int i = 0; i < list1.length; i++) {
           StoryModel storyModel = StoryModel.fromFirestore(list1[i]);
 
+          print(
+              "story<=Model============+${storyModel.id}----------${storyModel.name}--------${storyModel.genreId.toString()}");
 
-          print("story<=Model============+${storyModel.id}----------${storyModel.name}--------${storyModel.authId.toString()}");
+          if (storyModel.genreId!.isNotEmpty) {
+            List genre = storyModel.genreId!;
 
-          if (storyModel.authId!.isNotEmpty) {
-            List auth = storyModel.authId!;
+            if (genre.isNotEmpty) {
+              if (genre.contains(id)) {
+                genre.remove(id);
 
-            if (auth.isNotEmpty) {
-              if (auth.contains(id)) {
+                print("genre.isNotEmpty==========${genre.isNotEmpty}");
 
-                auth.remove(id);
-
-                print("auth.isNotEmpty==========${auth.isNotEmpty}");
-
-                if(auth.isNotEmpty){
+                if (genre.isNotEmpty) {
                   FirebaseData.updateData(
-                      map: {KeyTable.authorId:auth},
+                      map: {KeyTable.genreId: genre},
                       tableName: tableName,
                       doc: storyModel.id ?? "",
                       function: () {},
-                      context: context,isToast: false);
-                }else{
-                  FirebaseData.deleteData(tableName: tableName, doc: storyModel.id ?? "", function: (){});
+                      context: context,
+                      isToast: false);
+                } else {
+                  FirebaseData.deleteData(
+                      tableName: tableName,
+                      doc: storyModel.id ?? "",
+                      function: () {});
                 }
-
-
               }
             }
           }
@@ -446,6 +522,77 @@ class FirebaseData {
     }
   }
 
+  static deleteGenreBatch(Function function, String id, String tableName,
+      String key, BuildContext context) async {
+    print("genre_id-----genre-----${key}");
+    print("id-----genre-----${id}");
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(tableName)
+        .where(key, arrayContains: id)
+        // .where(key, isEqualTo: id)
+        .get();
+
+    print("doc---------auth-----${querySnapshot.docs.length}");
+
+    // QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+    //     .collection(tableName)
+    //     .where(key, isEqualTo: id)
+    //     .get();
+
+    if (querySnapshot.size > 0) {
+      if (querySnapshot.docs.length > 0) {
+        List<DocumentSnapshot> list1 = querySnapshot.docs;
+        for (int i = 0; i < list1.length; i++) {
+          StoryModel storyModel = StoryModel.fromFirestore(list1[i]);
+
+          print(
+              "story<=Model============+${storyModel.id}----------${storyModel.name}--------${storyModel.genreId.toString()}");
+
+          if (storyModel.genreId!.isNotEmpty) {
+            List genre = storyModel.genreId!;
+
+            if (genre.isNotEmpty) {
+              if (genre.contains(id)) {
+                genre.remove(id);
+
+                print("genre.isNotEmpty==========${genre.isNotEmpty}");
+
+                if (genre.isNotEmpty) {
+                  FirebaseData.updateData(
+                      map: {KeyTable.genreId: genre},
+                      tableName: tableName,
+                      doc: storyModel.id ?? "",
+                      function: () {},
+                      context: context,
+                      isToast: false);
+                } else {
+                  FirebaseData.deleteData(
+                      tableName: tableName,
+                      doc: storyModel.id ?? "",
+                      function: () {});
+                }
+              }
+            }
+          }
+
+          // batch.delete(list1[i].reference);
+
+          print("sliderId-------${list1[i].id}");
+
+          await deleteBackendData(list1[i].id, KeyTable.sliderList);
+        }
+        batch.commit().then((value) {
+          function();
+        });
+      } else {
+        function();
+      }
+    } else {
+      function();
+    }
+  }
 
   static deleteBackendData(String id, String tableName) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -461,13 +608,9 @@ class FirebaseData {
     }
   }
 
-
   static getData({required String tableName}) async {
-    return FirebaseFirestore.instance
-        .collection(tableName)
-        .snapshots();
+    return FirebaseFirestore.instance.collection(tableName).snapshots();
   }
-
 
   static refreshStoryData() {
     HomeController homeController = Get.find();
@@ -479,10 +622,19 @@ class FirebaseData {
     homeController.fetchCategoryData();
   }
 
-
   static refreshAuthorData() {
     HomeController homeController = Get.find();
     homeController.fetchAuthorData();
+  }
+
+  static refreshGenreData() {
+    HomeController homeController = Get.find();
+    homeController.fetchGenreData();
+  }
+
+  static refreshUserData() {
+    HomeController homeController = Get.find();
+    homeController.fetchUserData();
   }
 
   static refreshSliderData() {
@@ -501,7 +653,6 @@ class FirebaseData {
 
     return storyModel;
   }
-
 
   static Future<int> getLastIndexFromSliderTable(String table) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -524,13 +675,10 @@ class FirebaseData {
       return 1;
     }
   }
-
 }
 
 List<DashBoardData> getDashboardData() {
-
   return [
-
     DashBoardData(
         icon: 'dashboard_category_icon.svg',
         title: 'Categories',
@@ -540,10 +688,8 @@ List<DashBoardData> getDashboardData() {
         navigateId: 2,
         navigateIndex: 1,
         navigateAddClassId: 1,
-      action: actionCategories,
-      addAction: actionAddCategory
-    ),
-
+        action: actionCategories,
+        addAction: actionAddCategory),
     DashBoardData(
         icon: 'dashboard_homeslider_slider.svg',
         title: 'Home Slider',
@@ -555,7 +701,6 @@ List<DashBoardData> getDashboardData() {
         navigateAddClassId: 5,
         action: actionHomeSlider,
         addAction: actionAddSlider),
-
     DashBoardData(
         icon: 'dashboard_featured_books_icon.svg',
         title: 'Featured Books',
@@ -567,9 +712,7 @@ List<DashBoardData> getDashboardData() {
         navigateAddClassId: 6,
         action: actionStories,
         isFeatured: true,
-        addAction: actionAddStory
-    ),
-
+        addAction: actionAddStory),
     DashBoardData(
         icon: 'dashboard_populer_books_icon.svg',
         title: 'Populer Books',
@@ -582,9 +725,7 @@ List<DashBoardData> getDashboardData() {
         isPopular: true,
         navigateIndex: 3,
         navigateAddClassId: 5,
-      action: actionStories,
-        addAction: actionAddStory
-    ),
-
+        action: actionStories,
+        addAction: actionAddStory),
   ];
 }

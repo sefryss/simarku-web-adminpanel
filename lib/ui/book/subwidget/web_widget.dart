@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/model/authors_model.dart';
+import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -162,7 +163,7 @@ class WebWidget extends StatelessWidget{
                                       Expanded(flex: 2,child: StreamBuilder<QuerySnapshot>(
                                         stream:
                                         FirebaseFirestore.instance.collection(
-                                            KeyTable.authorList).snapshots(),
+                                            KeyTable.genreList).snapshots(),
                                         builder:
                                             (context, snapshot) {
                                           if(snapshot.data == null) {
@@ -172,21 +173,21 @@ class WebWidget extends StatelessWidget{
                                             List<DocumentSnapshot> list = snapshot.data!.docs;
 
 
-                                            List authorList = storyModel.authId!;
-                                            List<String> authorsName = [];
+                                            List authorList = storyModel.genreId!;
+                                            List<String> genreName = [];
 
 
                                             for(int i = 0;i<list.length;i++){
 
                                               if(authorList.contains(list[i].id)){
 
-                                                authorsName.add(TopAuthors.fromFirestore(list[i]).authorName!);
+                                                genreName.add(Genre.fromFirestore(list[i]).genre!);
 
                                               }
 
                                             }
 
-                                            print("authName------${authorsName.toString()}------${authorsName.length}");
+                                            print("authName------${genreName.toString()}------${genreName.length}");
 
 
 
@@ -223,7 +224,7 @@ class WebWidget extends StatelessWidget{
 
 
                                             return getHeaderCell(
-                                                '${authorsName.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                                '${genreName.toString().replaceAll('[', '').replaceAll(']', '')}',
                                                 context,
                                                 130);
                                           }

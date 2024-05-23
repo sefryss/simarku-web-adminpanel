@@ -25,13 +25,13 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-
   @override
   void initState() {
     super.initState();
 
     LoginData.getDeviceId();
   }
+
   RxInt position = 0.obs;
 
   RxInt totalItem = 10.obs;
@@ -46,7 +46,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     RxString queryText = ''.obs;
 
     return SafeArea(
-      child: CommonPage(widget: Container(
+      child: CommonPage(
+          widget: Container(
         margin: EdgeInsets.symmetric(
             horizontal: getDefaultHorSpace(context),
             vertical: getDefaultHorSpace(context)),
@@ -65,21 +66,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         getVerticalSpace(context, getCommonPadding(context)),
-
-
                         Row(
                           children: [
                             isWeb(context)
                                 ? Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                child: getEntryWidget(context),
-                              ),
-                            )
+                                    alignment: Alignment.centerLeft,
+                                    child: Container(
+                                      child: getEntryWidget(context),
+                                    ),
+                                  )
                                 : Container(),
-
-
-
                             getHorizontalSpace(context, isWeb(context) ? 0 : 0),
                             Visibility(
                               child: Expanded(child: Container()),
@@ -89,14 +85,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 child: getSearchTextFiledWidget(
                                     context, 'Search..', textEditingController,
                                     onChanged: (value) {
-                                      queryText(value);
-                                    })),
+                              queryText(value);
+                            })),
                             getHorizontalSpace(context, 15),
                             getButtonWidget(
                               context,
                               'Add New Category',
-                                  () {
-
+                              () {
                                 // HomeController homeController = Get.find<HomeController>();
                                 //
                                 // if(homeController.storyModel != null){
@@ -115,9 +110,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 // //   // Get.put(StoryController(storyModel: homeController.storyModel,homeController: homeController));
                                 // // },);
 
-
-
-
                                 widget.function();
                               },
                               horPadding: 25.h,
@@ -127,13 +119,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             )
                           ],
                         ),
-
                         isWeb(context)
                             ? Container()
                             : Container(
-                          child: getEntryWidget(context),
-                          margin: EdgeInsets.only(top: 15.h),
-                        ),
+                                child: getEntryWidget(context),
+                                margin: EdgeInsets.only(top: 15.h),
+                              ),
                         getVerticalSpace(context, 25),
                         StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
@@ -177,431 +168,432 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
                                 return paginationList.length > 0
                                     ? Expanded(
-                                  flex: 1,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15.w,
-                                            vertical: 15.h),
-                                        decoration: getDefaultDecoration(
-                                            bgColor:
-                                            getReportColor(context),
-                                            radius: 0),
-                                        child: Row(
+                                        flex: 1,
+                                        child: Column(
                                           children: [
                                             Container(
-                                                width: isWeb(context)
-                                                    ? 130.h
-                                                    : 80.h,
-                                                child: getMaxLineFont(
-                                                    context,
-                                                    'ID',
-                                                    50,
-                                                    getFontColor(context),
-                                                    1,
-                                                    fontWeight:
-                                                    FontWeight.w600,
-                                                    textAlign:
-                                                    TextAlign.start)),
-
-
-                                            Expanded(
-                                                child: Row(
-                                                  children: [
-
-                                                    Container(
-                                                      width: 150.h,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 15.w,
+                                                  vertical: 15.h),
+                                              decoration: getDefaultDecoration(
+                                                  bgColor:
+                                                      getReportColor(context),
+                                                  radius: 0),
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                      width: isWeb(context)
+                                                          ? 130.h
+                                                          : 80.h,
                                                       child: getMaxLineFont(
                                                           context,
-                                                          'Image',
+                                                          'ID',
                                                           50,
                                                           getFontColor(context),
                                                           1,
                                                           fontWeight:
-                                                          FontWeight.w600,
+                                                              FontWeight.w600,
                                                           textAlign:
-                                                          TextAlign.start),
-                                                    ),
-                                                    getHorizontalSpace(
-                                                      context,
-                                                      10,
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: getMaxLineFont(
-                                                          context,
-                                                          'Category',
-                                                          50,
-                                                          getFontColor(context),
-                                                          1,
-                                                          fontWeight:
-                                                          FontWeight.w600,
-                                                          textAlign:
-                                                          TextAlign.start),
-                                                    ),
-                                                  ],
-                                                )),
-                                            getMaxLineFont(
-                                                context,
-                                                'Action',
-                                                50,
-                                                getFontColor(context),
-                                                1,
-                                                fontWeight:
-                                                FontWeight.w600,
-                                                textAlign:
-                                                TextAlign.start)
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                          child: ListView.separated(
-                                            itemCount: paginationList.length,
-                                            controller: _controller,
-                                            shrinkWrap: true,
-                                            separatorBuilder:
-                                                (context, index) {
-                                              return Obx(() {
-                                                CategoryModel model =
-                                                CategoryModel
-                                                    .fromFirestore(
-                                                    paginationList[
-                                                    index]);
-
-                                                bool cell = true;
-
-                                                if (queryText
-                                                    .value.isNotEmpty &&
-                                                    !model.name!
-                                                        .toLowerCase()
-                                                        .contains(queryText
-                                                        .value
-                                                        .toLowerCase())) {
-                                                  cell = false;
-                                                }
-
-                                                print("cell===$cell");
-                                                return cell
-                                                    ? separatorBuilder(
-                                                    context,
-                                                    value: model.name,
-                                                    queryText: queryText)
-                                                    : Container();
-                                              });
-                                            },
-                                            itemBuilder: (context, index) {
-                                              return Obx(() {
-                                                bool cell = true;
-                                                CategoryModel model =
-                                                CategoryModel
-                                                    .fromFirestore(
-                                                    paginationList[
-                                                    index]);
-
-                                                if (queryText
-                                                    .value.isNotEmpty &&
-                                                    !model.name!
-                                                        .toLowerCase()
-                                                        .contains(queryText
-                                                        .value
-                                                        .toLowerCase())) {
-                                                  cell = false;
-                                                }
-                                                return cell
-                                                    ? Container(
-                                                  padding: EdgeInsets
-                                                      .symmetric(
-                                                      horizontal:
-                                                      15.w,
-                                                      vertical:
-                                                      15.h),
-                                                  decoration:
-                                                  getDefaultDecoration(
-                                                      bgColor:
-                                                      getCardColor(
-                                                          context),
-                                                      radius: 0),
-                                                  child: Row(
+                                                              TextAlign.start)),
+                                                  Expanded(
+                                                      child: Row(
                                                     children: [
                                                       Container(
-                                                          width: isWeb(
-                                                              context)
-                                                              ? 130.h
-                                                              : 80.h,
-                                                          child: getMaxLineFont(
-                                                              context,
-                                                              '${list.indexOf(paginationList[index])+1}',
-                                                              // (position.value != 0)?'${position.value}${index + 1}':"${d}",
-                                                              50,
-                                                              getFontColor(
-                                                                  context),
-                                                              1,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w600,
-                                                              textAlign:
-                                                              TextAlign
-                                                                  .start)),
+                                                        width: 150.h,
+                                                        child: getMaxLineFont(
+                                                            context,
+                                                            'Image',
+                                                            50,
+                                                            getFontColor(
+                                                                context),
+                                                            1,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            textAlign: TextAlign
+                                                                .start),
+                                                      ),
+                                                      getHorizontalSpace(
+                                                        context,
+                                                        10,
+                                                      ),
                                                       Expanded(
+                                                        flex: 1,
+                                                        child: getMaxLineFont(
+                                                            context,
+                                                            'Category',
+                                                            50,
+                                                            getFontColor(
+                                                                context),
+                                                            1,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            textAlign: TextAlign
+                                                                .start),
+                                                      ),
+                                                    ],
+                                                  )),
+                                                  getMaxLineFont(
+                                                      context,
+                                                      'Action',
+                                                      50,
+                                                      getFontColor(context),
+                                                      1,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      textAlign:
+                                                          TextAlign.start)
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                                child: ListView.separated(
+                                              itemCount: paginationList.length,
+                                              controller: _controller,
+                                              shrinkWrap: true,
+                                              separatorBuilder:
+                                                  (context, index) {
+                                                return Obx(() {
+                                                  CategoryModel model =
+                                                      CategoryModel
+                                                          .fromFirestore(
+                                                              paginationList[
+                                                                  index]);
+
+                                                  bool cell = true;
+
+                                                  if (queryText
+                                                          .value.isNotEmpty &&
+                                                      !model.name!
+                                                          .toLowerCase()
+                                                          .contains(queryText
+                                                              .value
+                                                              .toLowerCase())) {
+                                                    cell = false;
+                                                  }
+
+                                                  print("cell===$cell");
+                                                  return cell
+                                                      ? separatorBuilder(
+                                                          context,
+                                                          value: model.name,
+                                                          queryText: queryText)
+                                                      : Container();
+                                                });
+                                              },
+                                              itemBuilder: (context, index) {
+                                                return Obx(() {
+                                                  bool cell = true;
+                                                  CategoryModel model =
+                                                      CategoryModel
+                                                          .fromFirestore(
+                                                              paginationList[
+                                                                  index]);
+
+                                                  if (queryText
+                                                          .value.isNotEmpty &&
+                                                      !model.name!
+                                                          .toLowerCase()
+                                                          .contains(queryText
+                                                              .value
+                                                              .toLowerCase())) {
+                                                    cell = false;
+                                                  }
+                                                  return cell
+                                                      ? Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      15.w,
+                                                                  vertical:
+                                                                      15.h),
+                                                          decoration:
+                                                              getDefaultDecoration(
+                                                                  bgColor:
+                                                                      getCardColor(
+                                                                          context),
+                                                                  radius: 0),
                                                           child: Row(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               Container(
-                                                                width: 150.h,
-                                                                alignment: Alignment.centerLeft,
-                                                                child: Container(
-                                                                  height:
-                                                                  50.h,
-                                                                  width: 75.h,
-                                                                  child:
-                                                                  ClipRRect(
-                                                                    borderRadius:
-                                                                    BorderRadius.circular(
-                                                                        10.r),
-                                                                    child:
-                                                                    (model.image!.isNotEmpty && model.image!.split(".").last.startsWith("svg"))?Image.asset(Constants.placeImage):Image(
-                                                                      image: NetworkImage(
-                                                                          model.image!),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              getHorizontalSpace(
-                                                                context,
-                                                                10,
-                                                              ),
-                                                              Expanded(
+                                                                  width: isWeb(
+                                                                          context)
+                                                                      ? 130.h
+                                                                      : 80.h,
                                                                   child: getMaxLineFont(
                                                                       context,
-                                                                      model
-                                                                          .name!,
+                                                                      '${list.indexOf(paginationList[index]) + 1}',
+                                                                      // (position.value != 0)?'${position.value}${index + 1}':"${d}",
                                                                       50,
-                                                                      getFontColor(
-                                                                          context),
+                                                                      getFontColor(context),
                                                                       1,
-                                                                      fontWeight: FontWeight
-                                                                          .w600,
-                                                                      textAlign:
-                                                                      TextAlign.start)),
-                                                            ],
-                                                          )),
-                                                      Stack(
-                                                        children: [
-                                                          getMaxLineFont(
-                                                              context,
-                                                              'Action',
-                                                              50,
-                                                              Colors
-                                                                  .transparent,
-                                                              1,
-                                                              fontWeight:
-                                                              FontWeight
-                                                                  .w600,
-                                                              textAlign:
-                                                              TextAlign
-                                                                  .start),
-                                                          Positioned
-                                                              .fill(
-                                                              child:
-                                                              Center(
-                                                                child: GestureDetector(
-                                                                    onTapDown: _storePosition,
-                                                                    onTap: () {
-                                                                      _showPopupMenu(context, onTapDelete:
-                                                                          () {
-                                                                        PrefData.checkAccess(
-                                                                            context: context,
-                                                                            function: () {
-                                                                              getCommonDialog(
-                                                                                  context: context,
-                                                                                  title: 'Do you want to delete this category?',
-                                                                                  function: () async {
-                                                                                    await FirebaseData.deleteData(
-                                                                                        tableName: KeyTable.keyCategoryTable,
-                                                                                        doc: model.id!,
-                                                                                        function: () {
-                                                                                          FirebaseData.refreshCategoryData();
-                                                                                        });
-
-                                                                                    await FirebaseData.deleteBatch(() {
-                                                                                      FirebaseData.refreshCategoryData();
-                                                                                      FirebaseData.refreshStoryData();
-                                                                                    }, model.id!, KeyTable.storyList, KeyTable.refId);
-
-                                                                                    await FirebaseData.deleteBatch((){
-                                                                                      FirebaseData.refreshAuthorData();
-                                                                                    }, model.id!, KeyTable.authorList, KeyTable.refId);
-                                                                                  },
-                                                                                  subTitle: 'Delete');
-                                                                            });
-                                                                      }, onTapEdit:
-                                                                          () {
-                                                                        HomeController
-                                                                        homeController =
-                                                                        Get.find();
-                                                                        homeController.setCategoryModel(model);
-                                                                      });
-                                                                    },
-                                                                    child: Icon(
-                                                                      Icons
-                                                                          .more_vert,
-                                                                      color:
-                                                                      getSubFontColor(context),
-                                                                    )),
-                                                              ))
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                                    : Container();
-                                              });
-                                            },
-                                          )),
-                                      getVerticalSpace(
-                                          context,
-                                          (getCommonPadding(context) /
-                                              2)),
-                                      Container(
-                                        // height: 55.h,
-                                        width: double.infinity,
-
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            mainAxisSize:
-                                            MainAxisSize.min,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  print(
-                                                      "posi===${position.value}===${i - 1}");
-                                                  if (position.value >
-                                                      0) {
-                                                    position.value =
-                                                        position.value -
-                                                            1;
-                                                  }
-                                                },
-                                                child: getSvgImage1(
-                                                  'left.svg',
-                                                  height: 20.h,
-                                                  width: 20.h,
-                                                ),
-
-                                                // child: Icon(
-                                                //   Icons.chevron_left,
-                                                //   color: subPrimaryColor(context),
-                                                // )
-                                              ),
-                                              getHorizontalSpace(
-                                                  context, 10),
-                                              Align(
-                                                alignment:
-                                                Alignment.centerLeft,
-                                                child:
-                                                SingleChildScrollView(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .start,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .end,
-                                                    children:
-                                                    List.generate(
-                                                        i.toInt(),
-                                                            (index) =>
-                                                            InkWell(
-                                                              child:
-                                                              Container(
-                                                                margin:
-                                                                EdgeInsets.symmetric(horizontal: 5.h),
-                                                                height:
-                                                                35.h,
-                                                                width:
-                                                                35.h,
-
-                                                                decoration: getDefaultDecoration(
-                                                                    bgColor: position.value == index ? getPrimaryColor(context) : Colors.transparent,
-                                                                    radius: getResizeRadius(context, 15)),
-                                                                // decoration: BoxDecoration(
-                                                                //     shape: BoxShape
-                                                                //         .circle,
-                                                                //     color: position
-                                                                //         .value ==
-                                                                //         index
-                                                                //         ? getPrimaryColor(context)
-                                                                //         : getBorderColor(
-                                                                //         context)),
-                                                                child:
-                                                                Center(
-                                                                  child: getTextWidget(
+                                                                      fontWeight: FontWeight.w600,
+                                                                      textAlign: TextAlign.start)),
+                                                              Expanded(
+                                                                  child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Container(
+                                                                    width:
+                                                                        150.h,
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child:
+                                                                        Container(
+                                                                      height:
+                                                                          50.h,
+                                                                      width:
+                                                                          75.h,
+                                                                      child:
+                                                                          ClipRRect(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10.r),
+                                                                        child: (model.image!.isNotEmpty &&
+                                                                                model.image!.split(".").last.startsWith("svg"))
+                                                                            ? Image.asset(Constants.placeImage)
+                                                                            : Image(
+                                                                                image: NetworkImage(model.image!),
+                                                                              ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  getHorizontalSpace(
+                                                                    context,
+                                                                    10,
+                                                                  ),
+                                                                  Expanded(
+                                                                      child: getMaxLineFont(
+                                                                          context,
+                                                                          model
+                                                                              .name!,
+                                                                          50,
+                                                                          getFontColor(
+                                                                              context),
+                                                                          1,
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
+                                                                          textAlign:
+                                                                              TextAlign.start)),
+                                                                ],
+                                                              )),
+                                                              Stack(
+                                                                children: [
+                                                                  getMaxLineFont(
                                                                       context,
-                                                                      '${index + 1}',
+                                                                      'Action',
                                                                       50,
-                                                                      position.value == index ? Colors.white : subPrimaryColor(context)),
-                                                                ),
-                                                              ),
-                                                              onTap:
-                                                                  () {
-                                                                position.value =
-                                                                    index;
-                                                                _controller
-                                                                    .jumpTo(0);
-                                                              },
-                                                            )),
-                                                  ),
-                                                ),
-                                              ),
-                                              getHorizontalSpace(
-                                                  context, 10),
-                                              InkWell(
-                                                onTap: () {
-                                                  print(
-                                                      "posi===${position.value}===${i - 1}");
-                                                  if (position.value <
-                                                      (i.toInt() - 1)) {
-                                                    position.value =
-                                                        position.value +
-                                                            1;
-                                                  }
-                                                },
+                                                                      Colors
+                                                                          .transparent,
+                                                                      1,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .start),
+                                                                  Positioned
+                                                                      .fill(
+                                                                          child:
+                                                                              Center(
+                                                                    child: GestureDetector(
+                                                                        onTapDown: _storePosition,
+                                                                        onTap: () {
+                                                                          _showPopupMenu(context, onTapDelete:
+                                                                              () {
+                                                                            PrefData.checkAccess(
+                                                                                context: context,
+                                                                                function: () {
+                                                                                  getCommonDialog(
+                                                                                      context: context,
+                                                                                      title: 'Do you want to delete this category?',
+                                                                                      function: () async {
+                                                                                        await FirebaseData.deleteData(
+                                                                                            tableName: KeyTable.keyCategoryTable,
+                                                                                            doc: model.id!,
+                                                                                            function: () {
+                                                                                              FirebaseData.refreshCategoryData();
+                                                                                            });
 
-                                                child: getSvgImage1(
-                                                  'right.svg',
-                                                  height: 18.h,
-                                                  width: 18.h,
+                                                                                        await FirebaseData.deleteBatch(() {
+                                                                                          FirebaseData.refreshCategoryData();
+                                                                                          FirebaseData.refreshStoryData();
+                                                                                        }, model.id!, KeyTable.storyList, KeyTable.refId);
+
+                                                                                        await FirebaseData.deleteBatch(() {
+                                                                                          FirebaseData.refreshAuthorData();
+                                                                                        }, model.id!, KeyTable.authorList, KeyTable.refId);
+                                                                                      },
+                                                                                      subTitle: 'Delete');
+                                                                                });
+                                                                          }, onTapEdit:
+                                                                              () {
+                                                                            HomeController
+                                                                                homeController =
+                                                                                Get.find();
+                                                                            homeController.setCategoryModel(model);
+                                                                          });
+                                                                        },
+                                                                        child: Icon(
+                                                                          Icons
+                                                                              .more_vert,
+                                                                          color:
+                                                                              getSubFontColor(context),
+                                                                        )),
+                                                                  ))
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : Container();
+                                                });
+                                              },
+                                            )),
+                                            getVerticalSpace(
+                                                context,
+                                                (getCommonPadding(context) /
+                                                    2)),
+                                            Container(
+                                              // height: 55.h,
+                                              width: double.infinity,
+
+                                              child: Center(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        print(
+                                                            "posi===${position.value}===${i - 1}");
+                                                        if (position.value >
+                                                            0) {
+                                                          position.value =
+                                                              position.value -
+                                                                  1;
+                                                        }
+                                                      },
+                                                      child: getSvgImage1(
+                                                        'left.svg',
+                                                        height: 20.h,
+                                                        width: 20.h,
+                                                      ),
+
+                                                      // child: Icon(
+                                                      //   Icons.chevron_left,
+                                                      //   color: subPrimaryColor(context),
+                                                      // )
+                                                    ),
+                                                    getHorizontalSpace(
+                                                        context, 10),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children:
+                                                              List.generate(
+                                                                  i.toInt(),
+                                                                  (index) =>
+                                                                      InkWell(
+                                                                        child:
+                                                                            Container(
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(horizontal: 5.h),
+                                                                          height:
+                                                                              35.h,
+                                                                          width:
+                                                                              35.h,
+
+                                                                          decoration: getDefaultDecoration(
+                                                                              bgColor: position.value == index ? getPrimaryColor(context) : Colors.transparent,
+                                                                              radius: getResizeRadius(context, 15)),
+                                                                          // decoration: BoxDecoration(
+                                                                          //     shape: BoxShape
+                                                                          //         .circle,
+                                                                          //     color: position
+                                                                          //         .value ==
+                                                                          //         index
+                                                                          //         ? getPrimaryColor(context)
+                                                                          //         : getBorderColor(
+                                                                          //         context)),
+                                                                          child:
+                                                                              Center(
+                                                                            child: getTextWidget(
+                                                                                context,
+                                                                                '${index + 1}',
+                                                                                50,
+                                                                                position.value == index ? Colors.white : subPrimaryColor(context)),
+                                                                          ),
+                                                                        ),
+                                                                        onTap:
+                                                                            () {
+                                                                          position.value =
+                                                                              index;
+                                                                          _controller
+                                                                              .jumpTo(0);
+                                                                        },
+                                                                      )),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    getHorizontalSpace(
+                                                        context, 10),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        print(
+                                                            "posi===${position.value}===${i - 1}");
+                                                        if (position.value <
+                                                            (i.toInt() - 1)) {
+                                                          position.value =
+                                                              position.value +
+                                                                  1;
+                                                        }
+                                                      },
+
+                                                      child: getSvgImage1(
+                                                        'right.svg',
+                                                        height: 18.h,
+                                                        width: 18.h,
+                                                      ),
+                                                      // child: Icon(
+                                                      //   Icons.chevron_right,
+                                                      //   color: subPrimaryColor(context),
+                                                      // )
+                                                    ),
+                                                    getHorizontalSpace(
+                                                        context, 25),
+                                                    Expanded(
+                                                        child: Container(
+                                                            // child: isWeb(context)
+                                                            //     ? getEntryWidget(
+                                                            //     context)
+                                                            //     : Container(),
+                                                            ))
+                                                  ],
                                                 ),
-                                                // child: Icon(
-                                                //   Icons.chevron_right,
-                                                //   color: subPrimaryColor(context),
-                                                // )
                                               ),
-                                              getHorizontalSpace(
-                                                  context, 25),
-                                              Expanded(
-                                                  child: Container(
-                                                    // child: isWeb(context)
-                                                    //     ? getEntryWidget(
-                                                    //     context)
-                                                    //     : Container(),
-                                                  ))
-                                            ],
-                                          ),
+                                            ),
+                                            getVerticalSpace(
+                                                context,
+                                                (getCommonPadding(context) /
+                                                    2)),
+                                          ],
                                         ),
-                                      ),
-                                      getVerticalSpace(
-                                          context,
-                                          (getCommonPadding(context) /
-                                              2)),
-                                    ],
-                                  ),
-                                )
+                                      )
                                     : Center(child: getNoData(context));
                               });
                             } else {
@@ -610,8 +602,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           },
                         )
                       ],
-                    )
-                )),
+                    ))),
             getVerticalSpace(context, isWeb(context) ? 0 : 35),
           ],
         ),

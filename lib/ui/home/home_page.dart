@@ -1,8 +1,11 @@
 import 'package:ebookadminpanel/controller/author_controller.dart';
 import 'package:ebookadminpanel/controller/category_controller.dart';
+import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/story_controller.dart';
 import 'package:ebookadminpanel/ui/author/addAuthor/add_author_screen.dart';
 import 'package:ebookadminpanel/ui/author/author_screen.dart';
+import 'package:ebookadminpanel/ui/genre/addGenre/add_genre_screen.dart';
+import 'package:ebookadminpanel/ui/genre/genre_screen.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -275,6 +278,46 @@ class _HomePage extends State<HomePage> {
           changeAction(actionAuthor);
         },
         authorModel: homeController.authorModel,
+      );
+    } else if (action == actionGenre) {
+      PrefData.setAction(actionGenre);
+      genreController.clearGenreData();
+
+      return GenreScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionAddGenre);
+        },
+      );
+    } else if (action == actionAddGenre) {
+      PrefData.setAction(actionAddGenre);
+
+      GenreController genreController = Get.put(GenreController());
+
+      genreController.clearGenreData();
+
+      return AddGenreScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionGenre);
+        },
+      );
+    } else if (action == actionEditGenre) {
+      PrefData.setAction(actionEditGenre);
+
+      genreController.genreModel = homeController.genreModel;
+
+      if (genreController.isStatus) {
+        genreController.setAllDataFromGenreModel(
+            homeController.genreModel, false);
+      }
+
+      return AddGenreScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionGenre);
+        },
+        genreModel: homeController.genreModel,
       );
     } else if (action == actionStories) {
       PrefData.setAction(actionStories);

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "52319249413",
-    "project_id": "ebook-4d358",
-    "storage_bucket": "ebook-4d358.appspot.com"
+    "project_number": "716875505153",
+    "project_id": "simarku-a8d45",
+    "storage_bucket": "simarku-a8d45.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:52319249413:android:20ef122b2a7daaeb61286c",
+        "mobilesdk_app_id": "1:716875505153:android:14021f42510dcada892a00",
         "android_client_info": {
-          "package_name": "com.example.ebook"
+          "package_name": "com.example.simarku"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBd0bmRtOMpvNfIwFeei7nuh9_evb_qE0M"
+          "current_key": "AIzaSyDuK-PUsoP8-p-egC8eP6wccAwHjHx-LZc"
         }
       ],
       "services": {

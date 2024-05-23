@@ -19,9 +19,17 @@ int actionEditStory = 9;
 int actionAddStory = 8;
 int actionAddSlider = 10;
 int actionAuthor = 11;
-int dummyActionAuthor = -11;
+int dummyActionAuthor = -4;
 int actionAddAuthor = 12;
 int actionEditAuthor = 13;
+int actionGenre = 14;
+int actionAddGenre = 15;
+int actionEditGenre = 16;
+int dummyActionGenre = -5;
+int actionUser = 17;
+int actionAddUser = 18;
+int actionEditUser = 19;
+int dummyActionUser = -6;
 
 List<int> mainActionList = [
   actionCategories,
@@ -29,13 +37,17 @@ List<int> mainActionList = [
   actionHomeSlider,
   actionSendNotification,
   actionSettings,
-  actionAuthor
+  actionAuthor,
+  actionGenre,
+  actionUser
 ];
 List<int> dummyActionList = [
   dummyActionCategories,
   dummyActionStories,
   dummyActionHomeSlider,
-  dummyActionAuthor
+  dummyActionAuthor,
+  dummyActionGenre,
+  dummyActionUser
 ];
 int dummyAction = -1;
 
@@ -43,7 +55,9 @@ List<int> actionList = [
   actionAddCategory,
   actionAddStory,
   actionAddSlider,
-  actionAddAuthor
+  actionAddAuthor,
+  actionAddGenre,
+  actionAddUser,
 ];
 
 // int dummyActionDashBoard=0;
@@ -67,8 +81,8 @@ class Constants {
   static String serverKey =
       "AAAADC54ZAU:APA91bFIFCf68d9-9DSpCr2H_YSCOwEnggt3Z-mBQMgAKCbwLraGAFvjfctM4U6x97qVoY-ORbyYeH5yIcEdi6QVuTr1ewOeWrUHqHitToi6_-DFpb0oFj7mX9Zosf8712l4r-U-6Q_n";
 
-  static String url = "PDF (URL)";
-  static String file = "Upload Pdf File";
+  static String physichBook = "Buku Fisik";
+  static String file = "E-Book";
   static String placeImage = assetPath + "place.png";
 
   static void exitApp() {

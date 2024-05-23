@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -156,15 +157,15 @@ class SliderMobileScreen extends StatelessWidget {
                                                             List<DocumentSnapshot> list = snapshot.data!.docs;
 
 
-                                                            List authorList = storyModel.authId!;
-                                                            List<String> authorsName = [];
+                                                            List genreList = storyModel.genreId!;
+                                                            List<String> genreNames = [];
 
 
                                                             for(int i = 0;i<list.length;i++){
 
-                                                              if(authorList.contains(list[i].id)){
+                                                              if(genreList.contains(list[i].id)){
 
-                                                                authorsName.add(TopAuthors.fromFirestore(list[i]).authorName!);
+                                                                genreNames.add(Genre.fromFirestore(list[i]).genre!);
 
                                                               }
 
@@ -175,7 +176,7 @@ class SliderMobileScreen extends StatelessWidget {
                                                               child: Row(
                                                                 children: [
                                                                   getHeaderCell(
-                                                                      '${authorsName.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                                                      '${genreNames.toString().replaceAll('[', '').replaceAll(']', '')}',
                                                                       context,
                                                                       130),
                                                                 ],

@@ -10,13 +10,18 @@ class KeyTable{
   static String storyId = 'story_id';
   static String appDetail = 'app_detail';
   static String authorList = 'author_list';
+  static String genreList = 'genre_list';
+  static String user = 'Users';
+  static String userId = 'user_id';
   static String authorId = 'auth_id';
+  static String genreId = 'genre_id';
   static String keyDeviceId = 'device_id';
   static String keyUid = '_uid';
 
 
   static String isPopular = 'is_popular';
   static String isFeatured = 'is_featured';
+  static String isAvailable= 'is_available';
 
 
 
