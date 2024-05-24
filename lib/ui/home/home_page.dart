@@ -211,75 +211,78 @@ class _HomePage extends State<HomePage> {
 
     print("action---111-${action}");
 
-    if (action == actionCategories) {
-      PrefData.setAction(actionCategories);
-      return CategoryScreen(function: () {
-        changeAction(actionAddCategory);
-      });
-    } else if (action == actionAddCategory) {
-      PrefData.setAction(actionAddCategory);
+    // if (action == actionCategories) {
+    //   PrefData.setAction(actionCategories);
+    //   return CategoryScreen(function: () {
+    //     changeAction(actionAddCategory);
+    //   });
+    // } else if (action == actionAddCategory) {
+    //   PrefData.setAction(actionAddCategory);
 
-      CategoryController categoryController = Get.put(CategoryController());
+    //   CategoryController categoryController = Get.put(CategoryController());
 
-      categoryController.clearData();
+    //   categoryController.clearData();
 
-      return AddCategoryScreen(function: () {
-        onBackClick();
-      });
-    } else if (action == actionEditCategory) {
-      PrefData.setAction(actionEditCategory);
+    //   return AddCategoryScreen(function: () {
+    //     onBackClick();
+    //   });
+    // } else if (action == actionEditCategory) {
+    //   PrefData.setAction(actionEditCategory);
 
-      categoryController.categoryModel = homeController.categoryModel;
+    //   categoryController.categoryModel = homeController.categoryModel;
 
-      categoryController.setAllCategoryDate(homeController.categoryModel);
+    //   categoryController.setAllCategoryDate(homeController.categoryModel);
 
-      return AddCategoryScreen(
-        function: () {
-          onBackClick();
-        },
-        categoryModel: homeController.categoryModel,
-      );
-    } else if (action == actionAuthor) {
-      PrefData.setAction(actionAuthor);
-      authorController.clearAuthData();
+    //   return AddCategoryScreen(
+    //     function: () {
+    //       onBackClick();
+    //     },
+    //     categoryModel: homeController.categoryModel,
+    //   );
+    // } else 
+    // if (action == actionAuthor) {
+    //   PrefData.setAction(actionAuthor);
+    //   authorController.clearAuthData();
 
-      return AuthorScreen(
-        function: () {
-          onBackClick();
-          changeAction(actionAddAuthor);
-        },
-      );
-    } else if (action == actionAddAuthor) {
-      PrefData.setAction(actionAddAuthor);
+    //   return AuthorScreen(
+    //     function: () {
+    //       onBackClick();
+    //       changeAction(actionAddAuthor);
+    //     },
+    //   );
+    // } else if (action == actionAddAuthor) {
+    //   PrefData.setAction(actionAddAuthor);
 
-      AuthorController authorController = Get.put(AuthorController());
+    //   AuthorController authorController = Get.put(AuthorController());
 
-      authorController.clearAuthData();
+    //   authorController.clearAuthData();
 
-      return AddAuthorScreen(
-        function: () {
-          onBackClick();
-          changeAction(actionAuthor);
-        },
-      );
-    } else if (action == actionEditAuthor) {
-      PrefData.setAction(actionEditAuthor);
+    //   return AddAuthorScreen(
+    //     function: () {
+    //       onBackClick();
+    //       changeAction(actionAuthor);
+    //     },
+    //   );
+    // } else if (action == actionEditAuthor) {
+    //   PrefData.setAction(actionEditAuthor);
 
-      authorController.authorModel = homeController.authorModel;
+    //   authorController.authorModel = homeController.authorModel;
 
-      if (authorController.isStatus) {
-        authorController.setAllDataFromAuthorModel(
-            homeController.authorModel, false);
-      }
+    //   if (authorController.isStatus) {
+    //     authorController.setAllDataFromAuthorModel(
+    //         homeController.authorModel, false);
+    //   }
 
-      return AddAuthorScreen(
-        function: () {
-          onBackClick();
-          changeAction(actionAuthor);
-        },
-        authorModel: homeController.authorModel,
-      );
-    } else if (action == actionGenre) {
+    //   return AddAuthorScreen(
+    //     function: () {
+    //       onBackClick();
+    //       changeAction(actionAuthor);
+    //     },
+    //     authorModel: homeController.authorModel,
+    //   );
+    // } else
+    
+    if (action == actionGenre) {
       PrefData.setAction(actionGenre);
       genreController.clearGenreData();
 

@@ -26,10 +26,14 @@ class StoryController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   TextEditingController pdfController = TextEditingController();
-  TextEditingController authController = TextEditingController();
+  TextEditingController authorController = TextEditingController();
   TextEditingController genreController = TextEditingController();
   TextEditingController ownerController = TextEditingController();
-  // RxString audioUrl = ''.obs;
+  TextEditingController pageController = TextEditingController();
+  TextEditingController publisherController = TextEditingController();
+  TextEditingController releaseDateController = TextEditingController();
+  TextEditingController bookTypeController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
   RxString pdfUrl = ''.obs;
   RxString pdfSize = ''.obs;
   Uint8List webImage = Uint8List(10);
@@ -44,61 +48,26 @@ class StoryController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isPopular = true.obs;
   RxBool isFeatured = true.obs;
+  RxBool isAvailable = true.obs;
 
-  String oldCategory = '';
+  String oldGenre = '';
 
   StoryController({this.storyModel, this.homeController});
 
   final DateFormat formatter = DateFormat('dd/MM/yyyy');
 
-  // RxString date = ''.obs;
-  // DateTime customDate = DateTime.now();
-
-  // RxList selectedAuthors = [].obs;
-  // RxList selectedAuthorsNameList = [].obs;
   RxList selectedGenre = [].obs;
   RxList selectedGenreNameList = [].obs;
+  RxList selectedCategory = [].obs;
+  RxList selectedCategoryNameList = [].obs;
   RxList selectedUser = [].obs;
   RxList selectedUserNameList = [].obs;
 
   @override
   Future<void> onInit() async {
     super.onInit();
-
-    // date(formatter.format(DateTime.now()));
     setAllDataFromStoryModel(storyModel!, homeController!);
   }
-
-  // getAuthors(List selectedList) async {
-  //   QuerySnapshot snapshot =
-  //       await FirebaseFirestore.instance.collection(KeyTable.authorList).get();
-
-  //   if (snapshot.docs.isNotEmpty && snapshot.size > 0) {
-  //     List<DocumentSnapshot> list = snapshot.docs;
-
-  //     for (int i = 0; i < list.length; i++) {
-  //       if (selectedList.contains(list[i].id)) {
-  //         selectedAuthorsNameList
-  //             .add(TopAuthors.fromFirestore(list[i]).authorName!);
-  //       }
-  //     }
-  //   }
-
-  //   authController.text = selectedAuthorsNameList
-  //       .toString()
-  //       .replaceAll('[', '')
-  //       .replaceAll(']', '');
-
-  //   // publisher.value = jsonDecode(storyModel!.publisher ?? "");
-  //   //
-  //   //
-  //   // publisherController1.text = publisher.toString().replaceAll('[', '').replaceAll(']', '');
-  //   //
-  //   // print("selected---------publisher--${publisher.toString()}");
-
-  //   print("selected-----------${selectedAuthorsNameList.toString()}");
-  //   print("selected-----------${selectedAuthors.toString()}");
-  // }
 
   getGenre(List selectedList) async {
     QuerySnapshot snapshot =
@@ -118,13 +87,6 @@ class StoryController extends GetxController {
         .toString()
         .replaceAll('[', '')
         .replaceAll(']', '');
-
-    // publisher.value = jsonDecode(storyModel!.publisher ?? "");
-    //
-    //
-    // publisherController1.text = publisher.toString().replaceAll('[', '').replaceAll(']', '');
-    //
-    // print("selected---------publisher--${publisher.toString()}");
 
     print("selected-----------${selectedGenreNameList.toString()}");
     print("selected-----------${selectedGenre.toString()}");
@@ -147,13 +109,6 @@ class StoryController extends GetxController {
     ownerController.text =
         selectedUserNameList.toString().replaceAll('[', '').replaceAll(']', '');
 
-    // publisher.value = jsonDecode(storyModel!.publisher ?? "");
-    //
-    //
-    // publisherController1.text = publisher.toString().replaceAll('[', '').replaceAll(']', '');
-    //
-    // print("selected---------publisher--${publisher.toString()}");
-
     print("selected-----------${selectedUserNameList.toString()}");
     print("selected-----------${selectedUser.toString()}");
   }
@@ -165,10 +120,8 @@ class StoryController extends GetxController {
       storyModel = s;
 
       if (storyModel != null) {
-        // getAuthors(storyModel!.authId!);
         getGenre(storyModel!.genreId!);
-
-        // String authName = await FirebaseData.getAuthName(refId: storyModel!.authId ?? "");
+        getUser(storyModel!.ownerId!);
 
         String fileName = storyModel!.image!.split('%2F').last;
 
@@ -182,14 +135,18 @@ class StoryController extends GetxController {
           homeController!.pdf.value = Constants.file;
         }
 
-        oldCategory = '';
+        oldGenre = '';
         nameController.text = storyModel!.name!;
+        authorController.text = storyModel!.author!;
+        pageController.text = storyModel!.page!;
+        publisherController.text = storyModel!.publisher!;
+        releaseDateController.text = storyModel!.releaseDate!;
         imageController.text = file;
+        selectedGenre.value = storyModel!.genreId!;
 
-        homeController!.category.value = storyModel!.refId!;
-        // homeController!.author.value = storyModel!.authId!;
-
-        // selectedAuthors.value = storyModel!.authId!;
+        homeController!.genre.value = storyModel!.refId!;
+        homeController!.category.value = storyModel!.category!;
+        homeController!.bookType.value = storyModel!.bookType!;
 
         pdfUrl.value = pdfFile;
 
@@ -202,48 +159,38 @@ class StoryController extends GetxController {
               document: doc, selection: TextSelection.collapsed(offset: 0));
         }
 
-        // var myJSON = jsonDecode(r'{"insert":"hello\n"}');
-        // Delta delta = new Delta()..insert(decode(storyModel!.desc!));
-        //
-        // descController = QuillController(
-        //
-        //   document: Document.fromDelta(delta),
-        //   selection: TextSelection.collapsed(offset: 0),
-        // );
-
-        // pdfUrl.value = storyModel!.pdf!;
-
-        oldCategory = nameController.text;
+        oldGenre = nameController.text;
 
         isPopular.value = storyModel!.isPopular!;
         isFeatured.value = storyModel!.isFeatured!;
+        isAvailable.value = storyModel!.isAvailable!;
 
         print("desc------_${storyModel!.desc}");
-
-        // date(storyModel!.date);
-        // customDate = formatter.parse(storyModel!.date!);
       }
     }
   }
 
   clearStoryData() {
     nameController = TextEditingController();
+    authorController = TextEditingController();
+    pageController = TextEditingController();
+    publisherController = TextEditingController();
+    releaseDateController = TextEditingController();
+    bookTypeController = TextEditingController();
+    categoryController = TextEditingController();
     imageController = TextEditingController();
     pdfController = TextEditingController();
     pdfUrl.value = '';
     pdfSize.value = '';
     webImage = Uint8List(10);
-
-    authController = TextEditingController();
     genreController = TextEditingController();
     ownerController = TextEditingController();
-
-    // selectedAuthors.value = [];
-    // selectedAuthorsNameList.value = [];
     selectedGenre.value = [];
     selectedGenreNameList.value = [];
     selectedUser.value = [];
     selectedUserNameList.value = [];
+    selectedCategory.value = [];
+    selectedCategoryNameList.value = [];
 
     webFile = Uint8List(10);
     descController = QuillController.basic();
@@ -255,8 +202,9 @@ class StoryController extends GetxController {
     isLoading.value = false;
     isPopular.value = true;
     isFeatured.value = true;
+    isAvailable.value = true;
 
-    oldCategory = '';
+    oldGenre = '';
   }
 
   addStory(BuildContext context, HomeController controller,
@@ -267,27 +215,29 @@ class StoryController extends GetxController {
 
       StoryModel firebaseHistory = new StoryModel();
       firebaseHistory.name = nameController.text;
+      firebaseHistory.author = authorController.text;
+      firebaseHistory.publisher = publisherController.text;
+      firebaseHistory.releaseDate = releaseDateController.text;
+      firebaseHistory.page = pageController.text;
       firebaseHistory.image = url;
       firebaseHistory.pdf = (controller.pdf.value == Constants.physichBook)
           ? pdfController.text
           : pdfUrl;
-      firebaseHistory.refId = controller.category.value;
-      // firebaseHistory.authId = selectedAuthors;
+      firebaseHistory.refId = controller.genre.value;
       firebaseHistory.genreId = selectedGenre;
-      // firebaseHistory.authId = controller.author.value;
-      firebaseHistory.index = await FirebaseData.getLastIndexFromAuthTable();
       firebaseHistory.index = await FirebaseData.getLastIndexFromGenreTable();
-      firebaseHistory.index = await FirebaseData.getLastIndexFromUserTable();
+      firebaseHistory.ownerId = selectedUser;
       firebaseHistory.desc =
           deltaToHtml(descController.document.toDelta().toJson());
-      // firebaseHistory.desc = quillDeltaToHtml(descController.document.toDelta());
-      // firebaseHistory.date = date.value;
       firebaseHistory.isActive = true;
       firebaseHistory.views = 0;
       firebaseHistory.isBookmark = false;
       firebaseHistory.isFav = false;
       firebaseHistory.isPopular = isPopular.value;
       firebaseHistory.isFeatured = isFeatured.value;
+      firebaseHistory.isAvailable = isAvailable.value;
+      firebaseHistory.bookType = controller.bookType.value;
+      firebaseHistory.category = controller.category.value;
 
       FirebaseData.insertData(
           context: context,
@@ -303,51 +253,78 @@ class StoryController extends GetxController {
 
   bool checkValidation(BuildContext context) {
     if (isNotEmpty(nameController.text)) {
-      if (isNotEmpty(
-          descController.plainTextEditingValue.text.toString().trim())) {
-        if (isNotEmpty(pdfUrl.value)) {
-          if (isNotEmpty(imageController.text)) {
-            if (!imageController.text.split(".").last.startsWith("svg")) {
-              isLoading(true);
-              return true;
+      if (isNotEmpty(genreController.text)) {
+        if (isNotEmpty(authorController.text)) {
+          if (isNotEmpty(publisherController.text)) {
+            if (isNotEmpty(releaseDateController.text)) {
+              if (isNotEmpty(pageController.text)) {
+                if (isNotEmpty(imageController.text)) {
+                  if (!imageController.text.split(".").last.startsWith("svg")) {
+                    if (isNotEmpty(descController.plainTextEditingValue.text
+                        .toString()
+                        .trim())) {
+                      isLoading(true);
+                      return true;
+                    } else {
+                      showCustomToast(
+                          message: 'Masukkan sinopsis...',
+                          title: 'Error',
+                          context: context);
+                      return false;
+                    }
+                  } else {
+                    showCustomToast(
+                        message: 'svg image not supported',
+                        title: 'Error',
+                        context: context);
+                    return false;
+                  }
+                } else {
+                  showCustomToast(
+                      message: 'Pilih Gambar',
+                      title: 'Error',
+                      context: context);
+                  return false;
+                }
+              } else {
+                showCustomToast(
+                    message: 'Masukkan halaman...',
+                    title: 'Error',
+                    context: context);
+                return false;
+              }
             } else {
               showCustomToast(
-                  message: 'svg image not supported',
+                  message: 'Masukkan tanggal rilis...',
                   title: 'Error',
                   context: context);
               return false;
             }
           } else {
             showCustomToast(
-                message: 'Choose Image', title: 'Error', context: context);
+                message: 'Masukkan penerbit...',
+                title: 'Error',
+                context: context);
             return false;
           }
         } else {
           showCustomToast(
-              message: 'Choose File', title: 'Error', context: context);
+              message: 'Masukkan penulis...', title: 'Error', context: context);
           return false;
         }
       } else {
         showCustomToast(
-            message: 'Enter Story...', title: 'Error', context: context);
-
+            message: 'Masukkan genre...', title: 'Error', context: context);
         return false;
       }
     } else {
       showCustomToast(
-          message: 'Enter name...', title: 'Error', context: context);
+          message: 'Masukkan judul...', title: 'Error', context: context);
       return false;
     }
   }
 
-  // String quillDeltaToHtml(Delta delta) {
-  //   final convertedValue = jsonEncode(delta.toJson());
-  //   final markdown = deltaToMarkdown(convertedValue);
-  //   final html = mark.markdownToHtml(markdown);
-  //   return html;
-  // }
-
-  editCategory(HomeController homeController, BuildContext context,
+  editStory(HomeController homeController, BuildContext context,
       Function function) async {
     if (checkValidation(context)) {
       String url = imageController.text;
@@ -365,6 +342,8 @@ class StoryController extends GetxController {
       }
 
       storyModel!.name = nameController.text;
+      storyModel!.category = homeController.category.value;
+      storyModel!.bookType = homeController.bookType.value;
 
       if (pickImage != null) {
         print("called----if");
@@ -387,16 +366,11 @@ class StoryController extends GetxController {
       storyModel!.isPopular = isPopular.value;
       storyModel!.isFeatured = isFeatured.value;
 
-      storyModel!.refId = homeController.category.value;
+      storyModel!.refId = homeController.genre.value;
 
       storyModel!.desc =
           deltaToHtml(descController.document.toDelta().toJson());
-      // storyModel!.desc = quillDeltaToHtml(descController.document.toDelta());
-      // storyModel!.authId = selectedAuthors;
       storyModel!.genreId = selectedGenre;
-      // storyModel!.authId = homeController.author.value;
-
-      // storyModel!.date = date.value;
 
       FirebaseData.updateData(
           context: context,
@@ -445,21 +419,9 @@ class StoryController extends GetxController {
           SettableMetadata(
             contentType: "application/pdf",
           ));
-      // TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {
-      //   print("complete=====true");
-      // }).catchError((error) {
-      //   print("error=====$error");
-      // });
 
-      // // String url = await taskSnapshot.ref.fullPath;
-      //
-      //
       print("data===${fileBytes.toString()}");
-      //
-      // return utf8.decode(fileBytes);
-      //
-      //
-      // // return fileBytes.toString();
+
       return await getUrlFromTask(uploadTask);
     } catch (e) {
       return '';
@@ -474,7 +436,6 @@ class StoryController extends GetxController {
       print("error=====$error");
     });
 
-    // String url = await taskSnapshot.ref.fullPath;
     String url = await taskSnapshot.ref.getDownloadURL();
 
     print("url---------${url}");
@@ -546,87 +507,6 @@ class StoryController extends GetxController {
       isImageOffline(true);
     }
   }
-
-  // Future<void> showAuthorDialog(
-  //     BuildContext context, HomeController home) async {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         print("auythLrn------_${home.authorList.length}");
-  //         return AlertDialog(
-  //           title: getTextWidget(
-  //               context, 'Select Author', 60, getFontColor(context),
-  //               fontWeight: FontWeight.w700),
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(10.r),
-  //           ),
-  //           backgroundColor: getBackgroundColor(context),
-  //           contentPadding: EdgeInsets.zero,
-  //           content: Container(
-  //             padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
-  //             width:
-  //                 Responsive.isDesktop(context) || Responsive.isDesktop(context)
-  //                     ? 450.h
-  //                     : 350.h,
-  //             child: ListView.builder(
-  //               shrinkWrap: true,
-  //               // itemCount: 10,
-  //               itemCount: home.authorList.length,
-  //               itemBuilder: (context, index) {
-  //                 return ListTile(
-  //                   // title: getCustomFont("text", 18, getFontColor(context), 1),
-  //                   title: getCustomFont(home.authorList[index].authorName!, 14,
-  //                       getFontColor(context), 1),
-  //                   trailing: Obx(() => Checkbox(
-  //                       activeColor: getPrimaryColor(context),
-  //                       checkColor: Colors.white,
-  //                       onChanged: (checked) {
-  //                         print(
-  //                             "checked--------${selectedAuthors.contains(home.authorList[index].id!)}--------${checked}");
-
-  //                         if (selectedAuthors
-  //                             .contains(home.authorList[index].id!)) {
-  //                           selectedAuthors.remove(home.authorList[index].id!);
-  //                           selectedAuthorsNameList
-  //                               .remove(home.authorList[index].authorName!);
-  //                         } else {
-  //                           selectedAuthors.add(home.authorList[index].id!);
-  //                           selectedAuthorsNameList
-  //                               .add(home.authorList[index].authorName!);
-  //                         }
-
-  //                         print("selecteLen--------${selectedAuthors.length}");
-
-  //                         // isChecked[index] = checked;
-  //                         // _title = _getTitle();
-  //                       },
-  //                       value: selectedAuthors
-  //                           .contains(home.authorList[index].id!))),
-  //                 );
-  //               },
-  //             ),
-  //           ),
-  //           actions: [
-  //             getButtonWidget(
-  //               context,
-  //               'Submit',
-  //               isProgress: false,
-  //               () {
-  //                 Get.back();
-  //                 authController.text = selectedAuthorsNameList
-  //                     .toString()
-  //                     .replaceAll('[', '')
-  //                     .replaceAll(']', '');
-  //               },
-  //               horPadding: 25.h,
-  //               horizontalSpace: 0,
-  //               verticalSpace: 0,
-  //               btnHeight: 40.h,
-  //             )
-  //           ],
-  //         );
-  //       });
-  // }
 
   Future<void> showGenreDialog(
       BuildContext context, HomeController home) async {
@@ -709,84 +589,6 @@ class StoryController extends GetxController {
         });
   }
 
-  // Future<void> showUserDialog(BuildContext context, HomeController home) async {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         print("userList------_${home.userList.length}");
-  //         return AlertDialog(
-  //           title: getTextWidget(
-  //               context, 'Pilih Pemilik', 60, getFontColor(context),
-  //               fontWeight: FontWeight.w700),
-  //           shape: RoundedRectangleBorder(
-  //             borderRadius: BorderRadius.circular(10.r),
-  //           ),
-  //           backgroundColor: getBackgroundColor(context),
-  //           contentPadding: EdgeInsets.zero,
-  //           content: Container(
-  //             padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
-  //             width:
-  //                 Responsive.isDesktop(context) || Responsive.isDesktop(context)
-  //                     ? 450.h
-  //                     : 350.h,
-  //             child: ListView.builder(
-  //               shrinkWrap: true,
-  //               // itemCount: 10,
-  //               itemCount: home.userList.length,
-  //               itemBuilder: (context, index) {
-  //                 return ListTile(
-  //                   // title: getCustomFont("text", 18, getFontColor(context), 1),
-  //                   title: getCustomFont(home.userList[index].fullName, 14,
-  //                       getFontColor(context), 1),
-  //                   trailing: Obx(() => Checkbox(
-  //                       activeColor: getPrimaryColor(context),
-  //                       checkColor: Colors.white,
-  //                       onChanged: (checked) {
-  //                         print(
-  //                             "checked--------${selectedUser.contains(home.userList[index].id)}--------${checked}");
-
-  //                         if (selectedUser.contains(home.userList[index].id)) {
-  //                           selectedUser.remove(home.userList[index].id);
-  //                           selectedUserNameList
-  //                               .remove(home.userList[index].fullName);
-  //                         } else {
-  //                           selectedUser.add(home.userList[index].id);
-  //                           selectedUserNameList
-  //                               .add(home.userList[index].fullName);
-  //                         }
-
-  //                         print("selecteLen--------${selectedUser.length}");
-
-  //                         // isChecked[index] = checked;
-  //                         // _title = _getTitle();
-  //                       },
-  //                       value: selectedUser.contains(home.userList[index].id))),
-  //                 );
-  //               },
-  //             ),
-  //           ),
-  //           actions: [
-  //             getButtonWidget(
-  //               context,
-  //               'Submit',
-  //               isProgress: false,
-  //               () {
-  //                 Get.back();
-  //                 genreController.text = selectedGenreNameList
-  //                     .toString()
-  //                     .replaceAll('[', '')
-  //                     .replaceAll(']', '');
-  //               },
-  //               horPadding: 25.h,
-  //               horizontalSpace: 0,
-  //               verticalSpace: 0,
-  //               btnHeight: 40.h,
-  //             )
-  //           ],
-  //         );
-  //       });
-  // }
-
   Future<void> showUserDialog(BuildContext context) async {
     List<UserModel> userList = [];
     try {
@@ -857,11 +659,11 @@ class StoryController extends GetxController {
               'Submit',
               isProgress: false,
               () {
-                // Get.back();
-                // genreController.text = selectedUserNameList
-                //   .toString()
-                //   .replaceAll('[', '')
-                //   .replaceAll(']', '');
+                Get.back();
+                ownerController.text = selectedUserNameList
+                    .toString()
+                    .replaceAll('[', '')
+                    .replaceAll(']', '');
               },
               horPadding: 25.h,
               horizontalSpace: 0,

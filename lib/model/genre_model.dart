@@ -3,9 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Genre {
   String? genre;
   String? id;
-  String? refId;
+  int? refId=1;
 
-  int? index;
+  int? index = 1;
   bool? isActive = true;
 
   Genre({
@@ -30,9 +30,9 @@ class Genre {
     Map data = doc.data() as Map;
     return Genre(
       id: doc.id,
-      genre: data['genre'],
-      refId: data['refId'],
-      index: data['index'],
+      genre: data['genre'] ?? '',
+      refId: data['refId'] ?? 0,
+      index: data['index'] ?? 0,
       isActive: data['is_active'] ?? false,
     );
   }

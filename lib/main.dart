@@ -22,8 +22,8 @@ RxInt selectedAction = 0.obs;
 
 bool isLogin = false;
 ThemeController themeController = Get.put(ThemeController());
-CategoryController categoryController = Get.put(CategoryController());
-AuthorController authorController = Get.put(AuthorController());
+// CategoryController categoryController = Get.put(CategoryController());
+// AuthorController authorController = Get.put(AuthorController());
 GenreController genreController = Get.put(GenreController());
 StoryController storyController = Get.put(StoryController());
 

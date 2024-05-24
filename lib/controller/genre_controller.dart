@@ -63,7 +63,7 @@ class GenreController extends GetxController {
 
       Genre firebaseHistory = new Genre();
       firebaseHistory.genre = genreNameController.text;
-      firebaseHistory.refId = controller.category.value;
+      firebaseHistory.refId = await FirebaseData.getGenreRefId();
       firebaseHistory.index = await FirebaseData.getLastIndexFromGenreTable();
       firebaseHistory.isActive = activeStatus.value;
       // firebaseHistory.views = 0;
@@ -109,7 +109,6 @@ class GenreController extends GetxController {
       Function function) async {
     if (checkValidation(context)) {
       genreModel!.genre = genreNameController.text;
-      genreModel!.refId = homeController.category.value;
       genreModel!.isActive = activeStatus.value;
 
       FirebaseData.updateData(

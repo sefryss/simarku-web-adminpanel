@@ -311,6 +311,41 @@ class FirebaseData {
     }
   }
 
+  static Future<bool> checkGenreExists(String docId,
+      {String? collection}) async {
+    print("doc===$docId");
+    try {
+      var collectionRef = FirebaseFirestore.instance.collection(
+          collection == null ? KeyTable.genreList : collection);
+
+      var doc = await collectionRef.doc(docId).get();
+
+      return doc.exists;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  static Future<int> getGenreRefId() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.genreList)
+        .orderBy(KeyTable.refId, descending: true)
+        .get();
+
+    if (querySnapshot.size > 0) {
+      if (querySnapshot.docs.length > 0) {
+        List<DocumentSnapshot> list1 = querySnapshot.docs;
+        if (list1.length > 0) {
+          Genre genreModel = Genre.fromFirestore(list1[0]);
+          return (genreModel.refId! + 1);
+        }
+      }
+      return 1;
+    } else {
+      return 1;
+    }
+  }
+
   static Future<int> getLastIndexFromTable(String table) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection(table)
@@ -617,10 +652,10 @@ class FirebaseData {
     homeController.fetchStoryData();
   }
 
-  static refreshCategoryData() {
-    HomeController homeController = Get.find();
-    homeController.fetchCategoryData();
-  }
+  // static refreshCategoryData() {
+  //   HomeController homeController = Get.find();
+  //   homeController.fetchCategoryData();
+  // }
 
   static refreshAuthorData() {
     HomeController homeController = Get.find();

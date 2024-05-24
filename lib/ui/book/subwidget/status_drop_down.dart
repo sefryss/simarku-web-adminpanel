@@ -6,14 +6,15 @@ import 'package:ebookadminpanel/controller/home_controller.dart';
 
 import '../../../util/responsive.dart';
 import '../../common/common.dart';
+import 'package:ebookadminpanel/model/story_model.dart';
 
+class BookTypeDropdown extends StatelessWidget {
+  final Function(BookType)? onChanged;
+  final BookType? value;
 
-class PDFDropDown extends StatelessWidget {
-  final Function? onChanged;
-  final String? value;
+  final HomeController homeController;
 
-  final  HomeController homeController;
-  PDFDropDown(this.homeController,{
+  BookTypeDropdown(this.homeController, {
     Key? key,
     this.onChanged,
     this.value,
@@ -21,26 +22,13 @@ class PDFDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return  homeController.categoryList.length > 0
-        ?  getDropDown(
-      context: context,
-      dataController: homeController,
-
-    )
-
-        : Container();
+    return getDropDown(context: context, dataController: homeController);
   }
-  getDropDown(
-      {required HomeController dataController,
 
-
-        required BuildContext context,
-      }) {
-
-
-
-
+  Widget getDropDown({
+    required BuildContext context, 
+    required HomeController dataController
+  }) {
     double radius = getDefaultRadius(context);
     double fontSize = 40;
     double height = 45.h;
@@ -51,40 +39,57 @@ class PDFDropDown extends StatelessWidget {
 
     return Obx(() => Container(
       height: height,
-
       padding: EdgeInsets.symmetric(horizontal: 5.h),
       decoration: getDefaultDecoration(
-          radius: radius,
-          bgColor: getCardColor(context),
-          // bgColor: getReportColor(context),
-          borderColor: getBorderColor(context),
-          borderWidth: 1),
-
+        radius: radius,
+        bgColor: getCardColor(context),
+        borderColor: getBorderColor(context),
+        borderWidth: 1
+      ),
       alignment: Alignment.centerLeft,
-      child: DropdownButton<String>(
-        hint: getTextWidget(context,'Select Status',fontSize,getSubFontColor(context),fontWeight: FontWeight.w400),
+      child: DropdownButton<BookType>(
+        hint: getTextWidget(
+          context, 'Select Book Type', fontSize, getSubFontColor(context),
+          fontWeight: FontWeight.w400
+        ),
         isExpanded: true,
-        icon: imageAsset('down.png', height: 12.h, width: 12.h,color: getFontColor(context)).paddingSymmetric(horizontal: 10.h),
-
-        items: homeController.pdfOptionList.map((element){
-
-          print("listLen----${homeController.pdfOptionList.length}------${element}");
-          return DropdownMenuItem<String>(
-            value: element,
-            child: getTextWidget(context,element,fontSize,getFontColor(context),fontWeight: FontWeight.w400),
-
+        icon: imageAsset(
+          'down.png', height: 12.h, width: 12.h, color: getFontColor(context)
+        ).paddingSymmetric(horizontal: 10.h),
+        items: dataController.bookTypeList.map((BookType bookType) {
+          return DropdownMenuItem<BookType>(
+            value: bookType,
+            child: getTextWidget(
+              context,
+              bookType.toString().split('.').last,
+              fontSize,
+              getFontColor(context),
+              fontWeight: FontWeight.w400
+            ),
           );
         }).toList(),
-
-        value: (homeController.pdf.value.isEmpty)?homeController.pdfOptionList[0]:homeController.pdf.value,
+        value: dataController.bookType.value,
         underline: Container(),
-        onChanged: (value) {
-          onChanged!(value);
-          homeController.pdf(value);
+        onChanged: (BookType? newValue) {
+          if (newValue != null && newValue != dataController.bookType.value) {
+            dataController.bookType.value = newValue;
+            onChanged?.call(newValue);
+          }
         },
       ),
     ));
   }
-
 }
 
+extension BookTypeExtension on BookType {
+  static BookType fromString(String value) {
+    switch (value) {
+      case 'BukuFisik':
+        return BookType.BukuFisik;
+      case 'EBook':
+        return BookType.EBook;
+      default:
+        throw ArgumentError('Invalid BookType string: $value');
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/controller/data/key_table.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,11 +40,13 @@ class GenreMobileWidget extends StatelessWidget {
                       children: List.generate(list.length, (index) {
                         Genre genreModel = Genre.fromFirestore(list[index]);
                         bool cell = true;
-                        return FutureBuilder<bool>(
-                          future: FirebaseData.checkCategoryExists(
-                              genreModel.refId!),
+                        return StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection(KeyTable.genreList)
+                              .orderBy(KeyTable.refId, descending: true)
+                              .snapshots(),
                           builder: (context, snapshot) {
-                            if (snapshot.data != null && snapshot.data!) {
+                            if (snapshot.hasData) {
                               return Obx(() {
                                 if (queryText.value.isNotEmpty &&
                                     !genreModel.genre!

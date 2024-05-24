@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/controller/data/key_table.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +27,13 @@ class GenreWebWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
 
+    // Sort the list by index in ascending order
+    list.sort((a, b) {
+      int indexA = Genre.fromFirestore(a).index ?? 0;
+      int indexB = Genre.fromFirestore(b).index ?? 0;
+      return indexA.compareTo(indexB);
+    });
+
     return Expanded(
         child: Container(
       child: Column(
@@ -33,27 +41,17 @@ class GenreWebWidget extends StatelessWidget {
           getHeaderWidget(context),
           Expanded(
               child: ListView.builder(
-            // separatorBuilder: (context, index) {
-            //   TopAuthors model =
-            //   TopAuthors.fromFirestore(list[index]);
-            //   return FutureBuilder<bool>(future: FirebaseData.checkCategoryExists(
-            //       model.refId!),builder: (context, snapshot) {
-            //     if (snapshot.data != null && snapshot.data!) {
-            //       return separatorBuilder(
-            //           context, queryText: queryText, value: model.authorName!);
-            //     }
-            //
-            //     return Container();
-            //   },);
-            // },
             itemCount: list.length,
             itemBuilder: (context, index) {
               Genre genreModel = Genre.fromFirestore(list[index]);
 
-              return FutureBuilder<bool>(
-                future: FirebaseData.checkCategoryExists(genreModel.refId!),
+              return StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection(KeyTable.genreList)
+                    .orderBy(KeyTable.refId, descending: true)
+                    .snapshots(),
                 builder: (context, snapshot) {
-                  if (snapshot.data != null && snapshot.data!) {
+                  if (snapshot.hasData) {
                     return Obx(() {
                       bool cell = true;
 
@@ -72,9 +70,16 @@ class GenreWebWidget extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      getHeaderCell(
-                                          '${genreModel.genre}', context, 130),
-                                      getHorizontalSpace(context, 10),
+                                      Row(
+                                        children: [
+                                          getHeaderCell(
+                                              '${index + 1}', context, 130),
+                                          getHorizontalSpace(context, 5),
+                                          getHeaderCell('${genreModel.genre}',
+                                              context, 130),
+                                          getHorizontalSpace(context, 10),
+                                        ],
+                                      ),
                                       Row(
                                         children: [
                                           SizedBox(
@@ -177,9 +182,12 @@ class GenreWebWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // getHeaderCell('ID', context, 130),
-
-          getHeaderCell('Genre', context, 130),
+          Row(
+            children: [
+              getHeaderCell('ID', context, 130),
+              getHeaderCell('Genre', context, 130),
+            ],
+          ),
           Row(
             children: [
               getHeaderCell('Status', context, 120),

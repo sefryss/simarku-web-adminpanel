@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum BookType { physicBook, eBook } // 1. Added enum for book type
+enum BookType { BukuFisik, EBook } // 1. Added enum for book type
 
-enum Category { tukarPinjam, tukarMilik, bebasBaca }
+enum Category { TukarPinjam, TukarMilik, BebasBaca }
 
 class StoryModel {
   String? name = "";

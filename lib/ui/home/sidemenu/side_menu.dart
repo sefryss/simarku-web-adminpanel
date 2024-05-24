@@ -62,77 +62,77 @@ class SideMenu extends StatelessWidget {
             //   },
             // ),
 
-            DrawerExpansionTile(
-              // key: Key("selected ${selectedIndex}"),
-              title: "Categories",
-              svgSrc: (i == actionAddCategory ||
-                      i == actionCategories ||
-                      i == actionEditCategory ||
-                      checkAction(i, dummyActionCategories))
-                  ? "category_active.svg"
-                  : "menu.svg",
-              isSelected: i == actionAddCategory ||
-                  i == actionCategories ||
-                  i == actionEditCategory ||
-                  checkAction(i, dummyActionCategories),
-              isDropDown: true,
-              isAddSelected: i == actionAddCategory,
-              isListSelected: i == actionCategories,
-              pressList: () {
-                function(actionCategories);
-              },
-              pressAdd: () {
-                function(actionAddCategory);
-              },
-              press: () {
-                function(actionCategories);
-                // function(dummyActionCategories);
-
-                print("i---------$i-------$actionCategories");
-              },
-              index: 1,
-            ),
-
-            // DrawerListTile(
+            // DrawerExpansionTile(
+            //   // key: Key("selected ${selectedIndex}"),
             //   title: "Categories",
-            //   svgSrc: "menu.svg",
-            //   isSelected: i == actionCategories ||
-            //       i == actionAddCategory ||
-            //       i == actionEditCategory,
-            //   press: () {
+            //   svgSrc: (i == actionAddCategory ||
+            //           i == actionCategories ||
+            //           i == actionEditCategory ||
+            //           checkAction(i, dummyActionCategories))
+            //       ? "category_active.svg"
+            //       : "menu.svg",
+            //   isSelected: i == actionAddCategory ||
+            //       i == actionCategories ||
+            //       i == actionEditCategory ||
+            //       checkAction(i, dummyActionCategories),
+            //   isDropDown: true,
+            //   isAddSelected: i == actionAddCategory,
+            //   isListSelected: i == actionCategories,
+            //   pressList: () {
             //     function(actionCategories);
             //   },
-            //   isDropDown: true,
+            //   pressAdd: () {
+            //     function(actionAddCategory);
+            //   },
+            //   press: () {
+            //     function(actionCategories);
+            //     // function(dummyActionCategories);
+
+            //     print("i---------$i-------$actionCategories");
+            //   },
+            //   index: 1,
             // ),
 
-            DrawerExpansionTile(
-              // key: Key("selected ${selectedIndex}"),
-              title: "Author",
-              svgSrc: (i == actionAuthor ||
-                      i == actionEditAuthor ||
-                      i == actionAddAuthor ||
-                      checkAction(i, dummyActionAuthor))
-                  ? "user_active.svg"
-                  : "user.svg",
-              isSelected: i == actionAuthor ||
-                  i == actionEditAuthor ||
-                  i == actionAddAuthor ||
-                  checkAction(i, dummyActionAuthor),
-              isDropDown: true,
-              isListSelected: i == actionAuthor,
-              isAddSelected: i == actionAddAuthor,
-              pressList: () {
-                function(actionAuthor);
-              },
-              pressAdd: () {
-                function(actionAddAuthor);
-              },
-              press: () {
-                function(actionAuthor);
-                // function(dummyActionAuthor);
-              },
-              index: 4,
-            ),
+            // // DrawerListTile(
+            // //   title: "Categories",
+            // //   svgSrc: "menu.svg",
+            // //   isSelected: i == actionCategories ||
+            // //       i == actionAddCategory ||
+            // //       i == actionEditCategory,
+            // //   press: () {
+            // //     function(actionCategories);
+            // //   },
+            // //   isDropDown: true,
+            // // ),
+
+            // DrawerExpansionTile(
+            //   // key: Key("selected ${selectedIndex}"),
+            //   title: "Author",
+            //   svgSrc: (i == actionAuthor ||
+            //           i == actionEditAuthor ||
+            //           i == actionAddAuthor ||
+            //           checkAction(i, dummyActionAuthor))
+            //       ? "user_active.svg"
+            //       : "user.svg",
+            //   isSelected: i == actionAuthor ||
+            //       i == actionEditAuthor ||
+            //       i == actionAddAuthor ||
+            //       checkAction(i, dummyActionAuthor),
+            //   isDropDown: true,
+            //   isListSelected: i == actionAuthor,
+            //   isAddSelected: i == actionAddAuthor,
+            //   pressList: () {
+            //     function(actionAuthor);
+            //   },
+            //   pressAdd: () {
+            //     function(actionAddAuthor);
+            //   },
+            //   press: () {
+            //     function(actionAuthor);
+            //     // function(dummyActionAuthor);
+            //   },
+            //   index: 4,
+            // ),
 
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
@@ -141,8 +141,8 @@ class SideMenu extends StatelessWidget {
                       i == actionEditGenre ||
                       i == actionAddGenre ||
                       checkAction(i, dummyActionGenre))
-                  ? "slider_active.svg"
-                  : "slider.svg",
+                  ? "category_active.svg"
+                  : "menu.svg",
               isSelected: i == actionGenre ||
                   i == actionEditGenre ||
                   i == actionAddGenre ||
