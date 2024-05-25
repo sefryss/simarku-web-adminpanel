@@ -200,9 +200,9 @@ class StoryController extends GetxController {
     storyModel = null;
     homeController = null;
     isLoading.value = false;
-    isPopular.value = true;
-    isFeatured.value = true;
-    isAvailable.value = true;
+    isPopular.value = false;
+    isFeatured.value = false;
+    isAvailable.value = false;
 
     oldGenre = '';
   }
@@ -365,6 +365,8 @@ class StoryController extends GetxController {
 
       storyModel!.isPopular = isPopular.value;
       storyModel!.isFeatured = isFeatured.value;
+      storyModel!.isAvailable = isAvailable.value;
+      storyModel!.releaseDate = releaseDateController.text;
 
       storyModel!.refId = homeController.genre.value;
 

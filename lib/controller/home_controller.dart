@@ -26,8 +26,8 @@ class HomeController extends GetxController {
   RxString storyNotification = ''.obs;
   RxString pdf = Constants.physichBook.obs;
 
-  Rx<BookType> bookType = BookType.BukuFisik.obs;
-  Rx<Category> category = Category.TukarPinjam.obs;
+  Rx<BookType> bookType = BookType.ebook.obs;
+  Rx<Category> category = Category.bebasBaca.obs;
 
   RxList<TopAuthors> authorList = <TopAuthors>[].obs;
   RxList<String> allAuthorList = <String>[].obs;

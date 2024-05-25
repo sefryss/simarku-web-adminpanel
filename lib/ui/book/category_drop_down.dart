@@ -25,8 +25,10 @@ class CategoryDropDown extends StatelessWidget {
     return getDropDown(context: context, dataController: homeController);
   }
 
-  Widget getDropDown(
-      {required BuildContext context, required HomeController dataController}) {
+  Widget getDropDown({
+    required BuildContext context,
+    required HomeController dataController,
+  }) {
     double radius = getDefaultRadius(context);
     double fontSize = 40;
     double height = 45.h;
@@ -57,7 +59,8 @@ class CategoryDropDown extends StatelessWidget {
                 value: category,
                 child: getTextWidget(
                     context,
-                    category.toString().split('.').last,
+                    getCategoryString(
+                        category), // Use getCategoryString for display
                     fontSize,
                     getFontColor(context),
                     fontWeight: FontWeight.w400),
@@ -66,12 +69,27 @@ class CategoryDropDown extends StatelessWidget {
             value: dataController.category.value,
             underline: Container(),
             onChanged: (Category? newValue) {
-              if (newValue != null && newValue != dataController.category.value) {
+              if (newValue != null &&
+                  newValue != dataController.category.value) {
                 dataController.category.value = newValue;
                 onChanged?.call(newValue);
               }
             },
           ),
         ));
+  }
+}
+
+// Ensure this function matches your implementation
+String getCategoryString(Category category) {
+  switch (category) {
+    case Category.bebasBaca:
+      return 'Bebas Baca';
+    case Category.tukarMilik:
+      return 'Tukar Milik';
+    case Category.tukarPinjam:
+      return 'Tukar Pinjam';
+    default:
+      return '';
   }
 }

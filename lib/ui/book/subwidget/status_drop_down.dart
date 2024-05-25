@@ -8,6 +8,12 @@ import '../../../util/responsive.dart';
 import '../../common/common.dart';
 import 'package:ebookadminpanel/model/story_model.dart';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ebookadminpanel/controller/home_controller.dart';
+import 'package:ebookadminpanel/util/constants.dart';
+import 'package:ebookadminpanel/util/responsive.dart';
+
 class BookTypeDropdown extends StatelessWidget {
   final Function(BookType)? onChanged;
   final BookType? value;
@@ -26,7 +32,7 @@ class BookTypeDropdown extends StatelessWidget {
   }
 
   Widget getDropDown({
-    required BuildContext context, 
+    required BuildContext context,
     required HomeController dataController
   }) {
     double radius = getDefaultRadius(context);
@@ -61,7 +67,7 @@ class BookTypeDropdown extends StatelessWidget {
             value: bookType,
             child: getTextWidget(
               context,
-              bookType.toString().split('.').last,
+              getBookTypeString(bookType), // Use getBookTypeString for display
               fontSize,
               getFontColor(context),
               fontWeight: FontWeight.w400
@@ -81,15 +87,26 @@ class BookTypeDropdown extends StatelessWidget {
   }
 }
 
-extension BookTypeExtension on BookType {
-  static BookType fromString(String value) {
-    switch (value) {
-      case 'BukuFisik':
-        return BookType.BukuFisik;
-      case 'EBook':
-        return BookType.EBook;
-      default:
-        throw ArgumentError('Invalid BookType string: $value');
-    }
+// extension BookTypeExtension on BookType {
+//   static BookType fromString(String value) {
+//     switch (value) {
+//       case 'physichBook': // Ensure these match the enum names exactly
+//         return BookType.physichBook;
+//       case 'ebook':
+//         return BookType.ebook;
+//       default:
+//         throw ArgumentError('Invalid BookType string: $value');
+//     }
+//   }
+// }
+
+String getBookTypeString(BookType bookType) {
+  switch (bookType) {
+    case BookType.physichBook:
+      return 'Buku Fisik';
+    case BookType.ebook:
+      return 'E-Book';
+    default:
+      return '';
   }
 }

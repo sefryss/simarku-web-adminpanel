@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ebookadminpanel/model/genre_model.dart';
+import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,59 +31,57 @@ class WebWidget extends StatelessWidget {
     var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
 
     return Expanded(
-        child: Container(
-      child: Column(
-        children: [
-          getHeaderWidget(context),
-          Expanded(
+      child: Container(
+        child: Column(
+          children: [
+            getHeaderWidget(context),
+            Expanded(
               child: ListView.builder(
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              StoryModel storyModel = StoryModel.fromFirestore(list[index]);
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  StoryModel storyModel = StoryModel.fromFirestore(list[index]);
 
-              return StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection(KeyTable.storyList)
-                    .orderBy(KeyTable.refId, descending: true)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Obx(() {
-                      bool cell = true;
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection(KeyTable.storyList)
+                        .orderBy(KeyTable.refId, descending: true)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Obx(() {
+                          bool cell = true;
 
-                      if (queryText.value.isNotEmpty &&
-                          !storyModel.name!
-                              .toLowerCase()
-                              .contains(queryText.value)) {
-                        cell = false;
-                      }
-                      return cell
-                          ? Stack(
-                              children: [
-                                Container(
-                                  padding: padding,
-                                  child: Row(
-                                    children: [
-                                      getHeaderCell(
-                                          '${mainList.indexOf(list[index]) + 1}',
-                                          context,
-                                          50),
-                                      getHeaderCell(
-                                          '${storyModel.category.toString().split('.').last}',
-                                          context,
-                                          100),
-                                      getHorizontalSpace(context, 25),
-                                      SizedBox(
-                                        width: 80.h,
-                                        child: Container(
-                                          height: 50.h,
-                                          width: 75.h,
-                                          alignment: Alignment.centerLeft,
-                                          child: ClipRRect(
-                                            // borderRadius: BorderRadius
-                                            //     .circular(10.r),
-                                            child:
-                                                (storyModel.image!.isNotEmpty &&
+                          if (queryText.value.isNotEmpty &&
+                              !storyModel.name!
+                                  .toLowerCase()
+                                  .contains(queryText.value)) {
+                            cell = false;
+                          }
+                          return cell
+                              ? Stack(
+                                  children: [
+                                    Container(
+                                      padding: padding,
+                                      child: Row(
+                                        children: [
+                                          getHeaderCell(
+                                              '${mainList.indexOf(list[index]) + 1}',
+                                              context,
+                                              50),
+                                          getHeaderCell(
+                                              '${getCategoryString(storyModel.category!)}',
+                                              context,
+                                              100),
+                                          getHorizontalSpace(context, 10),
+                                          SizedBox(
+                                            width: 80.h,
+                                            child: Container(
+                                              height: 50.h,
+                                              width: 75.h,
+                                              alignment: Alignment.centerLeft,
+                                              child: ClipRRect(
+                                                child: (storyModel.image!
+                                                            .isNotEmpty &&
                                                         storyModel.image!
                                                             .split(".")
                                                             .last
@@ -94,109 +92,106 @@ class WebWidget extends StatelessWidget {
                                                         image: NetworkImage(
                                                             storyModel.image!),
                                                       ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      getHorizontalSpace(
-                                        context,
-                                        10,
-                                      ),
-                                      getHeaderTitle(
-                                          context, '${storyModel.name!}'),
-                                      getHorizontalSpace(
-                                        context,
-                                        40,
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: StreamBuilder<QuerySnapshot>(
-                                          stream: FirebaseFirestore.instance
-                                              .collection(KeyTable.genreList)
-                                              .snapshots(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.data == null) {
-                                              return Container();
-                                            } else {
-                                              List<DocumentSnapshot> list =
-                                                  snapshot.data!.docs;
+                                          getHorizontalSpace(context, 10),
+                                          Expanded(
+                                              flex: 1,
+                                              child: getHeaderTitle(context,
+                                                  '${storyModel.name!}')),
+                                          Expanded(
+                                            flex: 2,
+                                            child: StreamBuilder<QuerySnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection(KeyTable.user)
+                                                  .snapshots(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.data == null) {
+                                                  return Container();
+                                                } else {
+                                                  List<DocumentSnapshot> list =
+                                                      snapshot.data!.docs;
 
-                                              List authorList =
-                                                  storyModel.genreId!;
-                                              List<String> genreName = [];
+                                                  List ownerList =
+                                                      storyModel.ownerId!;
+                                                  List<String> ownerName = [];
 
-                                              for (int i = 0;
-                                                  i < list.length;
-                                                  i++) {
-                                                if (authorList
-                                                    .contains(list[i].id)) {
-                                                  genreName.add(
-                                                      Genre.fromFirestore(
-                                                              list[i])
-                                                          .genre!);
+                                                  for (int i = 0;
+                                                      i < list.length;
+                                                      i++) {
+                                                    if (ownerList
+                                                        .contains(list[i].id)) {
+                                                      ownerName.add(UserModel
+                                                              .fromFirestore(
+                                                                  list[i])
+                                                          .fullName!);
+                                                    }
+                                                  }
+
+                                                  print(
+                                                      "ownerName------${ownerName.toString()}------${ownerName.length}");
+
+                                                  return getHeaderCell(
+                                                      '${ownerName.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                                      context,
+                                                      130);
                                                 }
-                                              }
-
-                                              print(
-                                                  "authName------${genreName.toString()}------${genreName.length}");
-
-                                              return getHeaderCell(
-                                                  '${genreName.toString().replaceAll('[', '').replaceAll(']', '')}',
-                                                  context,
-                                                  130);
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                      getActiveDeActiveCell(context,
-                                          storyModel.isActive!, storyModel),
-                                      Stack(
-                                        children: [
-                                          getMaxLineFont(context, 'Action', 50,
-                                              Colors.transparent, 1,
-                                              fontWeight: FontWeight.w600,
-                                              textAlign: TextAlign.start),
-                                          Positioned.fill(
-                                              child: Center(
-                                            child: GestureDetector(
-                                                onTapDown: _storePosition,
-                                                onTap: () {
-                                                  function(
-                                                      _tapPosition, storyModel);
-                                                },
-                                                child: Icon(
-                                                  Icons.more_vert,
-                                                  color:
-                                                      getSubFontColor(context),
-                                                )),
-                                          ))
+                                              },
+                                            ),
+                                          ),
+                                          getActiveDeActiveCell(context,
+                                              storyModel.isActive!, storyModel),
+                                          Stack(
+                                            children: [
+                                              getMaxLineFont(context, 'Action',
+                                                  50, Colors.transparent, 1,
+                                                  fontWeight: FontWeight.w600,
+                                                  textAlign: TextAlign.start),
+                                              Positioned.fill(
+                                                  child: Center(
+                                                child: GestureDetector(
+                                                    onTapDown: _storePosition,
+                                                    onTap: () {
+                                                      function(_tapPosition,
+                                                          storyModel);
+                                                    },
+                                                    child: Icon(
+                                                      Icons.more_vert,
+                                                      color: getSubFontColor(
+                                                          context),
+                                                    )),
+                                              ))
+                                            ],
+                                          )
                                         ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Positioned.fill(
-                                    child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Divider(
-                                    height: 0.5,
-                                    color: cell
-                                        ? getBorderColor(context)
-                                        : Colors.transparent,
-                                  ).marginSymmetric(vertical: 4.h),
-                                ))
-                              ],
-                            )
-                          : Container();
-                    });
-                  }
-                  return Container();
+                                      ),
+                                    ),
+                                    Positioned.fill(
+                                        child: Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Divider(
+                                        height: 0.5,
+                                        color: cell
+                                            ? getBorderColor(context)
+                                            : Colors.transparent,
+                                      ).marginSymmetric(vertical: 4.h),
+                                    ))
+                                  ],
+                                )
+                              : Container();
+                        });
+                      }
+                      return Container();
+                    },
+                  );
                 },
-              );
-            },
-          ))
-        ],
+              ),
+            ),
+          ],
+        ),
       ),
-    ));
+    );
   }
 
   void _storePosition(TapDownDetails details) {
@@ -239,27 +234,17 @@ class WebWidget extends StatelessWidget {
       padding: padding,
       decoration: decoration,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              getHeaderCell('ID', context, 50),
-              getHeaderCell('Category', context, 130),
-              getHeaderCell('Image', context, 120),
-              getHeaderCell('Book Title', context, 180),
-              getHeaderCell('Genre', context, 150),
-            ],
+          getHeaderCell('ID', context, 50),
+          getHeaderCell('Category', context, 110),
+          getHeaderCell('Image', context, 100),
+          Expanded(flex: 1, child: getHeaderTitle(context, 'Book Title')),
+          Expanded(
+            flex: 2,
+            child: getHeaderCell('Penilik', context, 100),
           ),
-          Row(
-            children: [
-              getHeaderCell(
-                  'Book Status'
-                  '',
-                  context,
-                  130),
-              getHeaderTitle(context, 'Action'),
-            ],
-          )
+          getHeaderCell('Book Status', context, 130),
+          getHeaderTitle(context, 'Action'),
         ],
       ),
     );
@@ -275,5 +260,18 @@ class WebWidget extends StatelessWidget {
   getHeaderTitle(BuildContext context, String title) {
     return getMaxLineFont(context, title, 45, getFontColor(context), 1,
         fontWeight: FontWeight.w600, textAlign: TextAlign.start);
+  }
+}
+
+String getCategoryString(Category category) {
+  switch (category) {
+    case Category.bebasBaca:
+      return 'Bebas Baca';
+    case Category.tukarMilik:
+      return 'Tukar Milik';
+    case Category.tukarPinjam:
+      return 'Tukar Pinjam';
+    default:
+      return '';
   }
 }

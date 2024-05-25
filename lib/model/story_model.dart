@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum BookType { BukuFisik, EBook } // 1. Added enum for book type
+enum BookType { physichBook, ebook } // 1. Added enum for book type
 
-enum Category { TukarPinjam, TukarMilik, BebasBaca }
+enum Category { tukarPinjam, tukarMilik, bebasBaca }
 
 class StoryModel {
   String? name = "";
   String? author = "";
-  List ? ownerId;
+  List? ownerId;
   String? page = "";
   String? publisher = "";
   String? releaseDate = "";
@@ -81,10 +81,12 @@ class StoryModel {
       isPopular: data['is_popular'] ?? false,
       isFeatured: data['is_featured'] ?? false,
       bookType: data['book_type'] != null
-          ? BookType.values.byName(data['book_type'])
+          ? BookType.values
+              .firstWhere((e) => getBookTypeString(e) == data['book_type'])
           : null,
       category: data['category'] != null
-          ? Category.values.byName(data['category'])
+          ? Category.values
+              .firstWhere((e) => getCategoryString(e) == data['category'])
           : null,
     );
   }
@@ -112,10 +114,12 @@ class StoryModel {
       isFeatured: data['is_featured'],
       isAvailable: data['is_active'],
       bookType: data['book_type'] != null
-          ? BookType.values.byName(data['book_type'])
+          ? BookType.values
+              .firstWhere((e) => getBookTypeString(e) == data['book_type'])
           : null,
       category: data['category'] != null
-          ? Category.values.byName(data['category'])
+          ? Category.values
+              .firstWhere((e) => getCategoryString(e) == data['category'])
           : null,
     );
   }
@@ -143,10 +147,34 @@ class StoryModel {
     data['is_available'] = this.isAvailable;
     data['pdf'] = this.pdf;
     data['book_type'] =
-        this.bookType != null ? this.bookType.toString().split('.').last : null;
+        this.bookType != null ? getBookTypeString(this.bookType!) : null;
     data['category'] =
-        this.category != null ? this.category.toString().split('.').last : null;
+        this.category != null ? getCategoryString(this.category!) : null;
 
     return data;
+  }
+}
+
+String getCategoryString(Category category) {
+  switch (category) {
+    case Category.bebasBaca:
+      return 'Bebas Baca';
+    case Category.tukarMilik:
+      return 'Tukar Pinjam';
+    case Category.tukarPinjam:
+      return 'Tukar Milik';
+    default:
+      return '';
+  }
+}
+
+String getBookTypeString(BookType bookType) {
+  switch (bookType) {
+    case BookType.physichBook:
+      return 'Buku Fisik';
+    case BookType.ebook:
+      return 'E-Book';
+    default:
+      return '';
   }
 }

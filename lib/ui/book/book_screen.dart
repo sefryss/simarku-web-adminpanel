@@ -27,13 +27,13 @@ class StoryScreen extends StatefulWidget {
 }
 
 class _StoryScreenState extends State<StoryScreen> {
-
   @override
   void initState() {
     super.initState();
 
     LoginData.getDeviceId();
   }
+
   RxInt position = 0.obs;
 
   RxInt totalItem = 10.obs;
@@ -46,7 +46,8 @@ class _StoryScreenState extends State<StoryScreen> {
     RxString queryText = ''.obs;
 
     return SafeArea(
-      child: CommonPage(widget: Container(
+      child: CommonPage(
+          widget: Container(
         margin: EdgeInsets.symmetric(
             horizontal: getDefaultHorSpace(context),
             vertical: getDefaultHorSpace(context)),
@@ -68,9 +69,9 @@ class _StoryScreenState extends State<StoryScreen> {
                           children: [
                             isWeb(context)
                                 ? Expanded(
-                                child: Container(
-                                  child: getEntryWidget(context),
-                                ))
+                                    child: Container(
+                                    child: getEntryWidget(context),
+                                  ))
                                 : Container(),
                             getHorizontalSpace(context, isWeb(context) ? 0 : 0),
                             Visibility(
@@ -81,23 +82,21 @@ class _StoryScreenState extends State<StoryScreen> {
                                 child: getSearchTextFiledWidget(
                                     context, 'Search..', textEditingController,
                                     onChanged: (value) {
-                                      queryText(value);
-                                    })),
+                              queryText(value);
+                            })),
                             getHorizontalSpace(context, 15),
                             getButtonWidget(
                               context,
                               'Add New Book',
-                                  () {
+                              () {
+                                HomeController homeController =
+                                    Get.find<HomeController>();
 
-                                    HomeController homeController = Get.find<HomeController>();
+                                if (homeController.storyModel != null) {
+                                  homeController.storyModel = null;
+                                }
 
-                                    if(homeController.storyModel != null){
-                                      homeController.storyModel = null;
-                                    }
-
-
-                                    storyController.clearStoryData();
-
+                                storyController.clearStoryData();
 
                                 widget.function();
                               },
@@ -111,9 +110,9 @@ class _StoryScreenState extends State<StoryScreen> {
                         isWeb(context)
                             ? Container()
                             : Container(
-                          child: getEntryWidget(context),
-                          margin: EdgeInsets.only(top: 15.h),
-                        ),
+                                child: getEntryWidget(context),
+                                margin: EdgeInsets.only(top: 15.h),
+                              ),
                         getVerticalSpace(context, 25),
                         StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
@@ -153,151 +152,152 @@ class _StoryScreenState extends State<StoryScreen> {
 
                                 return paginationList.length > 0
                                     ? Expanded(
-                                  flex: 1,
-                                  child: Column(
-                                    children: [
-                                      isWeb(context)
-                                          ? WebWidget(
-                                          mainList: list,
-                                          list: paginationList,
-                                          queryText: queryText,
-                                          function: (detail, model) {
-                                            _showPopupMenu(context,
-                                                detail, model);
-                                          },
-                                          onTapStatus: (model) {
-                                            updateStatus(
-                                                context, model);
-                                          })
-                                          : MobileWidget(
-                                          mainList: list,
-                                          list: paginationList,
-                                          queryText: queryText,
-                                          function: (detail, model) {
-                                            _showPopupMenu(context,
-                                                detail, model);
-                                          },
-                                          onTapStatus: (model) {
-                                            updateStatus(
-                                                context, model);
-                                          }),
-                                      getVerticalSpace(
-                                          context,
-                                          (getCommonPadding(context) /
-                                              2)),
-                                      Container(
-                                        width: double.infinity,
-                                        child: Center(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                            mainAxisSize:
-                                            MainAxisSize.min,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  print(
-                                                      "posi===${position.value}===${i - 1}");
-                                                  if (position.value >
-                                                      0) {
-                                                    position.value =
-                                                        position.value -
-                                                            1;
-                                                  }
-                                                },
-                                                child: getSvgImage1(
-                                                  'left.svg',
-                                                  height: 20.h,
-                                                  width: 20.h,
-                                                ),
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            isWeb(context)
+                                                ? WebWidget(
+                                                    mainList: list,
+                                                    list: paginationList,
+                                                    queryText: queryText,
+                                                    function: (detail, model) {
+                                                      _showPopupMenu(context,
+                                                          detail, model);
+                                                    },
+                                                    onTapStatus: (model) {
+                                                      updateStatus(
+                                                          context, model);
+                                                    },
+                                                  )
+                                                : MobileWidget(
+                                                    mainList: list,
+                                                    list: paginationList,
+                                                    queryText: queryText,
+                                                    function: (detail, model) {
+                                                      _showPopupMenu(context,
+                                                          detail, model);
+                                                    },
+                                                    onTapStatus: (model) {
+                                                      updateStatus(
+                                                          context, model);
+                                                    }),
+                                            getVerticalSpace(
+                                                context,
+                                                (getCommonPadding(context) /
+                                                    2)),
+                                            Container(
+                                              width: double.infinity,
+                                              child: Center(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () {
+                                                        print(
+                                                            "posi===${position.value}===${i - 1}");
+                                                        if (position.value >
+                                                            0) {
+                                                          position.value =
+                                                              position.value -
+                                                                  1;
+                                                        }
+                                                      },
+                                                      child: getSvgImage1(
+                                                        'left.svg',
+                                                        height: 20.h,
+                                                        width: 20.h,
+                                                      ),
+                                                    ),
+                                                    getHorizontalSpace(
+                                                        context, 10),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .end,
+                                                          children:
+                                                              List.generate(
+                                                                  i.toInt(),
+                                                                  (index) =>
+                                                                      InkWell(
+                                                                        child:
+                                                                            Container(
+                                                                          margin:
+                                                                              EdgeInsets.symmetric(horizontal: 5.h),
+                                                                          height:
+                                                                              35.h,
+                                                                          width:
+                                                                              35.h,
+                                                                          decoration: getDefaultDecoration(
+                                                                              bgColor: position.value == index ? getPrimaryColor(context) : Colors.transparent,
+                                                                              radius: getResizeRadius(context, 15)),
+                                                                          child:
+                                                                              Center(
+                                                                            child: getTextWidget(
+                                                                                context,
+                                                                                '${index + 1}',
+                                                                                50,
+                                                                                position.value == index ? Colors.white : subPrimaryColor(context)),
+                                                                          ),
+                                                                        ),
+                                                                        onTap:
+                                                                            () {
+                                                                          position.value =
+                                                                              index;
+                                                                          _controller
+                                                                              .jumpTo(0);
+                                                                        },
+                                                                      )),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    getHorizontalSpace(
+                                                        context, 10),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        print(
+                                                            "posi===${position.value}===${i - 1}");
+                                                        if (position.value <
+                                                            (i.toInt() - 1)) {
+                                                          position.value =
+                                                              position.value +
+                                                                  1;
+                                                        }
+                                                      },
+                                                      child: getSvgImage1(
+                                                        'right.svg',
+                                                        height: 18.h,
+                                                        width: 18.h,
+                                                      ),
+                                                    ),
+                                                    getHorizontalSpace(
+                                                        context, 25),
+                                                    Expanded(child: Container())
+                                                  ],
+                                                ).marginOnly(
+                                                    right: getCommonPadding(
+                                                        context)),
                                               ),
-                                              getHorizontalSpace(
-                                                  context, 10),
-                                              Align(
-                                                alignment:
-                                                Alignment.centerLeft,
-                                                child:
-                                                SingleChildScrollView(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .start,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment
-                                                        .end,
-                                                    children:
-                                                    List.generate(
-                                                        i.toInt(),
-                                                            (index) =>
-                                                            InkWell(
-                                                              child:
-                                                              Container(
-                                                                margin:
-                                                                EdgeInsets.symmetric(horizontal: 5.h),
-                                                                height:
-                                                                35.h,
-                                                                width:
-                                                                35.h,
-                                                                decoration: getDefaultDecoration(
-                                                                    bgColor: position.value == index ? getPrimaryColor(context) : Colors.transparent,
-                                                                    radius: getResizeRadius(context, 15)),
-                                                                child:
-                                                                Center(
-                                                                  child: getTextWidget(
-                                                                      context,
-                                                                      '${index + 1}',
-                                                                      50,
-                                                                      position.value == index ? Colors.white : subPrimaryColor(context)),
-                                                                ),
-                                                              ),
-                                                              onTap:
-                                                                  () {
-                                                                position.value =
-                                                                    index;
-                                                                _controller
-                                                                    .jumpTo(0);
-                                                              },
-                                                            )),
-                                                  ),
-                                                ),
-                                              ),
-                                              getHorizontalSpace(
-                                                  context, 10),
-                                              InkWell(
-                                                onTap: () {
-                                                  print(
-                                                      "posi===${position.value}===${i - 1}");
-                                                  if (position.value <
-                                                      (i.toInt() - 1)) {
-                                                    position.value =
-                                                        position.value +
-                                                            1;
-                                                  }
-                                                },
-                                                child: getSvgImage1(
-                                                  'right.svg',
-                                                  height: 18.h,
-                                                  width: 18.h,
-                                                ),
-                                              ),
-                                              getHorizontalSpace(
-                                                  context, 25),
-                                              Expanded(child: Container())
-                                            ],
-                                          ).marginOnly(
-                                              right: getCommonPadding(
-                                                  context)),
+                                            ),
+                                            getVerticalSpace(
+                                                context,
+                                                (getCommonPadding(context) /
+                                                    2)),
+                                          ],
                                         ),
-                                      ),
-                                      getVerticalSpace(
-                                          context,
-                                          (getCommonPadding(context) /
-                                              2)),
-                                    ],
-                                  ),
-                                )
+                                      )
                                     : Center(child: getNoData(context));
                               });
                             } else {
@@ -386,9 +386,7 @@ class _StoryScreenState extends State<StoryScreen> {
                                 FirebaseData.deleteBatch(() {
                                   FirebaseData.refreshStoryData();
                                   FirebaseData.refreshSliderData();
-                                },
-                                    storyModel.id!,
-                                    KeyTable.sliderList,
+                                }, storyModel.id!, KeyTable.sliderList,
                                     KeyTable.storyId);
                               });
                         },

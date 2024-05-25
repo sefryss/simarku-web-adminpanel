@@ -10,6 +10,7 @@ import 'package:ebookadminpanel/model/story_model.dart';
 import 'package:ebookadminpanel/theme/app_theme.dart';
 import 'package:ebookadminpanel/theme/color_scheme.dart';
 import 'package:ebookadminpanel/ui/common/common.dart';
+import 'package:intl/intl.dart';
 import '../../../controller/data/LoginData.dart';
 import '../../../main.dart';
 import '../../../util/constants.dart';
@@ -205,7 +206,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                       getVerticalSpace(context, 30),
                                       Obx(() {
                                         return (homeController.bookType.value ==
-                                                BookType.BukuFisik)
+                                                BookType.physichBook)
                                             ? Text('')
                                             : itemSubTitle(
                                                 'Upload PDF', context);
@@ -213,7 +214,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                       getVerticalSpace(context, 10),
                                       Obx(
                                         () => (homeController.bookType.value ==
-                                                BookType.BukuFisik)
+                                                BookType.physichBook)
                                             ? Container()
                                             : getTextFiledWidget(
                                                 context,
@@ -716,7 +717,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               Obx(() {
                                                 return (homeController
                                                             .bookType.value ==
-                                                        BookType.BukuFisik)
+                                                        BookType.physichBook)
                                                     ? Text('')
                                                     : itemSubTitle(
                                                         'Upload PDF', context);
@@ -725,7 +726,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               Obx(
                                                 () => (homeController
                                                             .bookType.value ==
-                                                        BookType.BukuFisik)
+                                                        BookType.physichBook)
                                                     ? Container()
                                                     : getTextFiledWidget(
                                                         context,
@@ -1257,7 +1258,7 @@ Widget DateTimePickerWidget(
         lastDate: DateTime(2101),
       );
       if (pickedDate != null) {
-        controller.text = "${pickedDate.toLocal()}".split(' ')[0];
+        controller.text = DateFormat.yMMMMd('en_US').format(pickedDate);
       }
     },
     child: AbsorbPointer(
