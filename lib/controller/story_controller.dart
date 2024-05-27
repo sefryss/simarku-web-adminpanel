@@ -72,45 +72,34 @@ class StoryController extends GetxController {
   getGenre(List selectedList) async {
     QuerySnapshot snapshot =
         await FirebaseFirestore.instance.collection(KeyTable.genreList).get();
-
     if (snapshot.docs.isNotEmpty && snapshot.size > 0) {
       List<DocumentSnapshot> list = snapshot.docs;
-
       for (int i = 0; i < list.length; i++) {
         if (selectedList.contains(list[i].id)) {
           selectedGenreNameList.add(Genre.fromFirestore(list[i]).genre!);
         }
       }
     }
-
     genreController.text = selectedGenreNameList
         .toString()
         .replaceAll('[', '')
         .replaceAll(']', '');
-
-    print("selected-----------${selectedGenreNameList.toString()}");
-    print("selected-----------${selectedGenre.toString()}");
   }
 
   getUser(List selectedList) async {
     QuerySnapshot snapshot =
         await FirebaseFirestore.instance.collection(KeyTable.user).get();
-
     if (snapshot.docs.isNotEmpty && snapshot.size > 0) {
       List<DocumentSnapshot> list = snapshot.docs;
-
       for (int i = 0; i < list.length; i++) {
         if (selectedList.contains(list[i].id)) {
+          selectedUser.add(list[i].id);
           selectedUserNameList.add(UserModel.fromFirestore(list[i]).fullName!);
         }
       }
     }
-
     ownerController.text =
         selectedUserNameList.toString().replaceAll('[', '').replaceAll(']', '');
-
-    print("selected-----------${selectedUserNameList.toString()}");
-    print("selected-----------${selectedUser.toString()}");
   }
 
   setAllDataFromStoryModel(StoryModel? s, HomeController controller) {
@@ -373,6 +362,7 @@ class StoryController extends GetxController {
       storyModel!.desc =
           deltaToHtml(descController.document.toDelta().toJson());
       storyModel!.genreId = selectedGenre;
+      storyModel!.ownerId = selectedUser;
 
       FirebaseData.updateData(
           context: context,
@@ -591,7 +581,23 @@ class StoryController extends GetxController {
         });
   }
 
-  Future<void> showUserDialog(BuildContext context) async {
+  // Future<void> showOwnerDialog(BuildContext context) async {
+  //   await getUser(selectedUser); // Ensure selectedUser and selectedUserNameList are up-to-date
+  //   var result = await showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return OwnerListDialog(selectedUser: selectedUser);
+  //     },
+  //   );
+
+  //   if (result != null && result is List<String>) {
+  //     selectedUser.value = result;
+  //     selectedUserNameList.value = [];
+  //     await getUser(selectedUser);
+  //   }
+  // }
+
+  Future<void> showOwnerDialog(BuildContext context) async {
     List<UserModel> userList = [];
     try {
       QuerySnapshot querySnapshot =
@@ -611,9 +617,6 @@ class StoryController extends GetxController {
     return showDialog(
       context: context,
       builder: (context) {
-        // List<String> selectedUser = [];
-        // List<String> selectedUserNameList = [];
-
         return AlertDialog(
           title: getTextWidget(
               context, 'Pilih Pemilik', 60, getFontColor(context),
@@ -678,3 +681,85 @@ class StoryController extends GetxController {
     );
   }
 }
+
+
+
+  // Future<void> showOwnerDialog(
+  //     BuildContext context, HomeController home) async {
+  //   return showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         print("auythLrn------_${home.authorList.length}");
+  //         return AlertDialog(
+  //           title: getTextWidget(
+  //               context, 'Select Author', 60, getFontColor(context),
+  //               fontWeight: FontWeight.w700),
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.circular(10.r),
+  //           ),
+  //           backgroundColor: getBackgroundColor(context),
+  //           contentPadding: EdgeInsets.zero,
+  //           content: Container(
+  //             padding: EdgeInsets.symmetric(horizontal: 25.h, vertical: 15.h),
+  //             width:
+  //                 Responsive.isDesktop(context) || Responsive.isDesktop(context)
+  //                     ? 450.h
+  //                     : 350.h,
+  //             child: ListView.builder(
+  //               shrinkWrap: true,
+  //               // itemCount: 10,
+  //               itemCount: home.userList.length,
+  //               itemBuilder: (context, index) {
+  //                 return ListTile(
+  //                   // title: getCustomFont("text", 18, getFontColor(context), 1),
+  //                   title: getCustomFont(home.userList[index].fullName!, 14,
+  //                       getFontColor(context), 1),
+  //                   trailing: Obx(() => Checkbox(
+  //                       activeColor: getPrimaryColor(context),
+  //                       checkColor: Colors.white,
+  //                       onChanged: (checked) {
+  //                         print(
+  //                             "checked--------${selectedUser.contains(home.userList[index].id!)}--------${checked}");
+
+  //                         if (selectedUser.contains(home.userList[index].id!)) {
+  //                           selectedUser.remove(home.userList[index].id!);
+  //                           selectedUserNameList
+  //                               .remove(home.userList[index].fullName!);
+  //                         } else {
+  //                           selectedUser.add(home.userList[index].id!);
+  //                           selectedUserNameList
+  //                               .add(home.userList[index].fullName!);
+  //                         }
+
+  //                         print("selecteLen--------${selectedUser.length}");
+
+  //                         // isChecked[index] = checked;
+  //                         // _title = _getTitle();
+  //                       },
+  //                       value:
+  //                           selectedUser.contains(home.userList[index].id!))),
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //           actions: [
+  //             getButtonWidget(
+  //               context,
+  //               'Submit',
+  //               isProgress: false,
+  //               () {
+  //                 Get.back();
+  //                 ownerController.text = selectedUserNameList
+  //                     .toString()
+  //                     .replaceAll('[', '')
+  //                     .replaceAll(']', '');
+  //               },
+  //               horPadding: 25.h,
+  //               horizontalSpace: 0,
+  //               verticalSpace: 0,
+  //               btnHeight: 40.h,
+  //             )
+  //           ],
+  //         );
+  //       });
+  // }

@@ -40,40 +40,9 @@ class _LoginPage extends State<LoginPage> {
           child: Container(
             child: Row(
               children: [
-                // Visibility(child: Expanded(child: Container(
-                //
-                //   color: "#FFEDE9".toColor(),
-                //   height: double.infinity,
-                //   width: double.infinity,
-                //   child: Column(
-                //     children: [
-                //       Expanded(child: Container(
-                //         child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.end,
-                //            children: [
-                //              getMaxLineFont(context, 'E-book', 150, getPrimaryColor(context),1,
-                //                  customFont: Constants.headerFontsFamily,fontWeight:FontWeight.w900),
-                //              getVerticalSpace(context, 15),
-                //              getTextWidget(context, 'An e-reader, also called an e-book reader or e-book device, is a mobile electronic device that is designed primarily for the purpose of reading digital e-books and periodicals.'
-                //                  , 45, textColor,
-                //                  textAlign: TextAlign.center,fontWeight:FontWeight.w500),
-                //            ],
-                //         ).marginSymmetric(horizontal: 200.h),
-                //       ),flex: 1,),
-                //       Expanded(child: Container(
-                //         margin: EdgeInsets.only(top: 150.h),
-                //         alignment: Alignment.bottomCenter,
-                //         child: Image.asset(Constants.assetPath+'frame.png', height: double.infinity, ),
-                //       ),flex: 1,),
-                //     ],
-                //   ),
-                //
-                // )),visible: Responsive.isDesktop(context),),
-
                 Visibility(
                     visible: Responsive.isDesktop(context),
                     child: Expanded(child: Container())),
-
                 Expanded(
                   child: Obx(() =>
                       (isSignUp.value) ? getSignUpView() : getLoginView()),
@@ -82,7 +51,6 @@ class _LoginPage extends State<LoginPage> {
                   //     ? 1
                   //     : 2,
                 ),
-
                 Visibility(
                     visible: Responsive.isDesktop(context),
                     child: Expanded(child: Container()))
@@ -151,7 +119,7 @@ class _LoginPage extends State<LoginPage> {
               }),
               getVerticalSpace(context, 30),
               Obx(() {
-                return getButtonWidget(context, 'Log Inn', () {
+                return getButtonWidget(context, 'Log In', () {
                   isProgress.value = true;
                   _login();
                 },
@@ -169,8 +137,45 @@ class _LoginPage extends State<LoginPage> {
                 builder: (context, snapshot) {
                   if (snapshot.data != null && snapshot.data!.size > 0) {
                     print("sna-----------${snapshot.data}");
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Don\'t have an account?',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium!
+                              .copyWith(
+                                  color: Colors.grey.shade600,
+                                  fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(
+                          width: 5.h,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            isSignUp.value = true;
+                            passwordController.text = "";
+                            emailController.text = "";
+                            confirmPasswordController.text = "";
+                          },
+                          child: Text(
+                            'Sign Up',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    );
 
-                    return Container();
+                    // return Container();
 
                     // if(snapshot.connectionState == ConnectionState.active){
                     //   return Container();

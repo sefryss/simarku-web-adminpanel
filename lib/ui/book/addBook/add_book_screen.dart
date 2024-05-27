@@ -944,8 +944,9 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     child: InkWell(
                                                       onTap: () async {
                                                         await storyController
-                                                            .showUserDialog(
-                                                                context);
+                                                            .showOwnerDialog(
+                                                          context,
+                                                        );
                                                         // if (homeController.genreList
                                                         //         .isNotEmpty &&
                                                         //     homeController.genreList
@@ -1258,7 +1259,7 @@ Widget DateTimePickerWidget(
         lastDate: DateTime(2101),
       );
       if (pickedDate != null) {
-        controller.text = DateFormat.yMMMMd('en_US').format(pickedDate);
+        controller.text = DateFormat.yMMMd('en_US').format(pickedDate);
       }
     },
     child: AbsorbPointer(

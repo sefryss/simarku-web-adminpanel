@@ -153,7 +153,8 @@ class HomeController extends GetxController {
       for (var doc in list1) {
         var slider = SliderModel.fromFirestore(doc);
 
-        var isExist = await FirebaseData.checkStoryExist(slider.storyId!, KeyTable.storyList);
+        var isExist = await FirebaseData.checkStoryExist(
+            slider.storyId!, KeyTable.storyList);
 
         if (isExist != null && isExist.exists) {
           bool isCatExist = await FirebaseData.checkCategoryExists(
@@ -193,8 +194,8 @@ class HomeController extends GetxController {
   Future<List<UserModel>> fetchUserData() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-      .collection('Users') // Assuming the collection is named 'Users'
-      .get();
+          .collection('Users') // Assuming the collection is named 'Users'
+          .get();
 
       List<UserModel> users = querySnapshot.docs.map((doc) {
         return UserModel.fromFirestore(doc);
