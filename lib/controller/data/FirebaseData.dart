@@ -315,8 +315,8 @@ class FirebaseData {
       {String? collection}) async {
     print("doc===$docId");
     try {
-      var collectionRef = FirebaseFirestore.instance.collection(
-          collection == null ? KeyTable.genreList : collection);
+      var collectionRef = FirebaseFirestore.instance
+          .collection(collection == null ? KeyTable.genreList : collection);
 
       var doc = await collectionRef.doc(docId).get();
 
@@ -443,30 +443,30 @@ class FirebaseData {
     return author;
   }
 
- Future<void> getUserName({required String refId}) async {
-  try {
-    print("called-----true");
+  Future<void> getUserName({required String refId}) async {
+    try {
+      print("called-----true");
 
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection(KeyTable.user) 
-        .doc(refId)
-        .get();
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection(KeyTable.user)
+          .doc(refId)
+          .get();
 
-    print("called-----${snapshot.exists}");
+      print("called-----${snapshot.exists}");
 
-    if (snapshot.exists) {
-      UserModel user = UserModel.fromFirestore(snapshot);
-      print("users-----${user}");
+      if (snapshot.exists) {
+        UserModel user = UserModel.fromFirestore(snapshot);
+        print("users-----${user}");
 
-      String userName = user.fullName;
-      print("User FullName: $userName");
-    } else {
-      throw Exception("User not found");
+        String userName = user.fullName;
+        print("User FullName: $userName");
+      } else {
+        throw Exception("User not found");
+      }
+    } catch (e) {
+      print('Error getting user name: $e');
     }
-  } catch (e) {
-    print('Error getting user name: $e');
   }
-}
 
   static Future<String> getGenre({required String refId}) async {
     print("called-----true");
@@ -667,6 +667,16 @@ class FirebaseData {
     homeController.fetchGenreData();
   }
 
+  static refreshSekilasInfoData() {
+    HomeController homeController = Get.find();
+    homeController.fetchSekilasInfoData();
+  }
+
+  static refreshKegiatanLiterasiData() {
+    HomeController homeController = Get.find();
+    homeController.fetchKegiatanLiterasiData();
+  }
+
   static refreshUserData() {
     HomeController homeController = Get.find();
     homeController.fetchUserData();
@@ -716,29 +726,29 @@ List<DashBoardData> getDashboardData() {
   return [
     DashBoardData(
         icon: 'dashboard_category_icon.svg',
-        title: 'Categories',
+        title: 'Buku',
         backgroundColor: Color(0XFFFFEDE9),
         buttonColor: primaryColor,
-        tableName: KeyTable.keyCategoryTable,
+        tableName: KeyTable.storyList,
         navigateId: 2,
-        navigateIndex: 1,
-        navigateAddClassId: 1,
-        action: actionCategories,
-        addAction: actionAddCategory),
+        navigateIndex: 4,
+        navigateAddClassId: 3,
+        action: actionStories,
+        addAction: actionAddStory),
     DashBoardData(
         icon: 'dashboard_homeslider_slider.svg',
-        title: 'Home Slider',
+        title: 'Genre',
         backgroundColor: Color(0XFFD8F1E4),
         buttonColor: Color(0XFF36CB79),
-        tableName: KeyTable.sliderList,
+        tableName: KeyTable.genreList,
         navigateId: 5,
         navigateIndex: 4,
         navigateAddClassId: 5,
-        action: actionHomeSlider,
-        addAction: actionAddSlider),
+        action: actionGenre,
+        addAction: actionAddGenre),
     DashBoardData(
         icon: 'dashboard_featured_books_icon.svg',
-        title: 'Featured Books',
+        title: 'Buku Rekomendasi',
         backgroundColor: Color(0XFFFFF6D4),
         buttonColor: Color(0XFFFFAE35),
         tableName: KeyTable.storyList,
@@ -750,7 +760,7 @@ List<DashBoardData> getDashboardData() {
         addAction: actionAddStory),
     DashBoardData(
         icon: 'dashboard_populer_books_icon.svg',
-        title: 'Populer Books',
+        title: 'Buku Populer',
         backgroundColor: Color(0XFFF3E7FF),
         buttonColor: Color(0XFFA67CFF),
 // backgroundColor: Color(0XFFE1F1FF),

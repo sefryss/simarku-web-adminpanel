@@ -1,11 +1,8 @@
 import 'package:ebookadminpanel/main.dart';
-import 'package:ebookadminpanel/model/authors_model.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/controller/home_controller.dart';
@@ -63,7 +60,7 @@ class _AddGenreScreenState extends State<AddGenreScreen> {
                         children: [
                           getVerticalSpace(context, 30),
                           getCommonBackIcon(context, onTap: () {
-                            changeAction(actionAuthor);
+                            changeAction(actionGenre);
                           }),
 
                           getVerticalSpace(context, 30),

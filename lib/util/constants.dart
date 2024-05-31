@@ -30,6 +30,14 @@ int actionUser = 17;
 int actionAddUser = 18;
 int actionEditUser = 19;
 int dummyActionUser = -6;
+int actionSekilasInfo = 20;
+int actionAddSekilasInfo = 21;
+int actionEditSekilasInfo = 22;
+int dummyActionSekilasInfo = -7;
+int actionKegiatanLiterasi = 23;
+int actionAddKegiatanLiterasi = 24;
+int actionEditKegiatanLiterasi = 25;
+int dummyActionKegiatanLiterasi = -8;
 
 List<int> mainActionList = [
   actionCategories,
@@ -39,7 +47,9 @@ List<int> mainActionList = [
   actionSettings,
   actionAuthor,
   actionGenre,
-  actionUser
+  actionUser,
+  actionSekilasInfo,
+  actionKegiatanLiterasi,
 ];
 List<int> dummyActionList = [
   dummyActionCategories,
@@ -47,7 +57,9 @@ List<int> dummyActionList = [
   dummyActionHomeSlider,
   dummyActionAuthor,
   dummyActionGenre,
-  dummyActionUser
+  dummyActionUser,
+  dummyActionSekilasInfo,
+  dummyActionKegiatanLiterasi,
 ];
 int dummyAction = -1;
 
@@ -58,6 +70,8 @@ List<int> actionList = [
   actionAddAuthor,
   actionAddGenre,
   actionAddUser,
+  actionAddSekilasInfo,
+  actionAddKegiatanLiterasi,
 ];
 
 // int dummyActionDashBoard=0;

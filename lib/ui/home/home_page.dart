@@ -1,11 +1,13 @@
-import 'package:ebookadminpanel/controller/author_controller.dart';
-import 'package:ebookadminpanel/controller/category_controller.dart';
 import 'package:ebookadminpanel/controller/genre_controller.dart';
+import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
+import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
 import 'package:ebookadminpanel/controller/story_controller.dart';
-import 'package:ebookadminpanel/ui/author/addAuthor/add_author_screen.dart';
-import 'package:ebookadminpanel/ui/author/author_screen.dart';
 import 'package:ebookadminpanel/ui/genre/addGenre/add_genre_screen.dart';
 import 'package:ebookadminpanel/ui/genre/genre_screen.dart';
+import 'package:ebookadminpanel/ui/kegiatan_literasi/addKegiatanLiterasi/add_kegiatan_literasi_screen.dart';
+import 'package:ebookadminpanel/ui/kegiatan_literasi/kegiatan_literasi_screen.dart';
+import 'package:ebookadminpanel/ui/sekilas_info/addSekilasInfo/add_sekilas_info_screen.dart';
+import 'package:ebookadminpanel/ui/sekilas_info/sekilas_info_screen.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,8 +28,6 @@ import '../../util/pref_data.dart';
 import '../../util/responsive.dart';
 import '../book/addBook/add_book_screen.dart';
 import '../book/book_screen.dart';
-import '../category/addCategory/add_category_screen.dart';
-import '../category/category_screen.dart';
 import '../homeslider/home_slider_screen.dart';
 import '../notification/send_notification.dart';
 
@@ -239,7 +239,7 @@ class _HomePage extends State<HomePage> {
     //     },
     //     categoryModel: homeController.categoryModel,
     //   );
-    // } else 
+    // } else
     // if (action == actionAuthor) {
     //   PrefData.setAction(actionAuthor);
     //   authorController.clearAuthData();
@@ -281,7 +281,7 @@ class _HomePage extends State<HomePage> {
     //     authorModel: homeController.authorModel,
     //   );
     // } else
-    
+
     if (action == actionGenre) {
       PrefData.setAction(actionGenre);
       genreController.clearGenreData();
@@ -364,6 +364,89 @@ class _HomePage extends State<HomePage> {
           changeAction(actionStories);
         },
         storyModel: homeController.storyModel,
+      );
+    } else if (action == actionKegiatanLiterasi) {
+      PrefData.setAction(actionKegiatanLiterasi);
+      kegiatanLiterasiController.clearKegiatanLiterasiData();
+
+      return KegiatanLiterasiScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionAddKegiatanLiterasi);
+        },
+      );
+    } else if (action == actionAddKegiatanLiterasi) {
+      PrefData.setAction(actionAddKegiatanLiterasi);
+
+      KegiatanLiterasiController kegiatanLiterasiController =
+          Get.put(KegiatanLiterasiController());
+
+      kegiatanLiterasiController.clearKegiatanLiterasiData();
+
+      return AddKegiatanLiterasiScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionKegiatanLiterasi);
+        },
+      );
+    } else if (action == actionEditKegiatanLiterasi) {
+      PrefData.setAction(actionEditKegiatanLiterasi);
+
+      kegiatanLiterasiController.kegiatanLiterasiModel =
+          homeController.kegiatanLiterasiModel;
+
+      kegiatanLiterasiController.kegiatanLiterasiModel =
+          homeController.kegiatanLiterasiModel;
+
+      kegiatanLiterasiController
+          .setAllSekilasInfo(homeController.kegiatanLiterasiModel);
+
+      return AddKegiatanLiterasiScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionKegiatanLiterasi);
+        },
+        kegiatanLiterasiModel: homeController.kegiatanLiterasiModel,
+      );
+    } else if (action == actionSekilasInfo) {
+      PrefData.setAction(actionSekilasInfo);
+      sekilasInfoController.clearSekilasInfoData();
+
+      return SekilasInfoScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionAddSekilasInfo);
+        },
+      );
+    } else if (action == actionAddSekilasInfo) {
+      PrefData.setAction(actionAddSekilasInfo);
+
+      SekilasInfoController sekilasInfoController =
+          Get.put(SekilasInfoController());
+
+      sekilasInfoController.clearSekilasInfoData();
+
+      return AddSekilasInfoScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionSekilasInfo);
+        },
+      );
+    } else if (action == actionEditSekilasInfo) {
+      PrefData.setAction(actionEditSekilasInfo);
+
+      sekilasInfoController.sekilasInfoModel = homeController.sekilasInfoModel;
+
+      sekilasInfoController.sekilasInfoModel = homeController.sekilasInfoModel;
+
+      sekilasInfoController.setAllSekilasInfo(homeController.sekilasInfoModel);
+
+      return AddSekilasInfoScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionSekilasInfo);
+        },
+        sekilasInfoModel: homeController.sekilasInfoModel,
       );
     } else if (action == actionHomeSlider) {
       PrefData.setAction(actionHomeSlider);

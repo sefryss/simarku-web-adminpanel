@@ -1259,7 +1259,8 @@ Widget DateTimePickerWidget(
         lastDate: DateTime(2101),
       );
       if (pickedDate != null) {
-        controller.text = DateFormat.yMMMd('en_US').format(pickedDate);
+        controller.text =
+            DateFormat('MMMM d, yyyy', 'id_ID').format(pickedDate);
       }
     },
     child: AbsorbPointer(

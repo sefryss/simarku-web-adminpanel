@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/home_controller.dart';
-import 'package:ebookadminpanel/main.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:file_picker/file_picker.dart';

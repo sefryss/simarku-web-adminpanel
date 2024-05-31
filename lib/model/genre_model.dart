@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Genre {
   String? genre;
   String? id;
-  int? refId=1;
+  int? refId = 1;
 
   int? index = 1;
   bool? isActive = true;

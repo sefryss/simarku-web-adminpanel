@@ -241,7 +241,7 @@ class WebWidget extends StatelessWidget {
           Expanded(flex: 1, child: getHeaderTitle(context, 'Book Title')),
           Expanded(
             flex: 2,
-            child: getHeaderCell('Penilik', context, 100),
+            child: getHeaderCell('Pemilik', context, 100),
           ),
           getHeaderCell('Book Status', context, 130),
           getHeaderTitle(context, 'Action'),

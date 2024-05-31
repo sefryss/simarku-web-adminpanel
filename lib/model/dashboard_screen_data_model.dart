@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-class DashBoardData{
+class DashBoardData {
   final String? title;
   final String? tableName;
   final String? icon;

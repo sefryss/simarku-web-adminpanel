@@ -192,6 +192,64 @@ class SideMenu extends StatelessWidget {
               index: 2,
             ),
 
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Kegiatan Literasi",
+              svgSrc: (i == actionKegiatanLiterasi ||
+                      i == actionEditKegiatanLiterasi ||
+                      i == actionAddKegiatanLiterasi ||
+                      checkAction(i, dummyActionKegiatanLiterasi))
+                  ? "slider_active.svg"
+                  : "slider.svg",
+              isSelected: i == actionKegiatanLiterasi ||
+                  i == actionEditKegiatanLiterasi ||
+                  i == actionAddKegiatanLiterasi ||
+                  checkAction(i, dummyActionKegiatanLiterasi),
+              isDropDown: true,
+              isListSelected: i == actionKegiatanLiterasi,
+              isAddSelected: i == actionAddKegiatanLiterasi,
+              pressList: () {
+                function(actionKegiatanLiterasi);
+              },
+              pressAdd: () {
+                function(actionAddKegiatanLiterasi);
+              },
+              press: () {
+                function(actionKegiatanLiterasi);
+                // function(dummyActionAuthor);
+              },
+              index: 9,
+            ),
+
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Sekilas Info",
+              svgSrc: (i == actionSekilasInfo ||
+                      i == actionEditSekilasInfo ||
+                      i == actionAddSekilasInfo ||
+                      checkAction(i, dummyActionSekilasInfo))
+                  ? "sekilas_ilmu_fill.svg"
+                  : "newspaper.svg",
+              isSelected: i == actionSekilasInfo ||
+                  i == actionEditSekilasInfo ||
+                  i == actionAddSekilasInfo ||
+                  checkAction(i, dummyActionSekilasInfo),
+              isDropDown: true,
+              isListSelected: i == actionSekilasInfo,
+              isAddSelected: i == actionAddSekilasInfo,
+              pressList: () {
+                function(actionSekilasInfo);
+              },
+              pressAdd: () {
+                function(actionAddSekilasInfo);
+              },
+              press: () {
+                function(actionSekilasInfo);
+                // function(dummyActionAuthor);
+              },
+              index: 8,
+            ),
+
             // DrawerListTile(
             //   title: "Stories",
             //   svgSrc: "stories.svg",
@@ -204,38 +262,38 @@ class SideMenu extends StatelessWidget {
             //   isDropDown: true,
             // ),
 
-            DrawerExpansionTile(
-              // key: Key("selected ${selectedIndex}"),
-              title: "Home Slider",
-              svgSrc: (i == actionAddSlider ||
-                      i == actionHomeSlider ||
-                      checkAction(i, dummyActionHomeSlider))
-                  ? "slider_active.svg"
-                  : "slider.svg",
-              isSelected: i == actionAddSlider ||
-                  i == actionHomeSlider ||
-                  checkAction(i, dummyActionHomeSlider),
-              isDropDown: true,
-              isAddSelected: i == actionAddSlider,
-              isListSelected: i == actionHomeSlider,
-              pressList: () {
-                function(actionHomeSlider);
-              },
-              pressAdd: () {
-                if (homeController.sliderList.length < 3) {
-                  function(actionAddSlider);
-                } else {
-                  showCustomToast(
-                      context: context,
-                      message: "you have already 3 slider added");
-                }
-              },
-              press: () {
-                function(actionHomeSlider);
-                // function(dummyActionHomeSlider);
-              },
-              index: 3,
-            ),
+            // DrawerExpansionTile(
+            //   // key: Key("selected ${selectedIndex}"),
+            //   title: "Home Slider",
+            //   svgSrc: (i == actionAddSlider ||
+            //           i == actionHomeSlider ||
+            //           checkAction(i, dummyActionHomeSlider))
+            //       ? "slider_active.svg"
+            //       : "slider.svg",
+            //   isSelected: i == actionAddSlider ||
+            //       i == actionHomeSlider ||
+            //       checkAction(i, dummyActionHomeSlider),
+            //   isDropDown: true,
+            //   isAddSelected: i == actionAddSlider,
+            //   isListSelected: i == actionHomeSlider,
+            //   pressList: () {
+            //     function(actionHomeSlider);
+            //   },
+            //   pressAdd: () {
+            //     if (homeController.sliderList.length < 3) {
+            //       function(actionAddSlider);
+            //     } else {
+            //       showCustomToast(
+            //           context: context,
+            //           message: "you have already 3 slider added");
+            //     }
+            //   },
+            //   press: () {
+            //     function(actionHomeSlider);
+            //     // function(dummyActionHomeSlider);
+            //   },
+            //   index: 3,
+            // ),
 
             // DrawerListTile(
             //   title: "Home Slider",
@@ -247,21 +305,21 @@ class SideMenu extends StatelessWidget {
             //   isDropDown: true,
             // ),
 
-            DrawerExpansionTile(
-              // key: Key("selected ${selectedIndex}"),
-              title: "Send Notification",
-              svgSrc: (i == actionSendNotification)
-                  ? "notification_active.svg"
-                  : "notification.svg",
-              isSelected: i == actionSendNotification,
-              isDropDown: false,
-              pressList: () {},
-              pressAdd: () {},
-              press: () {
-                function(actionSendNotification);
-              },
-              index: 5,
-            ),
+            // DrawerExpansionTile(
+            //   // key: Key("selected ${selectedIndex}"),
+            //   title: "Send Notification",
+            //   svgSrc: (i == actionSendNotification)
+            //       ? "notification_active.svg"
+            //       : "notification.svg",
+            //   isSelected: i == actionSendNotification,
+            //   isDropDown: false,
+            //   pressList: () {},
+            //   pressAdd: () {},
+            //   press: () {
+            //     function(actionSendNotification);
+            //   },
+            //   index: 5,
+            // ),
 
             // DrawerListTile(
             //   title: "Send Notification",
@@ -272,20 +330,20 @@ class SideMenu extends StatelessWidget {
             //   },
             // ),
 
-            DrawerExpansionTile(
-              // key: Key("selected ${selectedIndex}"),
-              title: "Settings",
-              svgSrc:
-                  (i == actionSettings) ? "setting_active.svg" : "setting.svg",
-              isSelected: i == actionSettings,
-              isDropDown: false,
-              pressList: () {},
-              pressAdd: () {},
-              press: () {
-                function(actionSettings);
-              },
-              index: 6,
-            ),
+            // DrawerExpansionTile(
+            //   // key: Key("selected ${selectedIndex}"),
+            //   title: "Settings",
+            //   svgSrc:
+            //       (i == actionSettings) ? "setting_active.svg" : "setting.svg",
+            //   isSelected: i == actionSettings,
+            //   isDropDown: false,
+            //   pressList: () {},
+            //   pressAdd: () {},
+            //   press: () {
+            //     function(actionSettings);
+            //   },
+            //   index: 6,
+            // ),
 
             // DrawerListTile(
             //   title: "Settings",

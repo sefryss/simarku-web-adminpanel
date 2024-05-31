@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/model/authors_model.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
+import 'package:ebookadminpanel/model/kegiatan_literasi_model.dart';
+import 'package:ebookadminpanel/model/sekilas_info_model.dart';
 import 'package:ebookadminpanel/model/story_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:get/get.dart';
@@ -17,10 +19,14 @@ class HomeController extends GetxController {
   StoryModel? storyModel = null;
   TopAuthors? authorModel = null;
   Genre? genreModel = null;
+  SekilasInfoModel? sekilasInfoModel = null;
+  KegiatanLiterasiModel? kegiatanLiterasiModel = null;
   UserModel? userModel = null;
   RxString slider = ''.obs;
   RxString author = ''.obs;
   RxString genre = ''.obs;
+  RxString sekilasInfo = ''.obs;
+  RxString kegiatanLiterasi = ''.obs;
   RxString user = ''.obs;
   RxString story = ''.obs;
   RxString storyNotification = ''.obs;
@@ -33,6 +39,10 @@ class HomeController extends GetxController {
   RxList<String> allAuthorList = <String>[].obs;
   RxList<Genre> genreList = <Genre>[].obs;
   RxList<String> allGenreList = <String>[].obs;
+  RxList<SekilasInfoModel> sekilasInfoList = <SekilasInfoModel>[].obs;
+  RxList<KegiatanLiterasiModel> kegiatanLiterasiList = <KegiatanLiterasiModel>[].obs;
+  RxList<String> allSekilasInfoList = <String>[].obs;
+  RxList<String> allKegiatanLiterasiList = <String>[].obs;
   RxList<UserModel> userList = <UserModel>[].obs;
   RxList<String> allUserList = <String>[].obs;
   RxList<StoryModel> storyList = <StoryModel>[].obs;
@@ -62,6 +72,15 @@ class HomeController extends GetxController {
     changeAction(actionEditGenre);
   }
 
+  setSekilasInfoModel(SekilasInfoModel sekilasInfoModel) {
+    this.sekilasInfoModel = sekilasInfoModel;
+    changeAction(actionEditSekilasInfo);
+  }
+  setKegiatanLiterasiModel(KegiatanLiterasiModel kegiatanLiterasiModel) {
+    this.kegiatanLiterasiModel = kegiatanLiterasiModel;
+    changeAction(actionEditKegiatanLiterasi);
+  }
+
   setUserModel(UserModel userModel) {
     this.userModel = userModel;
     changeAction(actionEditUser);
@@ -74,6 +93,8 @@ class HomeController extends GetxController {
     fetchStoryData();
     fetchSliderData();
     fetchGenreData();
+    fetchSekilasInfoData();
+    fetchKegiatanLiterasiData();
     fetchUserData();
     fetchStoryDataForNotification();
   }
@@ -186,6 +207,50 @@ class HomeController extends GetxController {
       }
       isLoading(false);
       genre((list1[0]).id);
+    } else {
+      isLoading(false);
+    }
+  }
+
+  fetchSekilasInfoData() async {
+    isLoading(true);
+    sekilasInfoList.clear();
+    allSekilasInfoList.clear();
+    sekilasInfo("");
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.sekilasInfo).get();
+
+    if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> list1 = querySnapshot.docs;
+      for (var doc in list1) {
+        var sekilasInfo = SekilasInfoModel.fromFirestore(doc);
+        sekilasInfoList.add(sekilasInfo);
+        allSekilasInfoList.add(sekilasInfo.title!);
+      }
+      isLoading(false);
+      sekilasInfo((list1[0]).id);
+    } else {
+      isLoading(false);
+    }
+  }
+
+  fetchKegiatanLiterasiData() async {
+    isLoading(true);
+    kegiatanLiterasiList.clear();
+    allKegiatanLiterasiList.clear();
+    kegiatanLiterasi("");
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.kegiatanLiterasi).get();
+
+    if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> list1 = querySnapshot.docs;
+      for (var doc in list1) {
+        var kegiatanLiterasi = KegiatanLiterasiModel.fromFirestore(doc);
+        kegiatanLiterasiList.add(kegiatanLiterasi);
+        allKegiatanLiterasiList.add(kegiatanLiterasi.title!);
+      }
+      isLoading(false);
+      sekilasInfo((list1[0]).id);
     } else {
       isLoading(false);
     }
