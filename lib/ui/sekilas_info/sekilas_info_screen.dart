@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
 import 'package:ebookadminpanel/model/sekilas_info_model.dart';
 import 'package:ebookadminpanel/ui/sekilas_info/subwidget/sekilas_info_mobile_widget.dart';
 import 'package:ebookadminpanel/ui/sekilas_info/subwidget/sekilas_info_web_widget.dart';
@@ -409,40 +408,6 @@ class _SekilasInfoScreenState extends State<SekilasInfoScreen> {
                         subTitle: 'Delete');
                   });
 
-              // PrefData.checkAccess(
-              //     context: context,
-              //     function: () {
-              //       getCommonDialog(
-              //           context: context,
-              //           title: 'Do you want to delete Author?',
-              //           function: () {
-              //             FirebaseData.deleteData(
-              //                 tableName: KeyTable.authorList,
-              //                 doc: authorModel.id!,
-              //                 function: () {
-              //                   FirebaseData.deleteRecentStory(
-              //                       context: context,
-              //                       function: (doc) {
-              //                         FirebaseData.deleteStory(context: context, function: (doc){
-              //                           FirebaseData.deleteData(
-              //                               tableName: KeyTable.storyList,
-              //                               doc: doc,
-              //                               function: () {
-              //                                 FirebaseData.deleteBatch(() {
-              //                                   FirebaseData.refreshStoryData();
-              //                                   FirebaseData.refreshSliderData();
-              //                                 },
-              //                                     authorModel.id!,
-              //                                     KeyTable.sliderList,
-              //                                     KeyTable.storyId);
-              //                               });
-              //                         }, storyId: authorModel.id ?? "");
-              //                       },
-              //                       storyId: authorModel.id!);
-              //                 });
-              //           },
-              //           subTitle: 'Delete');
-              //     });
             },
             value: 'Delete'),
       ],

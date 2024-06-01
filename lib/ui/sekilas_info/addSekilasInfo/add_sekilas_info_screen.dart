@@ -71,20 +71,6 @@ class _AddSekilasInfoScreenState extends State<AddSekilasInfoScreen> {
 
                           getVerticalSpace(context, 30),
 
-                          // Row(
-                          //   children: [
-                          //     Expanded(
-                          //       child: getTextWidget(
-                          //           context,
-                          //           isEdit ? 'Edit Author' : 'Add Author',
-                          //           75,
-                          //           getFontColor(context),
-                          //           fontWeight: FontWeight.w700),
-                          //       flex: 1,
-                          //     ),
-                          //   ],
-                          // ),
-                          // getVerticalSpace(context, 40),
                           Responsive.isMobile(context)
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,6 +265,22 @@ class _AddSekilasInfoScreenState extends State<AddSekilasInfoScreen> {
                                             ],
                                           ),
                                         ),
+                                        getHorizontalSpace(context, 10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle('Sumber', context),
+                                              getVerticalSpace(context, 10),
+                                              getTextFiledWidget(
+                                                  context,
+                                                  "Masukkan sumber...",
+                                                  sekilasInfoController
+                                                      .sourceController),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     Row(
@@ -359,22 +361,6 @@ class _AddSekilasInfoScreenState extends State<AddSekilasInfoScreen> {
                                             ),
                                           ],
                                         )),
-                                        getHorizontalSpace(context, 10),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              itemSubTitle('Sumber', context),
-                                              getVerticalSpace(context, 10),
-                                              getTextFiledWidget(
-                                                  context,
-                                                  "Masukkan sumber...",
-                                                  sekilasInfoController
-                                                      .sourceController),
-                                            ],
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   ],
@@ -446,10 +432,7 @@ itemSubTitle(String s, BuildContext context, {Color? color}) {
 
 Widget DateTimePickerWidget(
     BuildContext context, String hintText, TextEditingController controller) {
-  double height = 45.h;
-  if (Responsive.isTablet(context)) {
-    height = 55.h;
-  }
+
   double radius = getDefaultRadius(context);
   double fontSize = getResizeFont(context, 40);
 

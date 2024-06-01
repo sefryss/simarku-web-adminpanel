@@ -93,7 +93,7 @@ class StoryController extends GetxController {
       for (int i = 0; i < list.length; i++) {
         if (selectedList.contains(list[i].id)) {
           selectedUser.add(list[i].id);
-          selectedUserNameList.add(UserModel.fromFirestore(list[i]).fullName!);
+          selectedUserNameList.add(UserModel.fromFirestore(list[i]).fullName);
         }
       }
     }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/data/key_table.dart';
 import 'package:ebookadminpanel/model/kegiatan_literasi_model.dart';
+import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -46,7 +47,7 @@ class KegiatanLiterasiWebWidget extends StatelessWidget {
 
               return StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
-                    .collection(KeyTable.sekilasInfo)
+                    .collection(KeyTable.kegiatanLiterasi)
                     .orderBy(KeyTable.index, descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
@@ -72,13 +73,47 @@ class KegiatanLiterasiWebWidget extends StatelessWidget {
                                       Row(
                                         children: [
                                           getHeaderCell(
-                                              '${index + 1}', context, 130),
-                                          getHorizontalSpace(context, 5),
+                                              '${index + 1}', context, 50),
                                           getHeaderCell(
-                                              '${kegiatanLiterasiModel.title}',
+                                              '${kegiatanLiterasiModel.source}',
                                               context,
                                               130),
+                                          getHorizontalSpace(context, 30),
+                                          SizedBox(
+                                            width: 80.h,
+                                            child: Container(
+                                              height: 50.h,
+                                              width: 75.h,
+                                              alignment: Alignment.centerLeft,
+                                              child: ClipRRect(
+                                                child: (kegiatanLiterasiModel
+                                                            .image!
+                                                            .isNotEmpty &&
+                                                        kegiatanLiterasiModel
+                                                            .image!
+                                                            .split(".")
+                                                            .last
+                                                            .startsWith("svg"))
+                                                    ? Image.asset(
+                                                        Constants.placeImage)
+                                                    : Image(
+                                                        image: NetworkImage(
+                                                            kegiatanLiterasiModel
+                                                                .image!),
+                                                      ),
+                                              ),
+                                            ),
+                                          ),
                                           getHorizontalSpace(context, 10),
+                                          getHeaderCell(
+                                              '${kegiatanLiterasiModel.date!}',
+                                              context,
+                                              200),
+                                          getHorizontalSpace(context, 10),
+                                          getHeaderCell(
+                                              '${kegiatanLiterasiModel.title!}',
+                                              context,
+                                              500),
                                         ],
                                       ),
                                       Row(
@@ -101,8 +136,8 @@ class KegiatanLiterasiWebWidget extends StatelessWidget {
                                                 child: GestureDetector(
                                                     onTapDown: _storePosition,
                                                     onTap: () {
-                                                      // function(_tapPosition,
-                                                      //     kegiatanLiterasiModel);
+                                                      function(_tapPosition,
+                                                          kegiatanLiterasiModel);
                                                     },
                                                     child: Icon(
                                                       Icons.more_vert,
@@ -146,8 +181,8 @@ class KegiatanLiterasiWebWidget extends StatelessWidget {
     _tapPosition = details.globalPosition;
   }
 
-  getActiveDeActiveCell(
-      BuildContext context, bool isActive, KegiatanLiterasiModel kegiatanLiterasiModel) {
+  getActiveDeActiveCell(BuildContext context, bool isActive,
+      KegiatanLiterasiModel kegiatanLiterasiModel) {
     return InkWell(
       child: Container(
           width: 120.h,
@@ -186,8 +221,11 @@ class KegiatanLiterasiWebWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              getHeaderCell('ID', context, 130),
-              getHeaderCell('Genre', context, 130),
+              getHeaderCell('ID', context, 50),
+              getHeaderCell('Sumber', context, 170),
+              getHeaderCell('Image', context, 95),
+              getHeaderCell('Tanggal', context, 215),
+              getHeaderCell('Judul', context, 100),
             ],
           ),
           Row(

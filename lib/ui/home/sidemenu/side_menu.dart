@@ -25,6 +25,7 @@ class SideMenu extends StatelessWidget {
       elevation: 5,
       backgroundColor: getCardColor(context),
       child: Obx(() {
+        // ignore: unused_local_variable
         HomeController homeController = Get.find();
         int i = selectedAction.value;
 

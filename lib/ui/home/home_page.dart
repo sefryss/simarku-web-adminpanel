@@ -56,6 +56,7 @@ class _HomePage extends State<HomePage> {
     setScreenSize(context);
 
     themeController.setThemeStatusBar(context);
+    // ignore: deprecated_member_use
     return WillPopScope(
         child: CommonPage(
             widget: Container(

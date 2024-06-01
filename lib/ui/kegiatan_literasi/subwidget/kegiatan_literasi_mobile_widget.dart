@@ -10,7 +10,6 @@ import '../../common/common.dart';
 
 // ignore: must_be_immutable
 class KegiatanLiterasiMobileWidget extends StatelessWidget {
-  var _tapPosition;
   KegiatanLiterasiMobileWidget({
     required this.list,
     required this.queryText,
@@ -121,7 +120,6 @@ class KegiatanLiterasiMobileWidget extends StatelessWidget {
   }
 
   void _storePosition(TapDownDetails details) {
-    _tapPosition = details.globalPosition;
   }
 
   getSubCell(String title, BuildContext context, double width,

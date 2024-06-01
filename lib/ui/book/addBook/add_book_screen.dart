@@ -117,7 +117,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 ? getDisableDropDownWidget(
                                                     context,
                                                     homeController
-                                                        .categoryList[0].name!,
+                                                        .categoryList[0].name,
                                                   )
                                                 : CategoryDropDown(
                                                     homeController,
@@ -504,7 +504,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                               homeController
                                                                   .categoryList[
                                                                       0]
-                                                                  .name!,
+                                                                  .name,
                                                             )
                                                           : CategoryDropDown(
                                                               homeController,
@@ -1243,10 +1243,6 @@ itemSubTitle(String s, BuildContext context, {Color? color}) {
 
 Widget DateTimePickerWidget(
     BuildContext context, String hintText, TextEditingController controller) {
-  double height = 45.h;
-  if (Responsive.isTablet(context)) {
-    height = 55.h;
-  }
   double radius = getDefaultRadius(context);
   double fontSize = getResizeFont(context, 40);
 

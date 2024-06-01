@@ -5,10 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/model/slider_model.dart';
 import 'package:ebookadminpanel/theme/app_theme.dart';
-
 import '../../../controller/data/FirebaseData.dart';
 import '../../../controller/data/key_table.dart';
-import '../../../model/authors_model.dart';
 import '../../../model/category_model.dart';
 import '../../../model/story_model.dart';
 import '../../../theme/color_scheme.dart';

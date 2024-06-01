@@ -13,7 +13,7 @@ import 'data/key_table.dart';
 class KegiatanLiterasiController extends GetxController {
   TextEditingController titleController = TextEditingController();
   TextEditingController imageController = TextEditingController();
-  TextEditingController authorController = TextEditingController();
+  TextEditingController sourceController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   Uint8List webImage = Uint8List(10);
@@ -43,51 +43,25 @@ class KegiatanLiterasiController extends GetxController {
       kegiatanLiterasiModel = kegiatanLiterasi;
 
       if (kegiatanLiterasiModel != null) {
-        // File file = new File((kegiatanLiterasiModel!.image ?? "") as List<Object>);
-        // String basename = basename(file.path);
-
         String fileName = kegiatanLiterasiModel!.image!.split('%2F').last;
 
         String file = fileName.split('?').first;
 
         titleController.text = kegiatanLiterasiModel!.title!;
         imageController.text = file;
-        authorController.text = kegiatanLiterasiModel!.author!;
+        sourceController.text = kegiatanLiterasiModel!.source!;
         dateController.text = kegiatanLiterasiModel!.date!;
         urlController.text = kegiatanLiterasiModel!.url!;
         activeStatus.value = kegiatanLiterasiModel!.isActive ?? true;
         if (kegiatanLiterasiModel!.desc != null &&
             kegiatanLiterasiModel!.desc!.isNotEmpty) {
-          // Delta delta = new Delta()..insert(decode(kegiatanLiterasiModel!.desc!));
-          // final doc = Document.fromDelta(delta);
           final doc = Document()
             ..insert(0, decode(kegiatanLiterasiModel!.desc ?? ""));
 
           descController = QuillController(
               document: doc, selection: TextSelection.collapsed(offset: 0));
         }
-        // imageController.text = kegiatanLiterasiModel!.image!;
-        // oldkegiatanLiterasi = nameController.text;
       }
-
-      // if (categoryModel != null) {
-      //
-      //   // File file = new File((categoryModel!.image ?? "") as List<Object>);
-      //   // String basename = basename(file.path);
-      //
-      //   String fileName = categoryModel!.image!.split('%2F').last;
-      //
-      //   String file = fileName.split('?').first;
-      //
-      //   oldCategory = '';
-      //   nameController.text = categoryModel!.name!;
-      //   // colorController.text = categoryModel!.color!;
-      //   imageController.text = file;
-      //
-      //   // imageController.text = categoryModel!.image!;
-      //   oldCategory = nameController.text;
-      //
-      // }
     }
   }
 
@@ -95,7 +69,7 @@ class KegiatanLiterasiController extends GetxController {
     titleController = TextEditingController();
     imageController = TextEditingController();
     webImage = Uint8List(10);
-    authorController = TextEditingController();
+    sourceController = TextEditingController();
     dateController = TextEditingController();
     urlController = TextEditingController();
     descController = QuillController.basic();
@@ -108,46 +82,31 @@ class KegiatanLiterasiController extends GetxController {
     // oldCategory = '';
   }
 
-  bool isCheckAlreadyExistsOrNot(BuildContext context) {
-    HomeController homeController = Get.find();
-    if (homeController.allKegiatanLiterasiList.length > 0 &&
-        homeController.allKegiatanLiterasiList.contains(titleController.text)) {
-      isLoading(false);
-
-      showCustomToast(context: context, message: 'Already Exists..');
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   addKegiatanLiterasi(BuildContext context, HomeController controller,
       Function function) async {
     if (checkValidation(context)) {
       String url = await uploadFile(pickImage!);
 
-      if (isCheckAlreadyExistsOrNot(context)) {
-        KegiatanLiterasiModel firebaseHistory = new KegiatanLiterasiModel();
-        firebaseHistory.title = titleController.text;
-        firebaseHistory.image = url;
-        firebaseHistory.author = authorController.text;
-        firebaseHistory.date = dateController.text;
-        firebaseHistory.desc =
-            deltaToHtml(descController.document.toDelta().toJson());
-        firebaseHistory.url = urlController.text;
-        // firebaseHistory.isFav = false;
-        firebaseHistory.isActive = activeStatus.value;
+      KegiatanLiterasiModel firebaseHistory = new KegiatanLiterasiModel();
+      firebaseHistory.title = titleController.text;
+      firebaseHistory.image = url;
+      firebaseHistory.source = sourceController.text;
+      firebaseHistory.date = dateController.text;
+      firebaseHistory.desc =
+          deltaToHtml(descController.document.toDelta().toJson());
+      firebaseHistory.url = urlController.text;
+      // firebaseHistory.isFav = false;
+      firebaseHistory.isActive = activeStatus.value;
 
-        FirebaseData.insertData(
-            context: context,
-            map: firebaseHistory.toJson(),
-            tableName: KeyTable.kegiatanLiterasi,
-            function: () {
-              isLoading(false);
-              function();
-              clearKegiatanLiterasiData();
-            });
-      }
+      FirebaseData.insertData(
+          context: context,
+          map: firebaseHistory.toJson(),
+          tableName: KeyTable.kegiatanLiterasi,
+          function: () {
+            isLoading(false);
+            function();
+            clearKegiatanLiterasiData();
+          });
     }
   }
 
@@ -187,34 +146,32 @@ class KegiatanLiterasiController extends GetxController {
         }
       }
 
-      if (isCheckAlreadyExistsOrNot(context)) {
-        kegiatanLiterasiModel!.title = titleController.text;
-        kegiatanLiterasiModel!.author = authorController.text;
-        kegiatanLiterasiModel!.date = dateController.text;
-        kegiatanLiterasiModel!.desc =
-            deltaToHtml(descController.document.toDelta().toJson());
-        kegiatanLiterasiModel!.url = urlController.text;
-        kegiatanLiterasiModel!.isActive = activeStatus.value;
+      kegiatanLiterasiModel!.title = titleController.text;
+      kegiatanLiterasiModel!.source = sourceController.text;
+      kegiatanLiterasiModel!.date = dateController.text;
+      kegiatanLiterasiModel!.desc =
+          deltaToHtml(descController.document.toDelta().toJson());
+      kegiatanLiterasiModel!.url = urlController.text;
+      kegiatanLiterasiModel!.isActive = activeStatus.value;
 
-        if (pickImage != null) {
-          print("called----if");
-          kegiatanLiterasiModel!.image = url;
-        } else {
-          print("called----else");
-          kegiatanLiterasiModel!.image = kegiatanLiterasiModel!.image;
-        }
-
-        FirebaseData.updateData(
-            context: context,
-            map: kegiatanLiterasiModel!.toJson(),
-            tableName: KeyTable.kegiatanLiterasi,
-            doc: kegiatanLiterasiModel!.id!,
-            function: () {
-              isLoading(false);
-              function();
-              clearKegiatanLiterasiData();
-            });
+      if (pickImage != null) {
+        print("called----if");
+        kegiatanLiterasiModel!.image = url;
+      } else {
+        print("called----else");
+        kegiatanLiterasiModel!.image = kegiatanLiterasiModel!.image;
       }
+
+      FirebaseData.updateData(
+          context: context,
+          map: kegiatanLiterasiModel!.toJson(),
+          tableName: KeyTable.kegiatanLiterasi,
+          doc: kegiatanLiterasiModel!.id!,
+          function: () {
+            isLoading(false);
+            function();
+            clearKegiatanLiterasiData();
+          });
     }
   }
 

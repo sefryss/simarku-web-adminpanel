@@ -7,11 +7,8 @@ import 'package:ebookadminpanel/model/story_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/controller/data/FirebaseData.dart';
-import 'package:ebookadminpanel/model/category_model.dart';
 import 'package:ebookadminpanel/model/slider_model.dart';
 import 'package:ebookadminpanel/util/constants.dart';
-
-import '../model/story_model.dart';
 import '../ui/home/home_page.dart';
 import 'data/key_table.dart';
 
@@ -40,7 +37,8 @@ class HomeController extends GetxController {
   RxList<Genre> genreList = <Genre>[].obs;
   RxList<String> allGenreList = <String>[].obs;
   RxList<SekilasInfoModel> sekilasInfoList = <SekilasInfoModel>[].obs;
-  RxList<KegiatanLiterasiModel> kegiatanLiterasiList = <KegiatanLiterasiModel>[].obs;
+  RxList<KegiatanLiterasiModel> kegiatanLiterasiList =
+      <KegiatanLiterasiModel>[].obs;
   RxList<String> allSekilasInfoList = <String>[].obs;
   RxList<String> allKegiatanLiterasiList = <String>[].obs;
   RxList<UserModel> userList = <UserModel>[].obs;
@@ -76,6 +74,7 @@ class HomeController extends GetxController {
     this.sekilasInfoModel = sekilasInfoModel;
     changeAction(actionEditSekilasInfo);
   }
+
   setKegiatanLiterasiModel(KegiatanLiterasiModel kegiatanLiterasiModel) {
     this.kegiatanLiterasiModel = kegiatanLiterasiModel;
     changeAction(actionEditKegiatanLiterasi);
@@ -239,8 +238,9 @@ class HomeController extends GetxController {
     kegiatanLiterasiList.clear();
     allKegiatanLiterasiList.clear();
     kegiatanLiterasi("");
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection(KeyTable.kegiatanLiterasi).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.kegiatanLiterasi)
+        .get();
 
     if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
       List<DocumentSnapshot> list1 = querySnapshot.docs;
@@ -250,7 +250,7 @@ class HomeController extends GetxController {
         allKegiatanLiterasiList.add(kegiatanLiterasi.title!);
       }
       isLoading(false);
-      sekilasInfo((list1[0]).id);
+      kegiatanLiterasi((list1[0]).id);
     } else {
       isLoading(false);
     }

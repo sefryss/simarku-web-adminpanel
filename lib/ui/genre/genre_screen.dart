@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ebookadminpanel/model/authors_model.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
-import 'package:ebookadminpanel/ui/author/subwidget/author_mobile_widget.dart';
-import 'package:ebookadminpanel/ui/author/subwidget/author_web_widget.dart';
 import 'package:ebookadminpanel/ui/genre/subwidget/genre_mobile_widget.dart';
 import 'package:ebookadminpanel/ui/genre/subwidget/genre_web_widget.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';

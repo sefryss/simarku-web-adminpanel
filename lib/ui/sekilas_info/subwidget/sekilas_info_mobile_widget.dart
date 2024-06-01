@@ -1,19 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/data/key_table.dart';
-import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/model/sekilas_info_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/theme/app_theme.dart';
-import '../../../controller/data/FirebaseData.dart';
 import '../../../theme/color_scheme.dart';
-import '../../../util/constants.dart';
 import '../../common/common.dart';
 
 // ignore: must_be_immutable
 class SekilasInfoMobileWidget extends StatelessWidget {
-  var _tapPosition;
   SekilasInfoMobileWidget({
     required this.list,
     required this.queryText,
@@ -124,7 +120,6 @@ class SekilasInfoMobileWidget extends StatelessWidget {
   }
 
   void _storePosition(TapDownDetails details) {
-    _tapPosition = details.globalPosition;
   }
 
   getSubCell(String title, BuildContext context, double width,

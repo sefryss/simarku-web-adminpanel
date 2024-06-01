@@ -31,6 +31,7 @@ class _LoginPage extends State<LoginPage> {
     setScreenSize(context);
 
     print("called------loginPage");
+    // ignore: deprecated_member_use
     return WillPopScope(
       child: Scaffold(
         backgroundColor: (Get.isDarkMode)

@@ -4,7 +4,7 @@ class KegiatanLiterasiModel {
   String? title;
   String? id;
   String? image;
-  String? author;
+  String? source;
   String? date;
   String? desc;
   String? url;
@@ -16,7 +16,7 @@ class KegiatanLiterasiModel {
     this.title,
     this.id,
     this.image,
-    this.author,
+    this.source,
     this.date,
     this.desc,
     this.url,
@@ -29,7 +29,7 @@ class KegiatanLiterasiModel {
     data['title'] = this.title;
     data['id'] = this.id;
     data['image'] = this.image;
-    data['author'] = this.author;
+    data['source'] = this.source;
     data['date'] = this.date;
     data['desc'] = this.desc;
     data['url'] = this.url;
@@ -44,7 +44,7 @@ class KegiatanLiterasiModel {
       id: doc.id,
       title: data['title'] ?? '',
       image: data['image'] ?? '',
-      author: data['author'] ?? '',
+      source: data['source'] ?? '',
       date: data['date'] ?? '',
       desc: data['desc'] ?? '',
       url: data['url'] ?? '',

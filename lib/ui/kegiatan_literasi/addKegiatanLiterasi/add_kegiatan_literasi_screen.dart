@@ -1,6 +1,5 @@
 import 'package:ebookadminpanel/main.dart';
 import 'package:ebookadminpanel/model/kegiatan_literasi_model.dart';
-import 'package:ebookadminpanel/ui/book/addBook/add_book_screen.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,7 +43,7 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
           children: [
             getTextWidget(
                 context,
-                isEdit ? 'Edit Kegiatan Literasi' : 'Add Kegiatan Literasi',
+                isEdit ? 'Edit Kegiatan Literasi' : 'Tambah Kegiatan Literasi',
                 75,
                 getFontColor(context),
                 fontWeight: FontWeight.w700),
@@ -54,11 +53,6 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                 context: context,
                 verSpace: 0,
                 horSpace: isWeb(context) ? null : 15.h,
-                // width: double.infinity,
-                // height: double.infinity,
-                // decoration: getDefaultDecoration(
-                //     bgColor: getCardColor(context), radius: radius),
-                // padding: EdgeInsets.all(padding),
                 child: Column(
                   children: [
                     Expanded(
@@ -72,20 +66,6 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
 
                           getVerticalSpace(context, 30),
 
-                          // Row(
-                          //   children: [
-                          //     Expanded(
-                          //       child: getTextWidget(
-                          //           context,
-                          //           isEdit ? 'Edit Author' : 'Add Author',
-                          //           75,
-                          //           getFontColor(context),
-                          //           fontWeight: FontWeight.w700),
-                          //       flex: 1,
-                          //     ),
-                          //   ],
-                          // ),
-                          // getVerticalSpace(context, 40),
                           Responsive.isMobile(context)
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,13 +125,13 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              itemSubTitle('Penulis', context),
+                                              itemSubTitle('Sumber', context),
                                               getVerticalSpace(context, 10),
                                               getTextFiledWidget(
                                                   context,
-                                                  "Masukkan penulis...",
+                                                  "Masukkan sumber...",
                                                   kegiatanLiterasiController
-                                                      .authorController),
+                                                      .sourceController),
                                             ],
                                           ),
                                         ),
@@ -163,9 +143,9 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                             children: [
                                               itemSubTitle('Tanggal', context),
                                               getVerticalSpace(context, 10),
-                                              DateTimePickerWidget(
+                                              getTextFiledWidget(
                                                   context,
-                                                  'Masukkan tanggal...',
+                                                  "Masukkan tanggal...",
                                                   kegiatanLiterasiController
                                                       .dateController),
                                             ],
@@ -281,6 +261,22 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                             ],
                                           ),
                                         ),
+                                        getHorizontalSpace(context, 10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle('Url', context),
+                                              getVerticalSpace(context, 10),
+                                              getTextFiledWidget(
+                                                  context,
+                                                  "Masukkan url...",
+                                                  kegiatanLiterasiController
+                                                      .urlController),
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     Row(
@@ -324,16 +320,7 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                                             QuillSimpleToolbarConfigurations(
                                                                 controller:
                                                                     kegiatanLiterasiController
-                                                                        .descController)
-
-                                                        // configurations: QuillToolbarConfigurations(
-                                                        //   // iconTheme: QuillIconTheme(
-                                                        //   //     iconUnselectedFillColor: Colors.transparent
-                                                        //   // ),
-                                                        //   //   controller:
-                                                        //   //   kegiatanLiterasiController.descController
-                                                        // ),
-                                                        ),
+                                                                        .descController)),
                                                   ),
                                                   Container(
                                                     child: QuillEditor.basic(
@@ -342,12 +329,6 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                                               controller:
                                                                   kegiatanLiterasiController
                                                                       .descController),
-
-                                                      // configurations: QuillEditorConfigurations(
-                                                      //   readOnly:
-                                                      //   false,
-                                                      //
-                                                      // ),
                                                       scrollController:
                                                           ScrollController(),
                                                       focusNode: FocusNode(),
@@ -361,22 +342,6 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                             ),
                                           ],
                                         )),
-                                        getHorizontalSpace(context, 10),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              itemSubTitle('Url', context),
-                                              getVerticalSpace(context, 10),
-                                              getTextFiledWidget(
-                                                  context,
-                                                  "Masukkan url...",
-                                                  kegiatanLiterasiController
-                                                      .urlController),
-                                            ],
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   ],

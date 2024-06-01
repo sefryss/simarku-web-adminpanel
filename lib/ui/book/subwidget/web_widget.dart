@@ -125,7 +125,7 @@ class WebWidget extends StatelessWidget {
                                                       ownerName.add(UserModel
                                                               .fromFirestore(
                                                                   list[i])
-                                                          .fullName!);
+                                                          .fullName);
                                                     }
                                                   }
 
