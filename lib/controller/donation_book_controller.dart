@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/home_controller.dart';
+import 'package:ebookadminpanel/model/donation_book_model.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:file_picker/file_picker.dart';
@@ -21,7 +22,7 @@ import 'data/FirebaseData.dart';
 import 'data/key_table.dart';
 import 'package:intl/intl.dart';
 
-class StoryController extends GetxController {
+class DonationBookController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   TextEditingController pdfController = TextEditingController();
@@ -32,7 +33,6 @@ class StoryController extends GetxController {
   TextEditingController publisherController = TextEditingController();
   TextEditingController releaseDateController = TextEditingController();
   TextEditingController bookTypeController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
   RxString pdfUrl = ''.obs;
   RxString pdfSize = ''.obs;
   Uint8List webImage = Uint8List(10);
@@ -42,23 +42,18 @@ class StoryController extends GetxController {
 
   RxBool isImageOffline = false.obs;
 
-  StoryModel? storyModel;
+  DonationBookModel? storyModel;
   HomeController? homeController;
   RxBool isLoading = false.obs;
-  RxBool isPopular = true.obs;
-  RxBool isFeatured = true.obs;
-  RxBool isAvailable = true.obs;
 
   String oldGenre = '';
 
-  StoryController({this.storyModel, this.homeController});
+  DonationBookController({this.storyModel, this.homeController});
 
   final DateFormat formatter = DateFormat('dd/MM/yyyy');
 
   RxList selectedGenre = [].obs;
   RxList selectedGenreNameList = [].obs;
-  RxList selectedCategory = [].obs;
-  RxList selectedCategoryNameList = [].obs;
   RxList selectedUser = [].obs;
   RxList selectedUserNameList = [].obs;
 
@@ -101,7 +96,7 @@ class StoryController extends GetxController {
         selectedUserNameList.toString().replaceAll('[', '').replaceAll(']', '');
   }
 
-  setAllDataFromStoryModel(StoryModel? s, HomeController controller) {
+  setAllDataFromStoryModel(DonationBookModel? s, HomeController controller) {
     print("called-----setData");
     homeController = controller;
     if (s != null) {
@@ -133,8 +128,7 @@ class StoryController extends GetxController {
         selectedGenre.value = storyModel!.genreId!;
 
         homeController!.genre.value = storyModel!.refId!;
-        homeController!.category.value = storyModel!.category!;
-        homeController!.bookType.value = storyModel!.bookType!;
+        homeController!.donationBookType.value = storyModel!.bookType!;
 
         pdfUrl.value = pdfFile;
 
@@ -149,10 +143,6 @@ class StoryController extends GetxController {
 
         oldGenre = nameController.text;
 
-        isPopular.value = storyModel!.isPopular!;
-        isFeatured.value = storyModel!.isFeatured!;
-        isAvailable.value = storyModel!.isAvailable!;
-
         print("desc------_${storyModel!.desc}");
       }
     }
@@ -165,7 +155,6 @@ class StoryController extends GetxController {
     publisherController = TextEditingController();
     releaseDateController = TextEditingController();
     bookTypeController = TextEditingController();
-    categoryController = TextEditingController();
     imageController = TextEditingController();
     pdfController = TextEditingController();
     pdfUrl.value = '';
@@ -177,8 +166,6 @@ class StoryController extends GetxController {
     selectedGenreNameList.value = [];
     selectedUser.value = [];
     selectedUserNameList.value = [];
-    selectedCategory.value = [];
-    selectedCategoryNameList.value = [];
 
     webFile = Uint8List(10);
     descController = QuillController.basic();
@@ -188,9 +175,6 @@ class StoryController extends GetxController {
     storyModel = null;
     homeController = null;
     isLoading.value = false;
-    isPopular.value = false;
-    isFeatured.value = false;
-    isAvailable.value = false;
 
     oldGenre = '';
   }
@@ -201,7 +185,7 @@ class StoryController extends GetxController {
       String url = await uploadFile(pickImage!);
       String pdfUrl = await uploadPdfFile();
 
-      StoryModel firebaseHistory = new StoryModel();
+      DonationBookModel firebaseHistory = new DonationBookModel();
       firebaseHistory.name = nameController.text;
       firebaseHistory.author = authorController.text;
       firebaseHistory.publisher = publisherController.text;
@@ -218,19 +202,12 @@ class StoryController extends GetxController {
       firebaseHistory.desc =
           deltaToHtml(descController.document.toDelta().toJson());
       firebaseHistory.isActive = true;
-      firebaseHistory.views = 0;
-      firebaseHistory.isBookmark = false;
-      firebaseHistory.isFav = false;
-      firebaseHistory.isPopular = isPopular.value;
-      firebaseHistory.isFeatured = isFeatured.value;
-      firebaseHistory.isAvailable = isAvailable.value;
-      firebaseHistory.bookType = controller.bookType.value;
-      firebaseHistory.category = controller.category.value;
+      firebaseHistory.bookType = controller.donationBookType.value;
 
       FirebaseData.insertData(
           context: context,
           map: firebaseHistory.toJson(),
-          tableName: KeyTable.storyList,
+          tableName: KeyTable.donationBook,
           function: () {
             isLoading(false);
             function();
@@ -330,8 +307,6 @@ class StoryController extends GetxController {
       }
 
       storyModel!.name = nameController.text;
-      storyModel!.category = homeController.category.value;
-      storyModel!.bookType = homeController.bookType.value;
 
       if (pickImage != null) {
         print("called----if");
@@ -351,9 +326,6 @@ class StoryController extends GetxController {
 
       // storyModel!.pdf = pdfUrl.value;
 
-      storyModel!.isPopular = isPopular.value;
-      storyModel!.isFeatured = isFeatured.value;
-      storyModel!.isAvailable = isAvailable.value;
       storyModel!.releaseDate = releaseDateController.text;
 
       storyModel!.refId = homeController.genre.value;
@@ -366,7 +338,7 @@ class StoryController extends GetxController {
       FirebaseData.updateData(
           context: context,
           map: storyModel!.toJson(),
-          tableName: KeyTable.storyList,
+          tableName: KeyTable.donationBook,
           doc: storyModel!.id!,
           function: () {
             isLoading(false);

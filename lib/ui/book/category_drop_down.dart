@@ -79,17 +79,3 @@ class CategoryDropDown extends StatelessWidget {
         ));
   }
 }
-
-// Ensure this function matches your implementation
-String getCategoryString(Category category) {
-  switch (category) {
-    case Category.bebasBaca:
-      return 'Bebas Baca';
-    case Category.tukarMilik:
-      return 'Tukar Milik';
-    case Category.tukarPinjam:
-      return 'Tukar Pinjam';
-    default:
-      return '';
-  }
-}

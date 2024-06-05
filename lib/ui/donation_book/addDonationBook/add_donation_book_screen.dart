@@ -1,3 +1,4 @@
+import 'package:ebookadminpanel/model/donation_book_model.dart';
 import 'package:ebookadminpanel/ui/book/category_drop_down.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,17 +19,17 @@ import '../../../util/responsive.dart';
 import '../../home/home_page.dart';
 import '../subwidget/status_drop_down.dart';
 
-class AddStoryScreen extends StatefulWidget {
+class AddDonationBookScreen extends StatefulWidget {
   final Function function;
-  final StoryModel? storyModel;
+  final DonationBookModel? donationBookModel;
 
-  AddStoryScreen({required this.function, this.storyModel});
+  AddDonationBookScreen({required this.function, this.donationBookModel});
 
   @override
-  State<AddStoryScreen> createState() => _AddStoryScreenState();
+  State<AddDonationBookScreen> createState() => _AddDonationBookScreenState();
 }
 
-class _AddStoryScreenState extends State<AddStoryScreen> {
+class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
   @override
   void initState() {
     super.initState();
@@ -40,7 +41,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   Widget build(BuildContext context) {
     HomeController homeController = Get.find();
 
-    bool isEdit = widget.storyModel != null;
+    bool isEdit = widget.donationBookModel != null;
     return SafeArea(
       child: CommonPage(
         widget: Container(
@@ -50,7 +51,10 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              getTextWidget(context, isEdit ? 'Edit Buku' : 'Tambah Buku', 75,
+              getTextWidget(
+                  context,
+                  isEdit ? 'Edit Donasi Buku' : 'Tambah Donasi Buku',
+                  75,
                   getFontColor(context),
                   fontWeight: FontWeight.w700),
               getVerticalSpace(context, 35),
@@ -75,7 +79,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                             getVerticalSpace(context, 30),
 
                             getCommonBackIcon(context, onTap: () {
-                              changeAction(actionStories);
+                              changeAction(actionDonationBook);
                             }),
 
                             getVerticalSpace(context, 30),
@@ -104,48 +108,52 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                       getTextFiledWidget(
                                           context,
                                           "Masukkan judul...",
-                                          storyController.nameController),
-                                      getVerticalSpace(context, 30),
-                                      itemSubTitle('Pilih Kategori', context),
-                                      getVerticalSpace(context, 10),
-                                      Obx(() {
-                                        return homeController
-                                                .categoryList.isNotEmpty
-                                            ? homeController
-                                                        .categoryList.length ==
-                                                    1
-                                                ? getDisableDropDownWidget(
-                                                    context,
-                                                    homeController
-                                                        .categoryList[0].name,
-                                                  )
-                                                : CategoryDropDown(
-                                                    homeController,
-                                                    value: homeController
-                                                        .category.value,
-                                                    onChanged: (value) {
-                                                      print(
-                                                          "value--------${homeController.category.value}");
-                                                      if (value !=
-                                                          homeController
-                                                              .category.value) {
-                                                        homeController.category
-                                                            .value = value;
-                                                      }
-                                                    },
-                                                  )
-                                            : getDisableTextFiledWidget(
-                                                context,
-                                                homeController.isLoading.value
-                                                    ? "Loading.."
-                                                    : "No Data",
-                                              );
-                                      }),
+                                          donationBookController
+                                              .nameController),
+                                      // getVerticalSpace(context, 30),
+                                      // itemSubTitle('Pilih Kategori', context),
+                                      // getVerticalSpace(context, 10),
+                                      // Obx(() {
+                                      //   return homeController
+                                      //           .categoryList.isNotEmpty
+                                      //       ? homeController
+                                      //                   .categoryList.length ==
+                                      //               1
+                                      //           ? getDisableDropDownWidget(
+                                      //               context,
+                                      //               homeController
+                                      //                   .categoryList[0].name,
+                                      //             )
+                                      //           : CategoryDropDown(
+                                      //               homeController,
+                                      //               value: homeController
+                                      //                   .category.value,
+                                      //               onChanged: (value) {
+                                      //                 print(
+                                      //                     "value--------${homeController.category.value}");
+                                      //                 if (value !=
+                                      //                     homeController
+                                      //                         .category.value) {
+                                      //                   homeController.category
+                                      //                       .value = value;
+                                      //                 }
+                                      //               },
+                                      //             )
+                                      //       : getDisableTextFiledWidget(
+                                      //           context,
+                                      //           homeController.isLoading.value
+                                      //               ? "Loading.."
+                                      //               : "No Data",
+                                      //         );
+                                      // }),
                                       getVerticalSpace(context, 30),
                                       itemSubTitle('Pilih Genre', context),
                                       getVerticalSpace(context, 10),
-                                      getTextFiledWidget(context, "Genre",
-                                          storyController.genreController,
+                                      getTextFiledWidget(
+                                          context,
+                                          "Genre",
+                                          donationBookController
+                                              .genreController,
                                           isEnabled: false,
                                           child: InkWell(
                                             onTap: () {
@@ -154,8 +162,9 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                   homeController
                                                           .genreList.length >
                                                       0) {
-                                                storyController.showGenreDialog(
-                                                    context, homeController);
+                                                donationBookController
+                                                    .showGenreDialog(context,
+                                                        homeController);
                                               } else {
                                                 showCustomToast(
                                                     context: context,
@@ -191,14 +200,16 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                       itemSubTitle('Jenis Buku', context),
                                       getVerticalSpace(context, 10),
                                       Obx(() {
-                                        return BookTypeDropdown(
+                                        return DonationBookTypeDropdown(
                                           homeController,
-                                          value: homeController.bookType.value,
+                                          value: homeController
+                                              .donationBookType.value,
                                           onChanged: (value) {
                                             if (value !=
-                                                homeController.bookType.value) {
-                                              homeController.bookType.value =
-                                                  value;
+                                                homeController
+                                                    .donationBookType.value) {
+                                              homeController.donationBookType
+                                                  .value = value;
                                             }
                                           },
                                         );
@@ -220,17 +231,18 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 context,
                                                 "No file chosen",
                                                 TextEditingController(
-                                                    text: storyController
+                                                    text: donationBookController
                                                         .pdfUrl.value),
                                                 isEnabled: false,
                                                 child: getCommonChooseFileBtn(
                                                     context, () {
-                                                  storyController.openFile();
+                                                  donationBookController
+                                                      .openFile();
                                                 }),
                                               ),
                                       ),
                                       Obx(() {
-                                        return (storyController
+                                        return (donationBookController
                                                 .pdfUrl.value.isNotEmpty)
                                             ? Container(
                                                 margin:
@@ -263,7 +275,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                         children: [
                                                           Obx(() => getTextWidget(
                                                               context,
-                                                              storyController
+                                                              donationBookController
                                                                   .pdfUrl.value,
                                                               50,
                                                               getFontColor(
@@ -272,7 +284,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                               context, 10),
                                                           getTextWidget(
                                                               context,
-                                                              storyController
+                                                              donationBookController
                                                                   .pdfSize
                                                                   .value,
                                                               40,
@@ -283,7 +295,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     ),
                                                     GestureDetector(
                                                         onTap: () {
-                                                          storyController.pdfUrl
+                                                          donationBookController
+                                                              .pdfUrl
                                                               .value = "";
                                                         },
                                                         child: imageAsset(
@@ -301,24 +314,27 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                       getTextFiledWidget(
                                           context,
                                           "No file chosen",
-                                          storyController.imageController,
+                                          donationBookController
+                                              .imageController,
                                           isEnabled: false,
                                           child: getCommonChooseFileBtn(context,
                                               () {
-                                            storyController.imgFromGallery();
+                                            donationBookController
+                                                .imgFromGallery();
                                           })),
                                       getVerticalSpace(context, 30),
                                       Align(
                                         alignment: Alignment.topLeft,
                                         child: Obx(() {
-                                          return (storyController
+                                          return (donationBookController
                                                   .isImageOffline.value)
                                               ? ClipRRect(
                                                   borderRadius: BorderRadius
                                                       .circular((getResizeRadius(
                                                           context,
                                                           35))), //add border radius
-                                                  child: (storyController.isSvg)
+                                                  child: (donationBookController
+                                                          .isSvg)
                                                       ? Image.asset(
                                                           Constants.placeImage,
                                                           height: 100.h,
@@ -326,7 +342,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           fit: BoxFit.contain,
                                                         )
                                                       : Image.memory(
-                                                          storyController
+                                                          donationBookController
                                                               .webImage,
                                                           height: 100.h,
                                                           width: 100.h,
@@ -340,7 +356,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                               (getResizeRadius(
                                                                   context,
                                                                   35))), //add border radius
-                                                      child: (widget.storyModel!
+                                                      child: (widget
+                                                              .donationBookModel!
                                                               .image!
                                                               .split(".")
                                                               .last
@@ -355,7 +372,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                                   .contain,
                                                             )
                                                           : Image.network(
-                                                              widget.storyModel!
+                                                              widget
+                                                                  .donationBookModel!
                                                                   .image!,
                                                               height: 150.h,
                                                               width: 200.h,
@@ -396,12 +414,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 configurations:
                                                     QuillSimpleToolbarConfigurations(
                                                         controller:
-                                                            storyController
+                                                            donationBookController
                                                                 .descController),
                                                 // iconTheme: QuillIconTheme(
                                                 //     iconUnselectedFillColor: Colors.transparent
                                                 // ),
-                                                // controller: storyController.descController
+                                                // controller: donationBookController.descController
                                               ),
                                             ),
                                             Container(
@@ -413,7 +431,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     QuillEditorConfigurations(
                                                         readOnly: false,
                                                         controller:
-                                                            storyController
+                                                            donationBookController
                                                                 .descController),
 
                                                 // true for view only mode
@@ -425,42 +443,42 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                         ),
                                       ),
 
-                                      getVerticalSpace(context, 30),
-                                      itemSubTitle('Is Popular?', context),
-                                      getVerticalSpace(context, 10),
-                                      Container(
-                                        height: 30.h,
-                                        child: FittedBox(
-                                          fit: BoxFit.fitHeight,
-                                          child: Obx(() => CupertinoSwitch(
-                                              activeColor:
-                                                  getPrimaryColor(context),
-                                              value: storyController
-                                                  .isPopular.value,
-                                              onChanged: (value) {
-                                                storyController
-                                                    .isPopular.value = value;
-                                              })),
-                                        ),
-                                      ),
-                                      getVerticalSpace(context, 30),
-                                      itemSubTitle('Is Recommended?', context),
-                                      getVerticalSpace(context, 10),
-                                      Container(
-                                        height: 30.h,
-                                        child: FittedBox(
-                                          fit: BoxFit.fitHeight,
-                                          child: Obx(() => CupertinoSwitch(
-                                              activeColor:
-                                                  getPrimaryColor(context),
-                                              value: storyController
-                                                  .isFeatured.value,
-                                              onChanged: (value) {
-                                                storyController
-                                                    .isFeatured.value = value;
-                                              })),
-                                        ),
-                                      ),
+                                      // getVerticalSpace(context, 30),
+                                      // itemSubTitle('Is Popular?', context),
+                                      // getVerticalSpace(context, 10),
+                                      // Container(
+                                      //   height: 30.h,
+                                      //   child: FittedBox(
+                                      //     fit: BoxFit.fitHeight,
+                                      //     child: Obx(() => CupertinoSwitch(
+                                      //         activeColor:
+                                      //             getPrimaryColor(context),
+                                      //         value: donationBookController
+                                      //             .isPopular.value,
+                                      //         onChanged: (value) {
+                                      //           donationBookController
+                                      //               .isPopular.value = value;
+                                      //         })),
+                                      //   ),
+                                      // ),
+                                      // getVerticalSpace(context, 30),
+                                      // itemSubTitle('Is Recommended?', context),
+                                      // getVerticalSpace(context, 10),
+                                      // Container(
+                                      //   height: 30.h,
+                                      //   child: FittedBox(
+                                      //     fit: BoxFit.fitHeight,
+                                      //     child: Obx(() => CupertinoSwitch(
+                                      //         activeColor:
+                                      //             getPrimaryColor(context),
+                                      //         value: donationBookController
+                                      //             .isFeatured.value,
+                                      //         onChanged: (value) {
+                                      //           donationBookController
+                                      //               .isFeatured.value = value;
+                                      //         })),
+                                      //   ),
+                                      // ),
                                     ],
                                   )
                                 : Column(
@@ -478,66 +496,66 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Masukkan Judul...",
-                                                  storyController
+                                                  donationBookController
                                                       .nameController),
                                             ],
                                           )),
-                                          getHorizontalSpace(context, 10),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                itemSubTitle(
-                                                    'Pilih Kategori', context),
-                                                getVerticalSpace(context, 10),
-                                                Obx(() {
-                                                  return homeController
-                                                          .categoryList
-                                                          .isNotEmpty
-                                                      ? homeController
-                                                                  .categoryList
-                                                                  .length ==
-                                                              1
-                                                          ? getDisableDropDownWidget(
-                                                              context,
-                                                              homeController
-                                                                  .categoryList[
-                                                                      0]
-                                                                  .name,
-                                                            )
-                                                          : CategoryDropDown(
-                                                              homeController,
-                                                              value:
-                                                                  homeController
-                                                                      .category
-                                                                      .value,
-                                                              onChanged:
-                                                                  (value) {
-                                                                print(
-                                                                    "value--------${homeController.category.value}");
-                                                                if (value !=
-                                                                    homeController
-                                                                        .category
-                                                                        .value) {
-                                                                  homeController
-                                                                      .category
-                                                                      .value = value;
-                                                                }
-                                                              },
-                                                            )
-                                                      : getDisableTextFiledWidget(
-                                                          context,
-                                                          homeController
-                                                                  .isLoading
-                                                                  .value
-                                                              ? "Loading.."
-                                                              : "No Data",
-                                                        );
-                                                }),
-                                              ],
-                                            ),
-                                          ),
+                                          // getHorizontalSpace(context, 10),
+                                          // Expanded(
+                                          //   child: Column(
+                                          //     crossAxisAlignment:
+                                          //         CrossAxisAlignment.start,
+                                          //     children: [
+                                          //       itemSubTitle(
+                                          //           'Pilih Kategori', context),
+                                          //       getVerticalSpace(context, 10),
+                                          //       Obx(() {
+                                          //         return homeController
+                                          //                 .categoryList
+                                          //                 .isNotEmpty
+                                          //             ? homeController
+                                          //                         .categoryList
+                                          //                         .length ==
+                                          //                     1
+                                          //                 ? getDisableDropDownWidget(
+                                          //                     context,
+                                          //                     homeController
+                                          //                         .categoryList[
+                                          //                             0]
+                                          //                         .name,
+                                          //                   )
+                                          //                 : CategoryDropDown(
+                                          //                     homeController,
+                                          //                     value:
+                                          //                         homeController
+                                          //                             .category
+                                          //                             .value,
+                                          //                     onChanged:
+                                          //                         (value) {
+                                          //                       print(
+                                          //                           "value--------${homeController.category.value}");
+                                          //                       if (value !=
+                                          //                           homeController
+                                          //                               .category
+                                          //                               .value) {
+                                          //                         homeController
+                                          //                             .category
+                                          //                             .value = value;
+                                          //                       }
+                                          //                     },
+                                          //                   )
+                                          //             : getDisableTextFiledWidget(
+                                          //                 context,
+                                          //                 homeController
+                                          //                         .isLoading
+                                          //                         .value
+                                          //                     ? "Loading.."
+                                          //                     : "No Data",
+                                          //               );
+                                          //       }),
+                                          //     ],
+                                          //   ),
+                                          // ),
                                           getHorizontalSpace(context, 10),
                                           Expanded(
                                               child: Column(
@@ -550,7 +568,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Genre",
-                                                  storyController
+                                                  donationBookController
                                                       .genreController,
                                                   isEnabled: false,
                                                   child: InkWell(
@@ -562,7 +580,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                                   .genreList
                                                                   .length >
                                                               0) {
-                                                        storyController
+                                                        donationBookController
                                                             .showGenreDialog(
                                                                 context,
                                                                 homeController);
@@ -624,7 +642,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Masukkan penulis...",
-                                                  storyController
+                                                  donationBookController
                                                       .authorController),
                                             ],
                                           )),
@@ -640,7 +658,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Masukkan penerbit...",
-                                                  storyController
+                                                  donationBookController
                                                       .publisherController),
                                             ],
                                           )),
@@ -656,7 +674,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 DateTimePickerWidget(
                                                     context,
                                                     'Masukkan tanggal...',
-                                                    storyController
+                                                    donationBookController
                                                         .releaseDateController),
                                               ],
                                             ),
@@ -673,7 +691,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "Masukkan halaman...",
-                                                  storyController
+                                                  donationBookController
                                                       .pageController),
                                             ],
                                           )),
@@ -691,15 +709,17 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     'Jenis Buku', context),
                                                 getVerticalSpace(context, 10),
                                                 Obx(() {
-                                                  return BookTypeDropdown(
+                                                  return DonationBookTypeDropdown(
                                                     homeController,
                                                     value: homeController
-                                                        .bookType.value,
+                                                        .donationBookType.value,
                                                     onChanged: (value) {
                                                       if (value !=
                                                           homeController
-                                                              .bookType.value) {
-                                                        homeController.bookType
+                                                              .donationBookType
+                                                              .value) {
+                                                        homeController
+                                                            .donationBookType
                                                             .value = value;
                                                       }
                                                     },
@@ -733,14 +753,14 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                         "No file chosen",
                                                         TextEditingController(
                                                             text:
-                                                                storyController
+                                                                donationBookController
                                                                     .pdfUrl
                                                                     .value),
                                                         isEnabled: false,
                                                         child:
                                                             getCommonChooseFileBtn(
                                                                 context, () {
-                                                          storyController
+                                                          donationBookController
                                                               .openFile();
                                                         }),
                                                       ),
@@ -750,7 +770,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                         ],
                                       ),
                                       Obx(() {
-                                        return (storyController
+                                        return (donationBookController
                                                 .pdfUrl.value.isNotEmpty)
                                             ? Container(
                                                 margin:
@@ -783,7 +803,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                         children: [
                                                           Obx(() => getTextWidget(
                                                               context,
-                                                              storyController
+                                                              donationBookController
                                                                   .pdfUrl.value,
                                                               50,
                                                               getFontColor(
@@ -792,7 +812,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                               context, 10),
                                                           getTextWidget(
                                                               context,
-                                                              storyController
+                                                              donationBookController
                                                                   .pdfSize
                                                                   .value,
                                                               40,
@@ -803,7 +823,8 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     ),
                                                     GestureDetector(
                                                         onTap: () {
-                                                          storyController.pdfUrl
+                                                          donationBookController
+                                                              .pdfUrl
                                                               .value = "";
                                                         },
                                                         child: imageAsset(
@@ -829,12 +850,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               getTextFiledWidget(
                                                   context,
                                                   "No file chosen",
-                                                  storyController
+                                                  donationBookController
                                                       .imageController,
                                                   isEnabled: false,
                                                   child: getCommonChooseFileBtn(
                                                       context, () {
-                                                    storyController
+                                                    donationBookController
                                                         .imgFromGallery();
                                                   })),
                                             ],
@@ -848,7 +869,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 Align(
                                                   alignment: Alignment.topLeft,
                                                   child: Obx(() {
-                                                    return (storyController
+                                                    return (donationBookController
                                                             .isImageOffline
                                                             .value)
                                                         ? ClipRRect(
@@ -858,7 +879,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                                         context,
                                                                         35))), //add border radius
                                                             child:
-                                                                (storyController
+                                                                (donationBookController
                                                                         .isSvg)
                                                                     ? Image
                                                                         .asset(
@@ -873,7 +894,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                                       )
                                                                     : Image
                                                                         .memory(
-                                                                        storyController
+                                                                        donationBookController
                                                                             .webImage,
                                                                         height:
                                                                             100.h,
@@ -890,7 +911,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                                         context,
                                                                         35))), //add border radius
                                                                 child: (widget
-                                                                        .storyModel!
+                                                                        .donationBookModel!
                                                                         .image!
                                                                         .split(
                                                                             ".")
@@ -911,7 +932,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                                     : Image
                                                                         .network(
                                                                         widget
-                                                                            .storyModel!
+                                                                            .donationBookModel!
                                                                             .image!,
                                                                         height:
                                                                             100.h,
@@ -938,12 +959,12 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                 getTextFiledWidget(
                                                     context,
                                                     "Pemilik",
-                                                    storyController
+                                                    donationBookController
                                                         .ownerController,
                                                     isEnabled: false,
                                                     child: InkWell(
                                                       onTap: () async {
-                                                        await storyController
+                                                        await donationBookController
                                                             .showOwnerDialog(
                                                           context,
                                                         );
@@ -952,7 +973,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                         //     homeController.genreList
                                                         //             .length >
                                                         //         0) {
-                                                        //   storyController
+                                                        //   donationBookController
                                                         //       .showUserDialog(
                                                         //           context,
                                                         //           homeController);
@@ -1045,7 +1066,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           configurations:
                                                               QuillSimpleToolbarConfigurations(
                                                                   controller:
-                                                                      storyController
+                                                                      donationBookController
                                                                           .descController)
 
                                                           // configurations: QuillToolbarConfigurations(
@@ -1053,7 +1074,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                           //   //     iconUnselectedFillColor: Colors.transparent
                                                           //   // ),
                                                           //   //   controller:
-                                                          //   //   storyController.descController
+                                                          //   //   donationBookController.descController
                                                           // ),
                                                           ),
                                                     ),
@@ -1062,7 +1083,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                         configurations:
                                                             QuillEditorConfigurations(
                                                                 controller:
-                                                                    storyController
+                                                                    donationBookController
                                                                         .descController),
 
                                                         // configurations: QuillEditorConfigurations(
@@ -1083,103 +1104,103 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                               ),
                                             ],
                                           )),
-                                          Expanded(
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                    child: Column(
-                                                  children: [
-                                                    itemSubTitle(
-                                                        'Is Popular?', context),
-                                                    getVerticalSpace(
-                                                        context, 10),
-                                                    Container(
-                                                      height: 30.h,
-                                                      child: FittedBox(
-                                                        fit: BoxFit.fitHeight,
-                                                        child: Obx(() =>
-                                                            CupertinoSwitch(
-                                                                activeColor:
-                                                                    getPrimaryColor(
-                                                                        context),
-                                                                value:
-                                                                    storyController
-                                                                        .isPopular
-                                                                        .value,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  storyController
-                                                                      .isPopular
-                                                                      .value = value;
-                                                                })),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
-                                                Expanded(
-                                                    child: Column(
-                                                  children: [
-                                                    itemSubTitle(
-                                                        'Is Recommended?',
-                                                        context),
-                                                    getVerticalSpace(
-                                                        context, 10),
-                                                    Container(
-                                                      height: 30.h,
-                                                      child: FittedBox(
-                                                        fit: BoxFit.fitHeight,
-                                                        child: Obx(() =>
-                                                            CupertinoSwitch(
-                                                                activeColor:
-                                                                    getPrimaryColor(
-                                                                        context),
-                                                                value: storyController
-                                                                    .isFeatured
-                                                                    .value,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  storyController
-                                                                      .isFeatured
-                                                                      .value = value;
-                                                                })),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
-                                                Expanded(
-                                                  child: Column(
-                                                    children: [
-                                                      itemSubTitle(
-                                                          'Is Available?',
-                                                          context),
-                                                      getVerticalSpace(
-                                                          context, 10),
-                                                      Container(
-                                                        height: 30.h,
-                                                        child: FittedBox(
-                                                          fit: BoxFit.fitHeight,
-                                                          child: Obx(() =>
-                                                              CupertinoSwitch(
-                                                                  activeColor:
-                                                                      getPrimaryColor(
-                                                                          context),
-                                                                  value: storyController
-                                                                      .isAvailable
-                                                                      .value,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    storyController
-                                                                        .isAvailable
-                                                                        .value = value;
-                                                                  })),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
+                                          // Expanded(
+                                          //   child: Row(
+                                          //     children: [
+                                          //       Expanded(
+                                          //           child: Column(
+                                          //         children: [
+                                          //           itemSubTitle(
+                                          //               'Is Popular?', context),
+                                          //           getVerticalSpace(
+                                          //               context, 10),
+                                          //           Container(
+                                          //             height: 30.h,
+                                          //             child: FittedBox(
+                                          //               fit: BoxFit.fitHeight,
+                                          //               child: Obx(() =>
+                                          //                   CupertinoSwitch(
+                                          //                       activeColor:
+                                          //                           getPrimaryColor(
+                                          //                               context),
+                                          //                       value:
+                                          //                           donationBookController
+                                          //                               .isPopular
+                                          //                               .value,
+                                          //                       onChanged:
+                                          //                           (value) {
+                                          //                         donationBookController
+                                          //                             .isPopular
+                                          //                             .value = value;
+                                          //                       })),
+                                          //             ),
+                                          //           ),
+                                          //         ],
+                                          //       )),
+                                          //       Expanded(
+                                          //           child: Column(
+                                          //         children: [
+                                          //           itemSubTitle(
+                                          //               'Is Recommended?',
+                                          //               context),
+                                          //           getVerticalSpace(
+                                          //               context, 10),
+                                          //           Container(
+                                          //             height: 30.h,
+                                          //             child: FittedBox(
+                                          //               fit: BoxFit.fitHeight,
+                                          //               child: Obx(() =>
+                                          //                   CupertinoSwitch(
+                                          //                       activeColor:
+                                          //                           getPrimaryColor(
+                                          //                               context),
+                                          //                       value: donationBookController
+                                          //                           .isFeatured
+                                          //                           .value,
+                                          //                       onChanged:
+                                          //                           (value) {
+                                          //                         donationBookController
+                                          //                             .isFeatured
+                                          //                             .value = value;
+                                          //                       })),
+                                          //             ),
+                                          //           ),
+                                          //         ],
+                                          //       )),
+                                          //       Expanded(
+                                          //         child: Column(
+                                          //           children: [
+                                          //             itemSubTitle(
+                                          //                 'Is Available?',
+                                          //                 context),
+                                          //             getVerticalSpace(
+                                          //                 context, 10),
+                                          //             Container(
+                                          //               height: 30.h,
+                                          //               child: FittedBox(
+                                          //                 fit: BoxFit.fitHeight,
+                                          //                 child: Obx(() =>
+                                          //                     CupertinoSwitch(
+                                          //                         activeColor:
+                                          //                             getPrimaryColor(
+                                          //                                 context),
+                                          //                         value: donationBookController
+                                          //                             .isAvailable
+                                          //                             .value,
+                                          //                         onChanged:
+                                          //                             (value) {
+                                          //                           donationBookController
+                                          //                               .isAvailable
+                                          //                               .value = value;
+                                          //                         })),
+                                          //               ),
+                                          //             ),
+                                          //           ],
+                                          //         ),
+                                          //       )
+                                          //     ],
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     ],
@@ -1197,15 +1218,16 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                           Obx(() => getButtonWidget(
                                 context,
                                 isEdit ? 'Update' : 'Save',
-                                isProgress: storyController.isLoading.value,
+                                isProgress:
+                                    donationBookController.isLoading.value,
                                 () {
                                   if (isEdit) {
-                                    storyController
+                                    donationBookController
                                         .editStory(homeController, context, () {
                                       widget.function();
                                     });
                                   } else {
-                                    storyController
+                                    donationBookController
                                         .addStory(context, homeController, () {
                                       widget.function();
                                     });

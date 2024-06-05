@@ -1,7 +1,10 @@
+import 'package:ebookadminpanel/controller/donation_book_controller.dart';
 import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
 import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
 import 'package:ebookadminpanel/controller/story_controller.dart';
+import 'package:ebookadminpanel/ui/donation_book/addDonationBook/add_donation_book_screen.dart';
+import 'package:ebookadminpanel/ui/donation_book/donation_book_screen.dart';
 import 'package:ebookadminpanel/ui/genre/addGenre/add_genre_screen.dart';
 import 'package:ebookadminpanel/ui/genre/genre_screen.dart';
 import 'package:ebookadminpanel/ui/kegiatan_literasi/addKegiatanLiterasi/add_kegiatan_literasi_screen.dart';
@@ -365,6 +368,50 @@ class _HomePage extends State<HomePage> {
           changeAction(actionStories);
         },
         storyModel: homeController.storyModel,
+      );
+    } else if (action == actionDonationBook) {
+      PrefData.setAction(actionDonationBook);
+
+      donationBookController.clearStoryData();
+      return DonasiBookScreen(
+        function: () {
+          changeAction(actionAddDonationBook);
+          // onBackClick();
+        },
+      );
+    } else if (action == actionAddDonationBook) {
+      PrefData.setAction(actionAddDonationBook);
+
+      DonationBookController donationBookController =
+          Get.put(DonationBookController());
+
+      donationBookController.clearStoryData();
+
+      return AddDonationBookScreen(
+        function: () {
+          onBackClick();
+          homeController.fetchDonationBook();
+          changeAction(actionDonationBook);
+        },
+      );
+    } else if (action == actionEditDonationBook) {
+      PrefData.setAction(actionEditDonationBook);
+
+      donationBookController.homeController = homeController;
+      donationBookController.storyModel = homeController.donationBookModel;
+
+      // if(!donationBookController.isBack.value){
+
+      donationBookController.setAllDataFromStoryModel(
+          homeController.donationBookModel, homeController);
+
+      // }
+      return AddDonationBookScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionDonationBook);
+        },
+        donationBookModel: homeController.donationBookModel,
       );
     } else if (action == actionKegiatanLiterasi) {
       PrefData.setAction(actionKegiatanLiterasi);

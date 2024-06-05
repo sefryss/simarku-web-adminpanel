@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:ebookadminpanel/controller/donation_book_controller.dart';
 import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
 import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
@@ -25,6 +26,8 @@ ThemeController themeController = Get.put(ThemeController());
 // AuthorController authorController = Get.put(AuthorController());
 GenreController genreController = Get.put(GenreController());
 StoryController storyController = Get.put(StoryController());
+DonationBookController donationBookController =
+    Get.put(DonationBookController());
 SekilasInfoController sekilasInfoController = Get.put(SekilasInfoController());
 KegiatanLiterasiController kegiatanLiterasiController =
     Get.put(KegiatanLiterasiController());

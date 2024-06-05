@@ -113,7 +113,7 @@ class KegiatanLiterasiWebWidget extends StatelessWidget {
                                           getHeaderCell(
                                               '${kegiatanLiterasiModel.title!}',
                                               context,
-                                              500),
+                                              400),
                                         ],
                                       ),
                                       Row(

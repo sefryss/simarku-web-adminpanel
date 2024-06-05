@@ -166,31 +166,31 @@ class SideMenu extends StatelessWidget {
 
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
-              title: "Books",
-              svgSrc: (i == actionAddStory ||
-                      i == actionEditStory ||
-                      i == actionStories ||
-                      checkAction(i, dummyActionStories))
-                  ? "stories_active.svg"
-                  : "stories.svg",
-              isSelected: i == actionAddStory ||
-                  i == actionEditStory ||
-                  i == actionStories ||
-                  checkAction(i, dummyActionStories),
+              title: "Donasi Buku",
+              svgSrc: (i == actionDonationBook ||
+                      i == actionEditDonationBook ||
+                      i == actionAddDonationBook ||
+                      checkAction(i, dummyActionDonationBook))
+                  ? "slider_active.svg"
+                  : "slider.svg",
+              isSelected: i == actionDonationBook ||
+                  i == actionEditDonationBook ||
+                  i == actionAddDonationBook ||
+                  checkAction(i, dummyActionDonationBook),
               isDropDown: true,
-              isListSelected: i == actionStories,
-              isAddSelected: i == actionAddStory,
+              isListSelected: i == actionDonationBook,
+              isAddSelected: i == actionAddDonationBook,
               pressList: () {
-                function(actionStories);
+                function(actionDonationBook);
               },
               pressAdd: () {
-                function(actionAddStory);
+                function(actionAddDonationBook);
               },
               press: () {
-                function(actionStories);
-                // function(dummyActionStories);
+                function(actionDonationBook);
+                // function(dummyActionAuthor);
               },
-              index: 2,
+              index: 10,
             ),
 
             DrawerExpansionTile(

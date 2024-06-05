@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/model/authors_model.dart';
+import 'package:ebookadminpanel/model/donation_book_model.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/model/kegiatan_literasi_model.dart';
 import 'package:ebookadminpanel/model/sekilas_info_model.dart';
@@ -14,6 +15,7 @@ import 'data/key_table.dart';
 
 class HomeController extends GetxController {
   StoryModel? storyModel = null;
+  DonationBookModel? donationBookModel = null;
   TopAuthors? authorModel = null;
   Genre? genreModel = null;
   SekilasInfoModel? sekilasInfoModel = null;
@@ -26,10 +28,12 @@ class HomeController extends GetxController {
   RxString kegiatanLiterasi = ''.obs;
   RxString user = ''.obs;
   RxString story = ''.obs;
+  RxString donationBook = ''.obs;
   RxString storyNotification = ''.obs;
-  RxString pdf = Constants.physichBook.obs;
+  RxString pdf = Constants.file.obs;
 
   Rx<BookType> bookType = BookType.ebook.obs;
+  Rx<DonationBookType> donationBookType = DonationBookType.ebook.obs;
   Rx<Category> category = Category.bebasBaca.obs;
 
   RxList<TopAuthors> authorList = <TopAuthors>[].obs;
@@ -44,20 +48,26 @@ class HomeController extends GetxController {
   RxList<UserModel> userList = <UserModel>[].obs;
   RxList<String> allUserList = <String>[].obs;
   RxList<StoryModel> storyList = <StoryModel>[].obs;
+  RxList<DonationBookModel> donationBookList = <DonationBookModel>[].obs;
   RxList<StoryModel> storyListNotification = <StoryModel>[].obs;
   RxList<String> sliderList = <String>[].obs;
   RxList<String> allStoryList = <String>[].obs;
+  RxList<String> allDonationBookList = <String>[].obs;
   RxList<String> allStoryListNotification = <String>[].obs;
   RxList<String> sliderIdList = <String>[].obs;
   RxBool isLoading = false.obs;
-
-  List<String> pdfOptionList = [Constants.physichBook, Constants.file];
   List<Category> categoryList = Category.values;
   List<BookType> bookTypeList = BookType.values;
+  List<DonationBookType> donationBookTypeList = DonationBookType.values;
 
   setStoryModel(StoryModel storyModel) {
     this.storyModel = storyModel;
     changeAction(actionEditStory);
+  }
+
+  setDonationBookModel(DonationBookModel donationBookModel) {
+    this.donationBookModel = donationBookModel;
+    changeAction(actionEditDonationBook);
   }
 
   setAuthorModel(TopAuthors authorModel) {
@@ -96,6 +106,7 @@ class HomeController extends GetxController {
     fetchKegiatanLiterasiData();
     fetchUserData();
     fetchStoryDataForNotification();
+    fetchDonationBook();
   }
 
   fetchAuthorData() async {
@@ -270,6 +281,28 @@ class HomeController extends GetxController {
     } catch (e) {
       print('Error fetching user data: $e');
       return [];
+    }
+  }
+
+  fetchDonationBook() async {
+    isLoading(true);
+    donationBookList.clear();
+    allDonationBookList.clear();
+    donationBook("");
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.donationBook).get();
+
+    if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> list1 = querySnapshot.docs;
+      for (var doc in list1) {
+        var donationBook = DonationBookModel.fromFirestore(doc);
+        donationBookList.add(donationBook);
+        allDonationBookList.add(donationBook.name!);
+      }
+      isLoading(false);
+      donationBook((list1[0]).id);
+    } else {
+      isLoading(false);
     }
   }
 }

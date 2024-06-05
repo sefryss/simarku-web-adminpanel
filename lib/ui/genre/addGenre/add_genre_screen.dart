@@ -167,7 +167,7 @@ class _AddGenreScreenState extends State<AddGenreScreen> {
                               horPadding: 25.h,
                               horizontalSpace: 0,
                               verticalSpace: 0,
-                              btnHeight: 40.h,
+                              btnHeight: 50.h,
                             )),
                       ],
                     ),
