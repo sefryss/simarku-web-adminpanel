@@ -3,6 +3,7 @@ import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
@@ -20,18 +21,65 @@ import '../../util/pref_data.dart';
 import 'key_table.dart';
 
 class FirebaseData {
+  // static createUser({
+  //   required bool isAdmin,
+  //   required bool isAccess,
+  //   required String password,
+  //   required String username,
+  //   required Function function,
+  // }) {
+  //   FirebaseFirestore.instance.collection('Users').add({
+  //     'FullName': 'Mimin SiMarKu',
+  //     'ProfilePicture': '',
+  //     'NIKNumber': '',
+  //     'PhoneNumber': '',
+  //     'Address': '',
+  //     'Email': username,
+  //     'IsOnline': false,
+  //     'LastActive': '',
+  //     'PushToken': '',
+  //     'isAccess': isAccess,
+  //     'is_admin': isAdmin,
+  //     'device_id': deviceID.value,
+  //   });
+
+  //   print("called-----function");
+  //   function();
+  // }
+
+  //  // Function to update Firebase Messaging Token
+  // Future<void> updatePushToken() async {
+  //   try {
+  //     final token = await fetchFirebaseMessagingToken();
+  //     await updateUserField({'PushToken': token});
+  //     user.value.pushToken = token;
+  //   } catch (e) {
+  //     // SMLoaders.errorSnackBar(
+  //     //     title: 'Push Token Error',
+  //     //     message: 'Terjadi kesalahan mendapatkan push token.');
+  //   }
+  // }
+
   static createUser(
       {required bool isAdmin,
+      required bool isAccess,
       required String password,
       required String username,
       required Function function}) {
     FirebaseFirestore.instance.collection(KeyTable.adminData).add({
+      'FullName': 'Mimin SiMarKu',
+      'ProfilePicture': '',
+      'NIKNumber': '',
+      'PhoneNumber': '',
+      'Address': '',
       KeyTable.keyUserName: username,
-      KeyTable.keyPassword: password,
+      'IsOnline': false,
+      'LastActive': '',
+      'PushToken': '',
+      KeyTable.keyIsAccess: isAccess,
+      KeyTable.keyIsAdmin: isAdmin,
       KeyTable.keyDeviceId: deviceID.value,
       KeyTable.keyUid: FirebaseAuth.instance.currentUser!.uid,
-      KeyTable.keyIsAdmin: isAdmin,
-      "isAccess": true
     }).then((value) {
       print("called-----function");
       function();
@@ -677,6 +725,16 @@ class FirebaseData {
     homeController.fetchKegiatanLiterasiData();
   }
 
+  static refreshFeedbackData() {
+    HomeController homeController = Get.find();
+    homeController.fetchFeedback();
+  }
+
+  static refreshRatingData() {
+    HomeController homeController = Get.find();
+    homeController.fetchRating();
+  }
+
   static refreshUserData() {
     HomeController homeController = Get.find();
     homeController.fetchUserData();
@@ -772,5 +830,38 @@ List<DashBoardData> getDashboardData() {
         navigateAddClassId: 5,
         action: actionStories,
         addAction: actionAddStory),
+    DashBoardData(
+        icon: 'dashboard_donation_icon.svg',
+        title: 'Donasi Buku',
+        backgroundColor: Color(0XFFFFEDE9),
+        buttonColor: primaryColor,
+        tableName: KeyTable.donationBook,
+        navigateId: 2,
+        navigateIndex: 4,
+        navigateAddClassId: 3,
+        action: actionDonationBook,
+        addAction: null),
+    DashBoardData(
+        icon: 'dashboard_kegiatan_literasi_icon.svg',
+        title: 'Kegiatan Literasi',
+        backgroundColor: Color(0XFFD8F1E4),
+        buttonColor: Color(0XFF36CB79),
+        tableName: KeyTable.kegiatanLiterasi,
+        navigateId: 5,
+        navigateIndex: 4,
+        navigateAddClassId: 5,
+        action: actionKegiatanLiterasi,
+        addAction: actionAddKegiatanLiterasi),
+    DashBoardData(
+        icon: 'dashboard_sekilas_info_icon.svg',
+        title: 'Sekilas Info',
+        backgroundColor: Color(0XFFFFF6D4),
+        buttonColor: Color(0XFFFFAE35),
+        tableName: KeyTable.sekilasInfo,
+        navigateId: 4,
+        navigateIndex: 3,
+        navigateAddClassId: 6,
+        action: actionSekilasInfo,
+        addAction: actionAddSekilasInfo),
   ];
 }

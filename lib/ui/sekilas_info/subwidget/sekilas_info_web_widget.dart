@@ -218,7 +218,7 @@ class SekilasInfoWebWidget extends StatelessWidget {
             children: [
               getHeaderCell('ID', context, 50),
               getHeaderCell('Penulis', context, 145),
-              getHeaderCell('Image', context, 120),
+              getHeaderCell('Gambar', context, 120),
               getHeaderCell('Tanggal', context, 160),
               getHeaderCell('Judul', context, 100),
             ],

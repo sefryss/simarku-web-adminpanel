@@ -38,7 +38,7 @@ class _AddGenreScreenState extends State<AddGenreScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getTextWidget(context, isEdit ? 'Edit Genre' : 'Add Genre', 75,
+            getTextWidget(context, isEdit ? 'Edit Genre' : 'Tambah Genre', 75,
                 getFontColor(context),
                 fontWeight: FontWeight.w700),
             getVerticalSpace(context, 35),
@@ -147,7 +147,7 @@ class _AddGenreScreenState extends State<AddGenreScreen> {
                       children: [
                         Obx(() => getButtonWidget(
                               context,
-                              isEdit ? 'Update' : 'Save',
+                              isEdit ? 'Ubah' : 'Simpan',
                               isProgress: genreController.isLoading.value,
                               () {
                                 if (isEdit) {

@@ -79,14 +79,14 @@ class _GenreScreenState extends State<GenreScreen> {
                             ),
                             Expanded(
                                 child: getSearchTextFiledWidget(
-                                    context, 'Search..', textEditingController,
+                                    context, 'Cari...', textEditingController,
                                     onChanged: (value) {
                               queryText(value);
                             })),
                             getHorizontalSpace(context, 15),
                             getButtonWidget(
                               context,
-                              'Add New Genre',
+                              'Tambah Genre',
                               () {
                                 HomeController homeController =
                                     Get.find<HomeController>();
@@ -371,7 +371,7 @@ class _GenreScreenState extends State<GenreScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Delete",
+                title: "Hapus",
                 space: 0,
                 visibility: false,
               ),
@@ -397,7 +397,7 @@ class _GenreScreenState extends State<GenreScreen> {
                           }, genreModel.id!, KeyTable.storyList,
                               KeyTable.genreId, context);
                         },
-                        subTitle: 'Delete');
+                        subTitle: 'Hapus');
                   });
 
               // PrefData.checkAccess(
@@ -435,7 +435,7 @@ class _GenreScreenState extends State<GenreScreen> {
               //           subTitle: 'Delete');
               //     });
             },
-            value: 'Delete'),
+            value: 'Hapus'),
       ],
       elevation: 1,
     );

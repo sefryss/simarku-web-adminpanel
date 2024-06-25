@@ -173,7 +173,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               oldAction);
                                         },
                                         child: getCustomFont(
-                                            "View All",
+                                            "Lihat Semua",
                                             getResizeFont(context, 50),
                                             getFontColor(context),
                                             1,

@@ -51,7 +51,7 @@ dependencies:
   #  delta_markdown:
   #  flutter_markdown: ^0.6.14
   file_picker: ^6.1.1
-  firebase_messaging: ^14.7.10
+  firebase_messaging: ^14.8.0
   http: ^1.1.0
   cloud_functions:
   tuple: ^2.0.2

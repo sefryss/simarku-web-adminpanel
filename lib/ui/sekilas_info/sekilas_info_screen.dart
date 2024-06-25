@@ -79,7 +79,7 @@ class _SekilasInfoScreenState extends State<SekilasInfoScreen> {
                             ),
                             Expanded(
                                 child: getSearchTextFiledWidget(
-                                    context, 'Search..', textEditingController,
+                                    context, 'Cari...', textEditingController,
                                     onChanged: (value) {
                               queryText(value);
                             })),
@@ -376,7 +376,7 @@ class _SekilasInfoScreenState extends State<SekilasInfoScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Delete",
+                title: "Hapus",
                 space: 0,
                 visibility: false,
               ),
@@ -405,11 +405,10 @@ class _SekilasInfoScreenState extends State<SekilasInfoScreen> {
                             KeyTable.sekilasInfoId,
                           );
                         },
-                        subTitle: 'Delete');
+                        subTitle: 'Hapus');
                   });
-
             },
-            value: 'Delete'),
+            value: 'Hapus'),
       ],
       elevation: 1,
     );

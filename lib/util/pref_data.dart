@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,23 +10,21 @@ class PrefData {
   static String keyLoginId = pkgName + "loginId";
   static String keyAction = pkgName + "action";
 
-
-
-  static setLogin(bool s,String id,bool isAccess) async {
+  static setLogin(bool s, String id, bool isAccess) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(login, s);
     prefs.setString(keyLoginId, id);
     prefs.setBool(keyIsAccess, isAccess);
   }
 
-
-  static Future checkAccess({required BuildContext context,required Function function}) async {
+  static Future checkAccess(
+      {required BuildContext context, required Function function}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isAccess= prefs.getBool(keyIsAccess) ?? false;
-    if(isAccess){
+    bool isAccess = prefs.getBool(keyIsAccess) ?? false;
+    if (isAccess) {
       function();
-    }else{
-      showCustomToast(message: "You are demo user..",context: context);
+    } else {
+      showCustomToast(message: "You are demo user..", context: context);
     }
   }
 
@@ -49,7 +44,6 @@ class PrefData {
     return id;
   }
 
-
   static Future<int> getAction() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(keyAction) ?? 0;
@@ -59,5 +53,4 @@ class PrefData {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt(keyAction, value);
   }
-
 }

@@ -166,25 +166,54 @@ class SideMenu extends StatelessWidget {
 
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
+              title: "Buku",
+              svgSrc: (i == actionAddStory ||
+                      i == actionEditStory ||
+                      i == actionStories ||
+                      checkAction(i, dummyActionStories))
+                  ? "stories_active.svg"
+                  : "stories.svg",
+              isSelected: i == actionAddStory ||
+                  i == actionEditStory ||
+                  i == actionStories ||
+                  checkAction(i, dummyActionStories),
+              isDropDown: true,
+              isListSelected: i == actionStories,
+              isAddSelected: i == actionAddStory,
+              pressList: () {
+                function(actionStories);
+              },
+              pressAdd: () {
+                function(actionAddStory);
+              },
+              press: () {
+                function(actionStories);
+                // function(dummyActionStories);
+              },
+              index: 2,
+            ),
+
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
               title: "Donasi Buku",
               svgSrc: (i == actionDonationBook ||
                       i == actionEditDonationBook ||
                       i == actionAddDonationBook ||
                       checkAction(i, dummyActionDonationBook))
-                  ? "slider_active.svg"
-                  : "slider.svg",
+                  ? "icon_donation_fill.svg"
+                  : "icon_donation_outline.svg",
               isSelected: i == actionDonationBook ||
-                  i == actionEditDonationBook ||
-                  i == actionAddDonationBook ||
+                  //     i == actionEditDonationBook ||
+                  //     i == actionAddDonationBook ||
                   checkAction(i, dummyActionDonationBook),
-              isDropDown: true,
+              isDropDown: false,
               isListSelected: i == actionDonationBook,
-              isAddSelected: i == actionAddDonationBook,
+              // isAddSelected: i == actionAddDonationBook,
               pressList: () {
                 function(actionDonationBook);
               },
               pressAdd: () {
-                function(actionAddDonationBook);
+                // function(actionAddDonationBook);
               },
               press: () {
                 function(actionDonationBook);
@@ -200,8 +229,8 @@ class SideMenu extends StatelessWidget {
                       i == actionEditKegiatanLiterasi ||
                       i == actionAddKegiatanLiterasi ||
                       checkAction(i, dummyActionKegiatanLiterasi))
-                  ? "slider_active.svg"
-                  : "slider.svg",
+                  ? "icon_kegiatan_literasi_fill.svg"
+                  : "icon_kegiatan_literasi_outline.svg",
               isSelected: i == actionKegiatanLiterasi ||
                   i == actionEditKegiatanLiterasi ||
                   i == actionAddKegiatanLiterasi ||
@@ -249,6 +278,85 @@ class SideMenu extends StatelessWidget {
                 // function(dummyActionAuthor);
               },
               index: 8,
+            ),
+
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Umpan Balik",
+              svgSrc:
+                  (i == actionFeedback || checkAction(i, dummyActionFeedback))
+                      ? "icon_feedback_fill.svg"
+                      : "icon_feedback_outline.svg",
+              isSelected: i == actionFeedback ||
+                  //     i == actionEditDonationBook ||
+                  //     i == actionAddDonationBook ||
+                  checkAction(i, dummyActionFeedback),
+              isDropDown: false,
+              isListSelected: i == actionFeedback,
+              // isAddSelected: i == actionAddDonationBook,
+              pressList: () {
+                function(actionFeedback);
+              },
+              pressAdd: () {
+                // function(actionAddDonationBook);
+              },
+              press: () {
+                function(actionFeedback);
+                // function(dummyActionAuthor);
+              },
+              index: 11,
+            ),
+
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Rating",
+              svgSrc: (i == actionRating || checkAction(i, dummyActionRating))
+                  ? "icon_rating_fill.svg"
+                  : "icon_rating_outline.svg",
+              isSelected: i == actionRating ||
+                  //     i == actionEditDonationBook ||
+                  //     i == actionAddDonationBook ||
+                  checkAction(i, dummyActionRating),
+              isDropDown: false,
+              isListSelected: i == actionRating,
+              // isAddSelected: i == actionAddDonationBook,
+              pressList: () {
+                function(actionRating);
+              },
+              pressAdd: () {
+                // function(actionAddDonationBook);
+              },
+              press: () {
+                function(actionRating);
+                // function(dummyActionAuthor);
+              },
+              index: 10,
+            ),
+
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Pesan",
+              svgSrc: (i == actionChat || checkAction(i, dummyActionChat))
+                  ? "icon_chat_fill.svg"
+                  : "icon_chat_outline.svg",
+              isSelected: i == actionChat ||
+                  //     i == actionEditDonationBook ||
+                  //     i == actionAddDonationBook ||
+                  checkAction(i, dummyActionChat),
+              isDropDown: false,
+              isListSelected: i == actionChat,
+              // isAddSelected: i == actionAddDonationBook,
+              pressList: () {
+                function(actionChat);
+              },
+              pressAdd: () {
+                // function(actionAddDonationBook);
+              },
+              press: () {
+                function(actionChat);
+                // function(dummyActionAuthor);
+              },
+              index: 10,
             ),
 
             // DrawerListTile(
@@ -625,7 +733,7 @@ class DrawerExpansionTile extends StatelessWidget {
                           : Colors.transparent,
                       title: getMaxLineFont(
                           context,
-                          "Add",
+                          "Tambah",
                           50,
                           isAddSelected ?? false
                               ? getPrimaryColor(context)

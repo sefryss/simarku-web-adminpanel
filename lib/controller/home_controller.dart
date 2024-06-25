@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/model/admin_model.dart';
 import 'package:ebookadminpanel/model/authors_model.dart';
 import 'package:ebookadminpanel/model/donation_book_model.dart';
+import 'package:ebookadminpanel/model/feedback_model.dart';
 import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/model/kegiatan_literasi_model.dart';
+import 'package:ebookadminpanel/model/rate_us_model.dart';
 import 'package:ebookadminpanel/model/sekilas_info_model.dart';
 import 'package:ebookadminpanel/model/story_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
@@ -14,6 +17,8 @@ import '../ui/home/home_page.dart';
 import 'data/key_table.dart';
 
 class HomeController extends GetxController {
+  FeedbackModel? feedbackModel = null;
+  RateUsModel? rateUsModel = null;
   StoryModel? storyModel = null;
   DonationBookModel? donationBookModel = null;
   TopAuthors? authorModel = null;
@@ -29,13 +34,15 @@ class HomeController extends GetxController {
   RxString user = ''.obs;
   RxString story = ''.obs;
   RxString donationBook = ''.obs;
+  RxString feedback = ''.obs;
+  RxString rateUs = ''.obs;
   RxString storyNotification = ''.obs;
   RxString pdf = Constants.file.obs;
 
   Rx<BookType> bookType = BookType.ebook.obs;
   Rx<DonationBookType> donationBookType = DonationBookType.ebook.obs;
   Rx<Category> category = Category.bebasBaca.obs;
-
+// Rx<AdminModel> adminModel = AdminModel().obs;
   RxList<TopAuthors> authorList = <TopAuthors>[].obs;
   RxList<String> allAuthorList = <String>[].obs;
   RxList<Genre> genreList = <Genre>[].obs;
@@ -49,10 +56,14 @@ class HomeController extends GetxController {
   RxList<String> allUserList = <String>[].obs;
   RxList<StoryModel> storyList = <StoryModel>[].obs;
   RxList<DonationBookModel> donationBookList = <DonationBookModel>[].obs;
+  RxList<FeedbackModel> feedbackList = <FeedbackModel>[].obs;
+  RxList<RateUsModel> ratingList = <RateUsModel>[].obs;
   RxList<StoryModel> storyListNotification = <StoryModel>[].obs;
   RxList<String> sliderList = <String>[].obs;
   RxList<String> allStoryList = <String>[].obs;
   RxList<String> allDonationBookList = <String>[].obs;
+  RxList<String> allFeedbackList = <String>[].obs;
+  RxList<String> allRateUsList = <String>[].obs;
   RxList<String> allStoryListNotification = <String>[].obs;
   RxList<String> sliderIdList = <String>[].obs;
   RxBool isLoading = false.obs;
@@ -90,6 +101,16 @@ class HomeController extends GetxController {
     changeAction(actionEditKegiatanLiterasi);
   }
 
+  setFeedbackModel(FeedbackModel feedbackModel) {
+    this.feedbackModel = feedbackModel;
+    changeAction(actionEditFeedback);
+  }
+
+  setRateUsModel(RateUsModel rateUsModel) {
+    this.rateUsModel = rateUsModel;
+    changeAction(actionEditRating);
+  }
+
   setUserModel(UserModel userModel) {
     this.userModel = userModel;
     changeAction(actionEditUser);
@@ -107,6 +128,9 @@ class HomeController extends GetxController {
     fetchUserData();
     fetchStoryDataForNotification();
     fetchDonationBook();
+    fetchFeedback();
+    fetchRating();
+    // fetchAdminData();
   }
 
   fetchAuthorData() async {
@@ -267,6 +291,26 @@ class HomeController extends GetxController {
     }
   }
 
+  // void fetchAdminData() async {
+  //   try {
+  //     // Mengambil data admin dari koleksi "adminData" dengan dokumen tertentu
+  //     var snapshot = await FirebaseFirestore.instance.collection('Users').doc('cTO8ePjRXqTyUB7TVxFK').get();
+      
+  //     if (snapshot.exists) {
+  //       // Jika dokumen ada, update nilai adminModel
+  //       adminModel.value = AdminModel.fromFirestore(snapshot);
+  //     } else {
+  //       // Jika dokumen tidak ditemukan, bisa lakukan penanganan error atau default value
+  //       print('Dokumen tidak ditemukan');
+  //     }
+  //   } catch (e) {
+  //     // Tangani error jika terjadi masalah saat mengambil data
+  //     print('Error fetching admin data: $e');
+  //   }
+  // }
+
+  
+
   Future<List<UserModel>> fetchUserData() async {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -289,8 +333,9 @@ class HomeController extends GetxController {
     donationBookList.clear();
     allDonationBookList.clear();
     donationBook("");
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection(KeyTable.donationBook).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.donationBook)
+        .get();
 
     if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
       List<DocumentSnapshot> list1 = querySnapshot.docs;
@@ -301,6 +346,50 @@ class HomeController extends GetxController {
       }
       isLoading(false);
       donationBook((list1[0]).id);
+    } else {
+      isLoading(false);
+    }
+  }
+
+  fetchFeedback() async {
+    isLoading(true);
+    feedbackList.clear();
+    allFeedbackList.clear();
+    feedback("");
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.feedback).get();
+
+    if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> list1 = querySnapshot.docs;
+      for (var doc in list1) {
+        var feedback = FeedbackModel.fromFirestore(doc);
+        feedbackList.add(feedback);
+        allFeedbackList.add(feedback.userName!);
+      }
+      isLoading(false);
+      feedback((list1[0]).id);
+    } else {
+      isLoading(false);
+    }
+  }
+
+  fetchRating() async {
+    isLoading(true);
+    ratingList.clear();
+    allRateUsList.clear();
+    rateUs("");
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.rating).get();
+
+    if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> list1 = querySnapshot.docs;
+      for (var doc in list1) {
+        var rating = RateUsModel.fromFirestore(doc);
+        ratingList.add(rating);
+        allRateUsList.add(rating.userName!);
+      }
+      isLoading(false);
+      rateUs((list1[0]).id);
     } else {
       isLoading(false);
     }

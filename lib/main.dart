@@ -1,8 +1,10 @@
 import 'dart:ui';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:ebookadminpanel/controller/donation_book_controller.dart';
+import 'package:ebookadminpanel/controller/feedback_controller.dart';
 import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
+import 'package:ebookadminpanel/controller/rating_controller.dart';
 import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -31,6 +33,8 @@ DonationBookController donationBookController =
 SekilasInfoController sekilasInfoController = Get.put(SekilasInfoController());
 KegiatanLiterasiController kegiatanLiterasiController =
     Get.put(KegiatanLiterasiController());
+FeedbackController feedbackController = Get.put(FeedbackController());
+RatingController ratingController = Get.put(RatingController());
 
 RxString deviceID = ''.obs;
 Future<void> main() async {
@@ -95,7 +99,7 @@ class MyApp extends StatelessWidget {
         print("them===${provider.themeMode}");
         themeController.setThemeStatusBar(context);
         return GetMaterialApp(
-          title: 'Flutter Demo',
+          title: 'SiMarKu',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.theme,
           //

@@ -85,26 +85,26 @@ class _DonasiBookScreenState extends State<DonasiBookScreen> {
                               queryText(value);
                             })),
                             getHorizontalSpace(context, 15),
-                            getButtonWidget(
-                              context,
-                              'Tambah Donasi Buku',
-                              () {
-                                HomeController homeController =
-                                    Get.find<HomeController>();
+                            // getButtonWidget(
+                            //   context,
+                            //   'Tambah Donasi Buku',
+                            //   () {
+                            //     HomeController homeController =
+                            //         Get.find<HomeController>();
 
-                                if (homeController.donationBookModel != null) {
-                                  homeController.donationBookModel = null;
-                                }
+                            //     if (homeController.donationBookModel != null) {
+                            //       homeController.donationBookModel = null;
+                            //     }
 
-                                donationBookController.clearStoryData();
+                            //     donationBookController.clearStoryData();
 
-                                widget.function();
-                              },
-                              horPadding: 25.h,
-                              horizontalSpace: 0,
-                              verticalSpace: 0,
-                              btnHeight: 42.h,
-                            )
+                            //     widget.function();
+                            //   },
+                            //   horPadding: 25.h,
+                            //   horizontalSpace: 0,
+                            //   verticalSpace: 0,
+                            //   btnHeight: 42.h,
+                            // )
                           ],
                         ),
                         isWeb(context)
@@ -366,7 +366,7 @@ class _DonasiBookScreenState extends State<DonasiBookScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Delete",
+                title: "Hapus",
                 space: 0,
                 visibility: false,
               ),
@@ -377,7 +377,7 @@ class _DonasiBookScreenState extends State<DonasiBookScreen> {
                   function: () {
                     getCommonDialog(
                         context: context,
-                        title: 'Do you want to delete this book?',
+                        title: 'Apakah ingin menghapus donasi buku ini?',
                         function: () {
                           FirebaseData.deleteData(
                               tableName: KeyTable.donationBook,
@@ -390,10 +390,10 @@ class _DonasiBookScreenState extends State<DonasiBookScreen> {
                                     KeyTable.storyId);
                               });
                         },
-                        subTitle: 'Delete');
+                        subTitle: 'Hapus');
                   });
             },
-            value: 'Delete'),
+            value: 'Hapus'),
       ],
       elevation: 1,
     );

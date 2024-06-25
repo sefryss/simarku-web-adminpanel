@@ -1196,7 +1196,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                         children: [
                           Obx(() => getButtonWidget(
                                 context,
-                                isEdit ? 'Update' : 'Save',
+                                isEdit ? 'Ubah' : 'Simpan',
                                 isProgress: storyController.isLoading.value,
                                 () {
                                   if (isEdit) {

@@ -377,7 +377,7 @@ class _AddSekilasInfoScreenState extends State<AddSekilasInfoScreen> {
                       children: [
                         Obx(() => getButtonWidget(
                               context,
-                              isEdit ? 'Update' : 'Save',
+                              isEdit ? 'Ubah' : 'Simpan',
                               isProgress: sekilasInfoController.isLoading.value,
                               () {
                                 if (isEdit) {
@@ -432,7 +432,6 @@ itemSubTitle(String s, BuildContext context, {Color? color}) {
 
 Widget DateTimePickerWidget(
     BuildContext context, String hintText, TextEditingController controller) {
-
   double radius = getDefaultRadius(context);
   double fontSize = getResizeFont(context, 40);
 

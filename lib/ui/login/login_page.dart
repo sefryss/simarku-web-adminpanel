@@ -107,20 +107,20 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
-                'Password',
+                'Kata Sandi',
                 40,
                 getFontColor(context),
                 fontWeight: FontWeight.w500,
               ),
               getVerticalSpace(context, 15),
               getPasswordTextFiledWidget(
-                  context, "Password", passwordController, onSubmit: (value) {
+                  context, "Kata Sandi", passwordController, onSubmit: (value) {
                 isProgress.value = true;
                 _login();
               }),
               getVerticalSpace(context, 30),
               Obx(() {
-                return getButtonWidget(context, 'Log In', () {
+                return getButtonWidget(context, 'Masuk', () {
                   isProgress.value = true;
                   _login();
                 },
@@ -143,7 +143,7 @@ class _LoginPage extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Don\'t have an account?',
+                          'Belum mempunyai akun?',
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -163,7 +163,7 @@ class _LoginPage extends State<LoginPage> {
                             confirmPasswordController.text = "";
                           },
                           child: Text(
-                            'Sign Up',
+                            'Daftar',
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
@@ -190,7 +190,7 @@ class _LoginPage extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Don\'t have an account?',
+                            'Belum mempunyai akun?',
                             textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
@@ -210,7 +210,7 @@ class _LoginPage extends State<LoginPage> {
                               confirmPasswordController.text = "";
                             },
                             child: Text(
-                              'Sign Up',
+                              'Daftar',
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
@@ -276,7 +276,7 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
-                'Password',
+                'Kata Sandi',
                 40,
                 getFontColor(context),
                 fontWeight: FontWeight.w500,
@@ -284,7 +284,7 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 15),
               getPasswordTextFiledWidget(
                 context,
-                "Password",
+                "Kata Sandi",
                 passwordController,
                 onSubmit: (value) {
                   isProgress.value = true;
@@ -294,7 +294,7 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
-                'Confirm Password',
+                'Konfirmasi Kata Sandi',
                 40,
                 getFontColor(context),
                 fontWeight: FontWeight.w500,
@@ -302,7 +302,7 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 15),
               getPasswordTextFiledWidget(
                 context,
-                "Confirm Password",
+                "Konfirmasi",
                 confirmPasswordController,
                 onSubmit: (value) {
                   isProgress.value = true;
@@ -311,7 +311,7 @@ class _LoginPage extends State<LoginPage> {
               ),
               getVerticalSpace(context, 30),
               Obx(() {
-                return getButtonWidget(context, 'Create', () {
+                return getButtonWidget(context, 'Daftar', () {
                   isProgress.value = true;
                   signUp();
                 },
@@ -327,7 +327,7 @@ class _LoginPage extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Already have an account?',
+                    'Sudah mempunyai akun?',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                         color: Colors.grey.shade600,
@@ -345,7 +345,7 @@ class _LoginPage extends State<LoginPage> {
                       confirmPasswordController.text = "";
                     },
                     child: Text(
-                      'Login',
+                      'Masuk',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: primaryColor, fontWeight: FontWeight.w600),

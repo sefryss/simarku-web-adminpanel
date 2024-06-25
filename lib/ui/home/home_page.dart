@@ -3,12 +3,18 @@ import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
 import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
 import 'package:ebookadminpanel/controller/story_controller.dart';
+import 'package:ebookadminpanel/ui/chat/addRating/add_chat_screen.dart';
+import 'package:ebookadminpanel/ui/chat/chat_screen.dart';
 import 'package:ebookadminpanel/ui/donation_book/addDonationBook/add_donation_book_screen.dart';
 import 'package:ebookadminpanel/ui/donation_book/donation_book_screen.dart';
+import 'package:ebookadminpanel/ui/feedback/addFeedback/add_feedback_screen.dart';
+import 'package:ebookadminpanel/ui/feedback/feedback_screen.dart';
 import 'package:ebookadminpanel/ui/genre/addGenre/add_genre_screen.dart';
 import 'package:ebookadminpanel/ui/genre/genre_screen.dart';
 import 'package:ebookadminpanel/ui/kegiatan_literasi/addKegiatanLiterasi/add_kegiatan_literasi_screen.dart';
 import 'package:ebookadminpanel/ui/kegiatan_literasi/kegiatan_literasi_screen.dart';
+import 'package:ebookadminpanel/ui/rating/addRating/add_rating_screen.dart';
+import 'package:ebookadminpanel/ui/rating/rating_screen.dart';
 import 'package:ebookadminpanel/ui/sekilas_info/addSekilasInfo/add_sekilas_info_screen.dart';
 import 'package:ebookadminpanel/ui/sekilas_info/sekilas_info_screen.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
@@ -413,6 +419,61 @@ class _HomePage extends State<HomePage> {
         },
         donationBookModel: homeController.donationBookModel,
       );
+    } else if (action == actionFeedback) {
+      PrefData.setAction(actionFeedback);
+
+      return FeedbackScreen(
+        function: () {
+          // changeAction(actionAddDonationBook);
+          // onBackClick();
+        },
+      );
+    } else if (action == actionEditFeedback) {
+      PrefData.setAction(actionEditFeedback);
+
+      feedbackController.homeController = homeController;
+      feedbackController.feedbackModel = homeController.feedbackModel;
+
+      // if(!feedbackController.isBack.value){
+
+      feedbackController
+          .setAllDataFromFeedbackModel(homeController.feedbackModel);
+
+      // }
+      return AddFeedbackScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionFeedback);
+        },
+        feedbackModel: homeController.feedbackModel,
+      );
+    } else if (action == actionRating) {
+      PrefData.setAction(actionRating);
+
+      return RatingScreen(
+        function: () {
+          // changeAction(actionAddDonationBook);
+          // onBackClick();
+        },
+      );
+    } else if (action == actionEditRating) {
+      PrefData.setAction(actionEditRating);
+
+      ratingController.homeController = homeController;
+      ratingController.rateUsModel = homeController.rateUsModel;
+
+      // if(!ratingController.isBack.value){
+
+      ratingController.setAllDataFromRatingModel(homeController.rateUsModel);
+
+      // }
+      return AddRatingScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionRating);
+        },
+        rateUsModel: homeController.rateUsModel,
+      );
     } else if (action == actionKegiatanLiterasi) {
       PrefData.setAction(actionKegiatanLiterasi);
       kegiatanLiterasiController.clearKegiatanLiterasiData();
@@ -495,6 +556,33 @@ class _HomePage extends State<HomePage> {
           changeAction(actionSekilasInfo);
         },
         sekilasInfoModel: homeController.sekilasInfoModel,
+      );
+    } else if (action == actionChat) {
+      PrefData.setAction(actionChat);
+
+      return ChatScreen(
+        function: () {
+          // changeAction(actionAddDonationBook);
+          // onBackClick();
+        },
+      );
+    } else if (action == actionEditChat) {
+      PrefData.setAction(actionEditChat);
+
+      ratingController.homeController = homeController;
+      ratingController.rateUsModel = homeController.rateUsModel;
+
+      // if(!ratingController.isBack.value){
+
+      ratingController.setAllDataFromRatingModel(homeController.rateUsModel);
+
+      // }
+      return AddChatScreen(
+        function: () {
+          onBackClick();
+          changeAction(actionChat);
+        },
+        rateUsModel: homeController.rateUsModel,
       );
     } else if (action == actionHomeSlider) {
       PrefData.setAction(actionHomeSlider);
@@ -654,20 +742,20 @@ class _HomePage extends State<HomePage> {
                     builder: (BuildContext dialogContext) {
                       return AlertDialog(
                         title: getCustomFont(
-                            "Log Out",
+                            "Keluar",
                             getResizeFont(context, 70),
                             getFontColor(context),
                             1,
                             fontWeight: FontWeight.w600),
                         content: getCustomFont(
-                            "Are you sure want to Log out ?",
+                            "Apakah anda yakin ingin keluar?",
                             getResizeFont(context, 50),
                             getFontColor(context),
                             1),
                         actions: <Widget>[
                           TextButton(
                             child: getCustomFont(
-                                "YES",
+                                "Ya",
                                 getResizeFont(context, 50),
                                 getPrimaryColor(context),
                                 1,
@@ -680,7 +768,7 @@ class _HomePage extends State<HomePage> {
                           ),
                           TextButton(
                             child: getCustomFont(
-                                "NO",
+                                "Tidak",
                                 getResizeFont(context, 50),
                                 getPrimaryColor(context),
                                 1,
@@ -705,7 +793,7 @@ class _HomePage extends State<HomePage> {
                 },
               ),
             ),
-            value: 'Log Out'),
+            value: 'Keluar'),
       ],
       elevation: 1.0,
     );

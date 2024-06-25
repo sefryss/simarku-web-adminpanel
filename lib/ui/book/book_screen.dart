@@ -54,7 +54,7 @@ class _StoryScreenState extends State<StoryScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getTextWidget(context, 'Books', 75, getFontColor(context),
+            getTextWidget(context, 'Buku', 75, getFontColor(context),
                 fontWeight: FontWeight.w700),
             getVerticalSpace(context, 35),
             Expanded(
@@ -80,14 +80,14 @@ class _StoryScreenState extends State<StoryScreen> {
                             ),
                             Expanded(
                                 child: getSearchTextFiledWidget(
-                                    context, 'Search..', textEditingController,
+                                    context, 'Cari...', textEditingController,
                                     onChanged: (value) {
                               queryText(value);
                             })),
                             getHorizontalSpace(context, 15),
                             getButtonWidget(
                               context,
-                              'Add New Book',
+                              'Tambah Buku',
                               () {
                                 HomeController homeController =
                                     Get.find<HomeController>();
@@ -366,7 +366,7 @@ class _StoryScreenState extends State<StoryScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Delete",
+                title: "Hapus",
                 space: 0,
                 visibility: false,
               ),
@@ -377,7 +377,7 @@ class _StoryScreenState extends State<StoryScreen> {
                   function: () {
                     getCommonDialog(
                         context: context,
-                        title: 'Do you want to delete this book?',
+                        title: 'Apakah ingin menghapus buku ini?',
                         function: () {
                           FirebaseData.deleteData(
                               tableName: KeyTable.storyList,
@@ -390,10 +390,10 @@ class _StoryScreenState extends State<StoryScreen> {
                                     KeyTable.storyId);
                               });
                         },
-                        subTitle: 'Delete');
+                        subTitle: 'Hapus');
                   });
             },
-            value: 'Delete'),
+            value: 'Hapus'),
       ],
       elevation: 1,
     );

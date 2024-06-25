@@ -358,7 +358,7 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                       children: [
                         Obx(() => getButtonWidget(
                               context,
-                              isEdit ? 'Update' : 'Save',
+                              isEdit ? 'Ubah' : 'Simpan',
                               isProgress:
                                   kegiatanLiterasiController.isLoading.value,
                               () {

@@ -80,7 +80,7 @@ class _KegiatanLiterasiScreenState extends State<KegiatanLiterasiScreen> {
                             ),
                             Expanded(
                                 child: getSearchTextFiledWidget(
-                                    context, 'Search..', textEditingController,
+                                    context, 'Cari...', textEditingController,
                                     onChanged: (value) {
                               queryText(value);
                             })),
@@ -381,7 +381,7 @@ class _KegiatanLiterasiScreenState extends State<KegiatanLiterasiScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Delete",
+                title: "Hapus",
                 space: 0,
                 visibility: false,
               ),
@@ -410,10 +410,10 @@ class _KegiatanLiterasiScreenState extends State<KegiatanLiterasiScreen> {
                             KeyTable.kegiatanLiterasiId,
                           );
                         },
-                        subTitle: 'Delete');
+                        subTitle: 'Hapus');
                   });
             },
-            value: 'Delete'),
+            value: 'Hapus'),
       ],
       elevation: 1,
     );

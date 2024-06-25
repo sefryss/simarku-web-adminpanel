@@ -236,14 +236,14 @@ class WebWidget extends StatelessWidget {
       child: Row(
         children: [
           getHeaderCell('ID', context, 50),
-          getHeaderCell('Category', context, 110),
-          getHeaderCell('Image', context, 100),
-          Expanded(flex: 1, child: getHeaderTitle(context, 'Book Title')),
+          getHeaderCell('Kategori', context, 110),
+          getHeaderCell('Gambar', context, 100),
+          Expanded(flex: 1, child: getHeaderTitle(context, 'Judul Buku')),
           Expanded(
             flex: 2,
             child: getHeaderCell('Pemilik', context, 100),
           ),
-          getHeaderCell('Book Status', context, 130),
+          getHeaderCell('Status', context, 120),
           getHeaderTitle(context, 'Action'),
         ],
       ),

@@ -1,5 +1,7 @@
 class KeyTable {
   static String storyList = 'books';
+  static String feedback = 'feedback';
+  static String rating = 'rating';
   static String donationBook = 'donation_books';
   // static String storyList = 'stories';
   static String recentList = 'recent';
@@ -25,10 +27,11 @@ class KeyTable {
   static String isFeatured = 'is_featured';
   static String isAvailable = 'is_available';
 
-  static String adminData = 'admin';
-  static String keyUserName = 'username';
+  static String adminData = 'Users';
+  static String keyUserName = 'Email';
   static String keyPassword = 'password';
   static String keyIsAdmin = 'is_admin';
+  static String keyIsAccess = 'isAccess';
 
   static String keyCategoryTable = 'category';
   static String keyHomeSliderTable = 'home_slider';

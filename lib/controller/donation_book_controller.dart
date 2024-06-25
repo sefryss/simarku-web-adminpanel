@@ -12,8 +12,6 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'package:ebookadminpanel/model/story_model.dart';
 import '../theme/color_scheme.dart';
 import '../ui/common/common.dart';
 import '../util/constants.dart';
