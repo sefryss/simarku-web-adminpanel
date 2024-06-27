@@ -38,7 +38,7 @@ class AppTheme {
 
     return base.copyWith(
       // ignore: deprecated_member_use
-      backgroundColor: backgroundColor,
+      // backgroundColor: backgroundColor,
       scaffoldBackgroundColor: backgroundColor,
       cardColor: cardColor,
       primaryColor: primaryColor,
@@ -61,7 +61,7 @@ class AppTheme {
       primaryColor: primaryColor,
       highlightColor: Colors.transparent,
       // ignore: deprecated_member_use
-      backgroundColor: darkBackgroundColor,
+      // backgroundColor: darkBackgroundColor,
       scaffoldBackgroundColor: darkBackgroundColor,
       cardColor: darkCardColor,
       brightness: Brightness.dark,

@@ -49,6 +49,7 @@ int dummyActionRating = -11;
 int actionChat = 34;
 int actionEditChat= 35;
 int dummyActionChat = -12;
+int actionDetailChat = 36;
 
 List<int> mainActionList = [
   actionCategories,
@@ -64,7 +65,8 @@ List<int> mainActionList = [
   actionDonationBook,
   actionFeedback,
   actionRating,
-  actionChat
+  actionChat,
+  actionDetailChat,
 ];
 List<int> dummyActionList = [
   dummyActionCategories,

@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:ebookadminpanel/theme/app_theme.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
-
 import '../../main.dart';
 import '../../theme/color_scheme.dart';
 import '../../util/constants.dart';

@@ -5,6 +5,8 @@ import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
 import 'package:ebookadminpanel/controller/story_controller.dart';
 import 'package:ebookadminpanel/ui/chat/addRating/add_chat_screen.dart';
 import 'package:ebookadminpanel/ui/chat/chat_screen.dart';
+import 'package:ebookadminpanel/ui/chat/subwidget/chat_web_widget.dart';
+import 'package:ebookadminpanel/ui/chat/widgets/detail_chat_screen.dart';
 import 'package:ebookadminpanel/ui/donation_book/addDonationBook/add_donation_book_screen.dart';
 import 'package:ebookadminpanel/ui/donation_book/donation_book_screen.dart';
 import 'package:ebookadminpanel/ui/feedback/addFeedback/add_feedback_screen.dart';
@@ -560,31 +562,18 @@ class _HomePage extends State<HomePage> {
     } else if (action == actionChat) {
       PrefData.setAction(actionChat);
 
-      return ChatScreen(
-        function: () {
-          // changeAction(actionAddDonationBook);
-          // onBackClick();
-        },
-      );
-    } else if (action == actionEditChat) {
-      PrefData.setAction(actionEditChat);
+      return ChatWebWidget();
+    }
+    // else if (action == actionDetailChat) {
+    //   PrefData.setAction(actionDetailChat);
+    //   return DetailChatScreen(
+    //       // function: () {
+    //       //   changeAction(actionAddSlider);
+    //       // },
+    //       );
+    // }
 
-      ratingController.homeController = homeController;
-      ratingController.rateUsModel = homeController.rateUsModel;
-
-      // if(!ratingController.isBack.value){
-
-      ratingController.setAllDataFromRatingModel(homeController.rateUsModel);
-
-      // }
-      return AddChatScreen(
-        function: () {
-          onBackClick();
-          changeAction(actionChat);
-        },
-        rateUsModel: homeController.rateUsModel,
-      );
-    } else if (action == actionHomeSlider) {
+    else if (action == actionHomeSlider) {
       PrefData.setAction(actionHomeSlider);
       return HomeSliderScreen(
         function: () {

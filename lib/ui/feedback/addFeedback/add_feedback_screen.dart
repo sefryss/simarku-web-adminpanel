@@ -210,7 +210,7 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
                                                       ScrollController(),
                                                   configurations:
                                                       QuillEditorConfigurations(
-                                                          readOnly: false,
+                                                          // readOnly: false,
                                                           controller:
                                                               feedbackController
                                                                   .feedbackController),

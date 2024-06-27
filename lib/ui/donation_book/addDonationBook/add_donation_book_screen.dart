@@ -427,7 +427,7 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                                     ScrollController(),
                                                 configurations:
                                                     QuillEditorConfigurations(
-                                                        readOnly: false,
+                                                        // readOnly: false,
                                                         controller:
                                                             donationBookController
                                                                 .descController),

@@ -21,52 +21,14 @@ import '../../util/pref_data.dart';
 import 'key_table.dart';
 
 class FirebaseData {
-  // static createUser({
-  //   required bool isAdmin,
-  //   required bool isAccess,
-  //   required String password,
-  //   required String username,
-  //   required Function function,
-  // }) {
-  //   FirebaseFirestore.instance.collection('Users').add({
-  //     'FullName': 'Mimin SiMarKu',
-  //     'ProfilePicture': '',
-  //     'NIKNumber': '',
-  //     'PhoneNumber': '',
-  //     'Address': '',
-  //     'Email': username,
-  //     'IsOnline': false,
-  //     'LastActive': '',
-  //     'PushToken': '',
-  //     'isAccess': isAccess,
-  //     'is_admin': isAdmin,
-  //     'device_id': deviceID.value,
-  //   });
-
-  //   print("called-----function");
-  //   function();
-  // }
-
-  //  // Function to update Firebase Messaging Token
-  // Future<void> updatePushToken() async {
-  //   try {
-  //     final token = await fetchFirebaseMessagingToken();
-  //     await updateUserField({'PushToken': token});
-  //     user.value.pushToken = token;
-  //   } catch (e) {
-  //     // SMLoaders.errorSnackBar(
-  //     //     title: 'Push Token Error',
-  //     //     message: 'Terjadi kesalahan mendapatkan push token.');
-  //   }
-  // }
-
   static createUser(
       {required bool isAdmin,
       required bool isAccess,
       required String password,
       required String username,
       required Function function}) {
-    FirebaseFirestore.instance.collection(KeyTable.adminData).add({
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    FirebaseFirestore.instance.collection(KeyTable.adminData).doc(uid).set({
       'FullName': 'Mimin SiMarKu',
       'ProfilePicture': '',
       'NIKNumber': '',
@@ -79,7 +41,7 @@ class FirebaseData {
       KeyTable.keyIsAccess: isAccess,
       KeyTable.keyIsAdmin: isAdmin,
       KeyTable.keyDeviceId: deviceID.value,
-      KeyTable.keyUid: FirebaseAuth.instance.currentUser!.uid,
+      KeyTable.keyUid: uid,
     }).then((value) {
       print("called-----function");
       function();
@@ -454,25 +416,25 @@ class FirebaseData {
     }
   }
 
-  static Future<int> getLastIndexFromUserTable() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection(KeyTable.user)
-        .orderBy(KeyTable.index, descending: true)
-        .get();
+  // static Future<int> getLastIndexFromUserTable() async {
+  //   QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //       .collection(KeyTable.user)
+  //       .orderBy(KeyTable.index, descending: true)
+  //       .get();
 
-    if (querySnapshot.size > 0) {
-      if (querySnapshot.docs.length > 0) {
-        List<DocumentSnapshot> list1 = querySnapshot.docs;
-        if (list1.length > 0) {
-          UserModel userModel = UserModel.fromFirestore(list1[0]);
-          return (userModel.index! + 1);
-        }
-      }
-      return 1;
-    } else {
-      return 1;
-    }
-  }
+  //   if (querySnapshot.size > 0) {
+  //     if (querySnapshot.docs.length > 0) {
+  //       List<DocumentSnapshot> list1 = querySnapshot.docs;
+  //       if (list1.length > 0) {
+  //         UserModel userModel = UserModel.fromFirestore(list1[0]);
+  //         return (userModel.index! + 1);
+  //       }
+  //     }
+  //     return 1;
+  //   } else {
+  //     return 1;
+  //   }
+  // }
 
   static Future<String> getAuthName({required String refId}) async {
     print("called-----true");

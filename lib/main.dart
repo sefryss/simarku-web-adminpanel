@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:ebookadminpanel/controller/donation_book_controller.dart';
@@ -10,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -19,6 +21,7 @@ import 'package:ebookadminpanel/util/app_routes.dart';
 import 'package:ebookadminpanel/util/pref_data.dart';
 import 'controller/data/LoginData.dart';
 import 'controller/story_controller.dart';
+import 'controller/chat_controller.dart'; // Import your ChatController
 
 RxInt selectedAction = 0.obs;
 
@@ -88,10 +91,33 @@ setScreenSize(
   ScreenUtil.init(context, designSize: Size(1440, 900));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      log('Message: $message');
+
+      if (ChatController.auth.currentUser != null) {
+        if (message.toString().contains('resume')) {
+          ChatController.updateActiveStatus(true);
+        }
+        if (message.toString().contains('pause')) {
+          ChatController.updateActiveStatus(false);
+        }
+      }
+
+      return Future.value(message);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ThemeController>(

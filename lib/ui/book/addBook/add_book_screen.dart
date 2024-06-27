@@ -411,7 +411,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
                                                     ScrollController(),
                                                 configurations:
                                                     QuillEditorConfigurations(
-                                                        readOnly: false,
+                                                        // readOnly: false,
                                                         controller:
                                                             storyController
                                                                 .descController),
