@@ -112,9 +112,9 @@ class _MyAppState extends State<MyApp> {
         if (message.toString().contains('inactive')) {
           ChatController.updateActiveStatus(false);
         }
-        if (message.toString().contains('hidden')) {
-          ChatController.updateActiveStatus(false);
-        }
+        // if (message.toString().contains('hidden')) {
+        //   ChatController.updateActiveStatus(false);
+        // }
       }
 
       return Future.value(message);
