@@ -118,56 +118,70 @@ class _DetailChatScreenState extends State<DetailChatScreen> {
 
   Widget _appBar(UserModel user) {
     return SafeArea(
-      child: Row(
-        children: [
-          // Sizebox
-          SizedBox(
-            width: 15,
-          ),
-          // User profile
-          ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: user.profilePicture.isNotEmpty
-                ? Image.network(
-                    user.profilePicture,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  )
-                : Image.asset(
-                    'assets/images/profile-placeholder.png',
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
+        child: StreamBuilder(
+            stream: ChatController.getUserInfo(widget.user),
+            builder: (context, snapshot) {
+              final data = snapshot.data?.docs;
+              final list =
+                  data?.map((e) => UserModel.fromJson(e.data())).toList() ?? [];
 
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                // 'Udin',
-                user.fullName,
-                style: AppTextStyle.body1Regular
-                    .copyWith(color: AppColors.n1White),
-              ),
-              Text(
-                widget.user.isOnline == true
-                    ? 'Online'
-                    : MyDateUtil.getLastActiveTime(
-                        context: context, lastActive: widget.user.lastActive),
-                style: AppTextStyle.body4Regular
-                    .copyWith(color: AppColors.n3white),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
+              return Row(
+                children: [
+                  // Sizebox
+                  SizedBox(
+                    width: 15,
+                  ),
+                  // User profile
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: user.profilePicture.isNotEmpty
+                        ? Image.network(
+                            user.profilePicture,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/profile-placeholder.png',
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        // 'Udin',
+                        list.isNotEmpty
+                            ? list[0].fullName
+                            : widget.user.fullName,
+                        style: AppTextStyle.body1Regular
+                            .copyWith(color: AppColors.n1White),
+                      ),
+                      Text(
+                        list.isNotEmpty
+                            ? list[0].isOnline
+                                ? 'Online'
+                                : MyDateUtil.getLastActiveTime(
+                                    context: context,
+                                    lastActive: list[0].lastActive)
+                            : MyDateUtil.getLastActiveTime(
+                                context: context,
+                                lastActive: widget.user.lastActive),
+                        style: AppTextStyle.body4Regular
+                            .copyWith(color: AppColors.n3white),
+                      )
+                    ],
+                  ),
+                ],
+              );
+            }));
   }
 
   // Bottom chat input field

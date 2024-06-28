@@ -109,7 +109,10 @@ class _MyAppState extends State<MyApp> {
         if (message.toString().contains('resume')) {
           ChatController.updateActiveStatus(true);
         }
-        if (message.toString().contains('pause')) {
+        if (message.toString().contains('inactive')) {
+          ChatController.updateActiveStatus(false);
+        }
+        if (message.toString().contains('hidden')) {
           ChatController.updateActiveStatus(false);
         }
       }

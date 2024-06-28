@@ -160,9 +160,9 @@ String getCategoryString(Category category) {
     case Category.bebasBaca:
       return 'Bebas Baca';
     case Category.tukarMilik:
-      return 'Tukar Pinjam';
-    case Category.tukarPinjam:
       return 'Tukar Milik';
+    case Category.tukarPinjam:
+      return 'Tukar Pinjam';
     default:
       return '';
   }
