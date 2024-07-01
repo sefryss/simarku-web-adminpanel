@@ -8,6 +8,7 @@ import 'package:ebookadminpanel/model/kegiatan_literasi_model.dart';
 import 'package:ebookadminpanel/model/rate_us_model.dart';
 import 'package:ebookadminpanel/model/sekilas_info_model.dart';
 import 'package:ebookadminpanel/model/story_model.dart';
+import 'package:ebookadminpanel/model/tukar_milik_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/controller/data/FirebaseData.dart';
@@ -18,6 +19,7 @@ import 'data/key_table.dart';
 
 class HomeController extends GetxController {
   FeedbackModel? feedbackModel = null;
+  TukarMilikModel? tukarMilikModel = null;
   RateUsModel? rateUsModel = null;
   StoryModel? storyModel = null;
   DonationBookModel? donationBookModel = null;
@@ -33,8 +35,9 @@ class HomeController extends GetxController {
   RxString kegiatanLiterasi = ''.obs;
   RxString user = ''.obs;
   RxString story = ''.obs;
-  RxString donationBook = ''.obs;
   RxString feedback = ''.obs;
+  RxString tukarMilik = ''.obs;
+  RxString donationBook = ''.obs;
   RxString rateUs = ''.obs;
   RxString storyNotification = ''.obs;
   RxString pdf = Constants.file.obs;
@@ -58,12 +61,14 @@ class HomeController extends GetxController {
   RxList<DonationBookModel> donationBookList = <DonationBookModel>[].obs;
   RxList<FeedbackModel> feedbackList = <FeedbackModel>[].obs;
   RxList<RateUsModel> ratingList = <RateUsModel>[].obs;
+  RxList<TukarMilikModel> tukarMilikList = <TukarMilikModel>[].obs;
   RxList<StoryModel> storyListNotification = <StoryModel>[].obs;
   RxList<String> sliderList = <String>[].obs;
   RxList<String> allStoryList = <String>[].obs;
   RxList<String> allDonationBookList = <String>[].obs;
   RxList<String> allFeedbackList = <String>[].obs;
   RxList<String> allRateUsList = <String>[].obs;
+  RxList<String> allTukarMilikList = <String>[].obs;
   RxList<String> allStoryListNotification = <String>[].obs;
   RxList<String> sliderIdList = <String>[].obs;
   RxBool isLoading = false.obs;
@@ -130,6 +135,7 @@ class HomeController extends GetxController {
     fetchDonationBook();
     fetchFeedback();
     fetchRating();
+    fetchTukarMilik();
     // fetchAdminData();
   }
 
@@ -390,6 +396,28 @@ class HomeController extends GetxController {
       }
       isLoading(false);
       rateUs((list1[0]).id);
+    } else {
+      isLoading(false);
+    }
+  }
+
+  fetchTukarMilik() async {
+    isLoading(true);
+    tukarMilikList.clear();
+    allTukarMilikList.clear();
+    tukarMilik("");
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.tukarMilik).get();
+
+    if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> list1 = querySnapshot.docs;
+      for (var doc in list1) {
+        var tukarMilik = TukarMilikModel.fromFirestore(doc);
+        tukarMilikList.add(tukarMilik);
+        allTukarMilikList.add(tukarMilik.senderBookId!);
+      }
+      isLoading(false);
+      tukarMilik((list1[0]).id);
     } else {
       isLoading(false);
     }

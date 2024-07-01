@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:ebookadminpanel/controller/chat_controller.dart';
 import 'package:ebookadminpanel/controller/donation_book_controller.dart';
 import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
@@ -19,8 +22,10 @@ import 'package:ebookadminpanel/ui/rating/addRating/add_rating_screen.dart';
 import 'package:ebookadminpanel/ui/rating/rating_screen.dart';
 import 'package:ebookadminpanel/ui/sekilas_info/addSekilasInfo/add_sekilas_info_screen.dart';
 import 'package:ebookadminpanel/ui/sekilas_info/sekilas_info_screen.dart';
+import 'package:ebookadminpanel/ui/tukar_milik/tukar_milik_screen.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/controller/home_controller.dart';
@@ -59,6 +64,20 @@ class _HomePage extends State<HomePage> {
     super.initState();
 
     LoginData.getDeviceId();
+    SystemChannels.lifecycle.setMessageHandler((message) {
+      log('Message: $message');
+
+      if (ChatController.auth.currentUser != null) {
+        if (message.toString().contains('resume')) {
+          ChatController.updateActiveStatus(true);
+        }
+        if (message.toString().contains('hidden')) {
+          ChatController.updateActiveStatus(false);
+        }
+      }
+
+      return Future.value(message);
+    });
   }
 
   @override
@@ -563,7 +582,18 @@ class _HomePage extends State<HomePage> {
       PrefData.setAction(actionChat);
 
       return ChatWebWidget();
+    } else if (action == actionTukarMilik) {
+      PrefData.setAction(actionTukarMilik);
+
+      // donationBookController.clearStoryData();
+      return TukarMilikScreen(
+        function: () {
+          // changeAction(actionAddTukarMilik);
+          // onBackClick();
+        },
+      );
     }
+
     // else if (action == actionDetailChat) {
     //   PrefData.setAction(actionDetailChat);
     //   return DetailChatScreen(

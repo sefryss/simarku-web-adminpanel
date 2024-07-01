@@ -15,8 +15,10 @@ class GenreWebWidget extends StatelessWidget {
       {required this.list,
       required this.queryText,
       required this.function,
+          required this.mainList,
       required this.onTapStatus});
   final List<DocumentSnapshot> list;
+    final List<DocumentSnapshot> mainList;
   final RxString queryText;
   final Function(Offset, Genre) function;
   final Function onTapStatus;
@@ -26,11 +28,11 @@ class GenreWebWidget extends StatelessWidget {
     var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
 
     // Sort the list by index in ascending order
-    list.sort((a, b) {
-      int indexA = Genre.fromFirestore(a).index ?? 0;
-      int indexB = Genre.fromFirestore(b).index ?? 0;
-      return indexA.compareTo(indexB);
-    });
+    // list.sort((a, b) {
+    //   int indexA = Genre.fromFirestore(a).index ?? 0;
+    //   int indexB = Genre.fromFirestore(b).index ?? 0;
+    //   return indexA.compareTo(indexB);
+    // });
 
     return Expanded(
         child: Container(
@@ -70,8 +72,10 @@ class GenreWebWidget extends StatelessWidget {
                                     children: [
                                       Row(
                                         children: [
-                                          getHeaderCell(
-                                              '${index + 1}', context, 130),
+                                               getHeaderCell(
+                                              '${mainList.indexOf(list[index]) + 1}',
+                                              context,
+                                              50),
                                           getHorizontalSpace(context, 5),
                                           getHeaderCell('${genreModel.genre}',
                                               context, 130),

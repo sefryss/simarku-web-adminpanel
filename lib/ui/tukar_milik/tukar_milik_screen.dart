@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ebookadminpanel/model/genre_model.dart';
-import 'package:ebookadminpanel/ui/genre/subwidget/genre_mobile_widget.dart';
-import 'package:ebookadminpanel/ui/genre/subwidget/genre_web_widget.dart';
+import 'package:ebookadminpanel/model/tukar_milik_model.dart';
+import 'package:ebookadminpanel/ui/tukar_milik/subwidget/mobile_widget.dart';
+import 'package:ebookadminpanel/ui/tukar_milik/subwidget/web_widget.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,33 +11,34 @@ import 'package:ebookadminpanel/main.dart';
 import 'package:ebookadminpanel/theme/color_scheme.dart';
 import 'package:ebookadminpanel/ui/category/entries_drop_down.dart';
 import 'package:ebookadminpanel/ui/common/common.dart';
+
 import '../../../controller/data/key_table.dart';
 import '../../../controller/home_controller.dart';
 import '../../controller/data/LoginData.dart';
 import '../../util/pref_data.dart';
 
-class GenreScreen extends StatefulWidget {
+class TukarMilikScreen extends StatefulWidget {
   final Function function;
 
-  GenreScreen({required this.function});
+  TukarMilikScreen({required this.function});
 
   @override
-  State<GenreScreen> createState() => _GenreScreenState();
+  State<TukarMilikScreen> createState() => _TukarMilikScreenState();
 }
 
-class _GenreScreenState extends State<GenreScreen> {
-  RxInt position = 0.obs;
-
-  RxInt totalItem = 10.obs;
-
-  final ScrollController _controller = ScrollController();
-
+class _TukarMilikScreenState extends State<TukarMilikScreen> {
   @override
   void initState() {
     super.initState();
 
     LoginData.getDeviceId();
   }
+
+  RxInt position = 0.obs;
+
+  RxInt totalItem = 10.obs;
+
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class _GenreScreenState extends State<GenreScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getTextWidget(context, 'Genre', 75, getFontColor(context),
+            getTextWidget(context, 'Tukar Milik', 75, getFontColor(context),
                 fontWeight: FontWeight.w700),
             getVerticalSpace(context, 35),
             Expanded(
@@ -79,31 +80,31 @@ class _GenreScreenState extends State<GenreScreen> {
                             ),
                             Expanded(
                                 child: getSearchTextFiledWidget(
-                                    context, 'Cari...', textEditingController,
+                                    context, 'Cari..', textEditingController,
                                     onChanged: (value) {
                               queryText(value);
                             })),
                             getHorizontalSpace(context, 15),
-                            getButtonWidget(
-                              context,
-                              'Tambah Genre',
-                              () {
-                                HomeController homeController =
-                                    Get.find<HomeController>();
+                            // getButtonWidget(
+                            //   context,
+                            //   'Tambah Donasi Buku',
+                            //   () {
+                            //     HomeController homeController =
+                            //         Get.find<HomeController>();
 
-                                if (homeController.genreModel != null) {
-                                  homeController.genreModel = null;
-                                }
+                            //     if (homeController.donationBookModel != null) {
+                            //       homeController.donationBookModel = null;
+                            //     }
 
-                                genreController.clearGenreData();
+                            //     donationBookController.clearStoryData();
 
-                                widget.function();
-                              },
-                              horPadding: 25.h,
-                              horizontalSpace: 0,
-                              verticalSpace: 0,
-                              btnHeight: 42.h,
-                            )
+                            //     widget.function();
+                            //   },
+                            //   horPadding: 25.h,
+                            //   horizontalSpace: 0,
+                            //   verticalSpace: 0,
+                            //   btnHeight: 42.h,
+                            // )
                           ],
                         ),
                         isWeb(context)
@@ -115,8 +116,8 @@ class _GenreScreenState extends State<GenreScreen> {
                         getVerticalSpace(context, 25),
                         StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
-                              .collection(KeyTable.genreList)
-                              .orderBy(KeyTable.index, descending: false)
+                              .collection(KeyTable.tukarMilik)
+                              // .orderBy(KeyTable.index, descending: true)
                               .snapshots(),
                           builder: (context1, snapshot) {
                             print("state===${snapshot.connectionState}");
@@ -130,8 +131,6 @@ class _GenreScreenState extends State<GenreScreen> {
                                     ConnectionState.active) {
                               List<DocumentSnapshot> list = snapshot.data!.docs;
 
-                              print("list----${list.length}");
-
                               return Obx(() {
                                 double i = list.length / 10;
 
@@ -141,7 +140,6 @@ class _GenreScreenState extends State<GenreScreen> {
                                 if (d > 0) {
                                   i = i + 1;
                                 }
-
                                 List<DocumentSnapshot> paginationList = [];
 
                                 paginationList = list
@@ -158,31 +156,30 @@ class _GenreScreenState extends State<GenreScreen> {
                                         child: Column(
                                           children: [
                                             isWeb(context)
-                                                ? GenreWebWidget(
+                                                ? WebWidget(
                                                     mainList: list,
                                                     list: paginationList,
                                                     queryText: queryText,
-                                                    function:
-                                                        (detail, genreModel) {
-                                                      _showPopupMenu(context,
-                                                          detail, genreModel);
+                                                    function: (detail, model) {
+                                                      // _showPopupMenu(context,
+                                                      //     detail, model);
                                                     },
                                                     onTapStatus: (model) {
-                                                      print(
-                                                          "called------update");
-                                                      updateStatus(
-                                                          context, model);
-                                                    })
-                                                : GenreMobileWidget(
+                                                      // updateStatus(
+                                                      //     context, model);
+                                                    },
+                                                  )
+                                                : MobileWidget(
+                                                    mainList: list,
                                                     list: paginationList,
                                                     queryText: queryText,
                                                     function: (detail, model) {
-                                                      _showPopupMenu(context,
-                                                          detail, model);
+                                                      // _showPopupMenu(context,
+                                                      //     detail, model);
                                                     },
                                                     onTapStatus: (model) {
-                                                      updateStatus(
-                                                          context, model);
+                                                      // updateStatus(
+                                                      //     context, model);
                                                     }),
                                             getVerticalSpace(
                                                 context,
@@ -316,30 +313,8 @@ class _GenreScreenState extends State<GenreScreen> {
     );
   }
 
-  updateStatus(BuildContext context, Genre genreModel) {
-    PrefData.checkAccess(
-        context: context,
-        function: () {
-          getCommonDialog(
-              context: context,
-              title: genreModel.isActive!
-                  ? 'Apakah ingin menonaktifkan genre ini?'
-                  : 'Apakah ingin mengaktifkan genre ini?',
-              function: () {
-                print("dataupdated");
-                FirebaseData.updateData(
-                    context: context,
-                    map: {'is_active': genreModel.isActive! ? false : true},
-                    doc: genreModel.id!,
-                    tableName: KeyTable.genreList,
-                    isToast: false,
-                    function: () {});
-              },
-              subTitle: 'Genre');
-        });
-  }
-
-  _showPopupMenu(BuildContext context, var detail, Genre genreModel) async {
+  _showPopupMenu(
+      BuildContext context, var detail, TukarMilikModel storyModel) async {
     final RenderBox? overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -362,11 +337,8 @@ class _GenreScreenState extends State<GenreScreen> {
               ),
             ),
             onTap: () {
-              HomeController homeController = Get.find();
-
-              genreController.isStatus = true;
-
-              homeController.setGenreModel(genreModel);
+              // HomeController homeController = Get.find();
+              // homeController.setDonationBookModel(storyModel);
             },
             value: 'Edit'),
         PopupMenuItem<String>(
@@ -383,58 +355,21 @@ class _GenreScreenState extends State<GenreScreen> {
                   function: () {
                     getCommonDialog(
                         context: context,
-                        title: 'Apakah ingin menghapus genre ini?',
-                        function: () async {
-                          await FirebaseData.deleteData(
-                              tableName: KeyTable.authorList,
-                              doc: genreModel.id!,
+                        title: 'Apakah ingin menghapus donasi buku ini?',
+                        function: () {
+                          FirebaseData.deleteData(
+                              tableName: KeyTable.donationBook,
+                              doc: storyModel.id!,
                               function: () {
-                                FirebaseData.refreshGenreData();
+                                FirebaseData.deleteBatch(() {
+                                  FirebaseData.refreshStoryData();
+                                  FirebaseData.refreshSliderData();
+                                }, storyModel.id!, KeyTable.sliderList,
+                                    KeyTable.storyId);
                               });
-
-                          await FirebaseData.deleteAuthorBatch(() {
-                            FirebaseData.refreshGenreData();
-                            FirebaseData.refreshStoryData();
-                          }, genreModel.id!, KeyTable.storyList,
-                              KeyTable.genreId, context);
                         },
                         subTitle: 'Hapus');
                   });
-
-              // PrefData.checkAccess(
-              //     context: context,
-              //     function: () {
-              //       getCommonDialog(
-              //           context: context,
-              //           title: 'Do you want to delete Author?',
-              //           function: () {
-              //             FirebaseData.deleteData(
-              //                 tableName: KeyTable.authorList,
-              //                 doc: authorModel.id!,
-              //                 function: () {
-              //                   FirebaseData.deleteRecentStory(
-              //                       context: context,
-              //                       function: (doc) {
-              //                         FirebaseData.deleteStory(context: context, function: (doc){
-              //                           FirebaseData.deleteData(
-              //                               tableName: KeyTable.storyList,
-              //                               doc: doc,
-              //                               function: () {
-              //                                 FirebaseData.deleteBatch(() {
-              //                                   FirebaseData.refreshStoryData();
-              //                                   FirebaseData.refreshSliderData();
-              //                                 },
-              //                                     authorModel.id!,
-              //                                     KeyTable.sliderList,
-              //                                     KeyTable.storyId);
-              //                               });
-              //                         }, storyId: authorModel.id ?? "");
-              //                       },
-              //                       storyId: authorModel.id!);
-              //                 });
-              //           },
-              //           subTitle: 'Delete');
-              //     });
             },
             value: 'Hapus'),
       ],

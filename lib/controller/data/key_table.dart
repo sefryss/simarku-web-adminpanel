@@ -2,6 +2,7 @@ class KeyTable {
   static String storyList = 'books';
   static String feedback = 'feedback';
   static String rating = 'rating';
+  static String tukarMilik = 'TukarMilik';
   static String donationBook = 'donation_books';
   // static String storyList = 'stories';
   static String recentList = 'recent';

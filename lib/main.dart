@@ -51,10 +51,10 @@ Future<void> main() async {
   print("deviceid------------${deviceID.value}");
 
   selectedAction.value = await PrefData.getAction();
-
   // setPathUrlStrategy();
 
   // configureApp();
+    await ChatController.initializeUserModel();
 
   runApp(MyApp());
 }
@@ -102,23 +102,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    SystemChannels.lifecycle.setMessageHandler((message) {
-      log('Message: $message');
-
-      if (ChatController.auth.currentUser != null) {
-        if (message.toString().contains('resume')) {
-          ChatController.updateActiveStatus(true);
-        }
-        if (message.toString().contains('inactive')) {
-          ChatController.updateActiveStatus(false);
-        }
-        // if (message.toString().contains('hidden')) {
-        //   ChatController.updateActiveStatus(false);
-        // }
-      }
-
-      return Future.value(message);
-    });
   }
 
   @override

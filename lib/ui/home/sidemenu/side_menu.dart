@@ -359,6 +359,35 @@ class SideMenu extends StatelessWidget {
               index: 10,
             ),
 
+             DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Tukar Milik",
+              svgSrc: (i == actionTukarMilik ||
+                      i == actionEditTukarMilik ||
+                  
+                      checkAction(i, dummyActionTukarMilik))
+                  ? "icon_donation_fill.svg"
+                  : "icon_donation_outline.svg",
+              isSelected: i == actionTukarMilik ||
+                  //     i == actionEditDonationBook ||
+                  //     i == actionAddDonationBook ||
+                  checkAction(i, dummyActionTukarMilik),
+              isDropDown: false,
+              isListSelected: i == actionTukarMilik,
+              // isAddSelected: i == actionAddDonationBook,
+              pressList: () {
+                function(actionTukarMilik);
+              },
+              pressAdd: () {
+                // function(actionAddDonationBook);
+              },
+              press: () {
+                function(actionTukarMilik);
+                // function(dummyActionAuthor);
+              },
+              index: 10,
+            ),
+
             // DrawerListTile(
             //   title: "Stories",
             //   svgSrc: "stories.svg",
