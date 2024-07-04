@@ -134,6 +134,7 @@ class SideMenu extends StatelessWidget {
             //   },
             //   index: 4,
             // ),
+            Divider(),
 
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
@@ -192,18 +193,77 @@ class SideMenu extends StatelessWidget {
               },
               index: 2,
             ),
+            Divider(),
+
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Tukar Pinjam",
+              svgSrc: (i == actionTukarPinjam ||
+                      i == actionEditTukarPinjam ||
+                      checkAction(i, dummyActionTukarPinjam))
+                  ? "icon_donation_fill.svg"
+                  : "icon_donation_outline.svg",
+              isSelected: i == actionTukarPinjam ||
+                  i == actionEditTukarPinjam ||
+                  //     i == actionAddDonationBook ||
+                  checkAction(i, dummyActionTukarPinjam),
+              isDropDown: false,
+              isListSelected: i == actionTukarPinjam,
+              // isAddSelected: i == actionAddDonationBook,
+              pressList: () {
+                function(actionTukarPinjam);
+              },
+              pressAdd: () {
+                // function(actionAddDonationBook);
+              },
+              press: () {
+                function(actionTukarPinjam);
+                // function(dummyActionAuthor);
+              },
+              index: 10,
+            ),
+
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Tukar Milik",
+              svgSrc: (i == actionTukarMilik ||
+                      i == actionEditTukarMilik ||
+                      checkAction(i, dummyActionTukarMilik))
+                  ? "icon_donation_fill.svg"
+                  : "icon_donation_outline.svg",
+              isSelected: i == actionTukarMilik ||
+                  i == actionEditTukarMilik ||
+                  //     i == actionAddDonationBook ||
+                  checkAction(i, dummyActionTukarMilik),
+              isDropDown: false,
+              isListSelected: i == actionTukarMilik,
+              // isAddSelected: i == actionAddDonationBook,
+              pressList: () {
+                function(actionTukarMilik);
+              },
+              pressAdd: () {
+                // function(actionAddDonationBook);
+              },
+              press: () {
+                function(actionTukarMilik);
+                // function(dummyActionAuthor);
+              },
+              index: 10,
+            ),
 
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
               title: "Donasi Buku",
               svgSrc: (i == actionDonationBook ||
-                      i == actionEditDonationBook ||
-                      i == actionAddDonationBook ||
+                      i == actionEditDonationBook
+                      // ||
+                      // i == actionAddDonationBook
+                      ||
                       checkAction(i, dummyActionDonationBook))
                   ? "icon_donation_fill.svg"
                   : "icon_donation_outline.svg",
               isSelected: i == actionDonationBook ||
-                  //     i == actionEditDonationBook ||
+                  i == actionEditDonationBook ||
                   //     i == actionAddDonationBook ||
                   checkAction(i, dummyActionDonationBook),
               isDropDown: false,
@@ -221,6 +281,34 @@ class SideMenu extends StatelessWidget {
               },
               index: 10,
             ),
+
+            Divider(),
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
+              title: "Pesan",
+              svgSrc: (i == actionChat || checkAction(i, dummyActionChat))
+                  ? "icon_chat_fill.svg"
+                  : "icon_chat_outline.svg",
+              isSelected: i == actionChat ||
+                  //     i == actionEditDonationBook ||
+                  //     i == actionAddDonationBook ||
+                  checkAction(i, dummyActionChat),
+              isDropDown: false,
+              isListSelected: i == actionChat,
+              // isAddSelected: i == actionAddDonationBook,
+              pressList: () {
+                function(actionChat);
+              },
+              pressAdd: () {
+                // function(actionAddDonationBook);
+              },
+              press: () {
+                function(actionChat);
+                // function(dummyActionAuthor);
+              },
+              index: 10,
+            ),
+            Divider(),
 
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
@@ -280,6 +368,8 @@ class SideMenu extends StatelessWidget {
               index: 8,
             ),
 
+            Divider(),
+
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
               title: "Umpan Balik",
@@ -328,61 +418,6 @@ class SideMenu extends StatelessWidget {
               },
               press: () {
                 function(actionRating);
-                // function(dummyActionAuthor);
-              },
-              index: 10,
-            ),
-
-            DrawerExpansionTile(
-              // key: Key("selected ${selectedIndex}"),
-              title: "Pesan",
-              svgSrc: (i == actionChat || checkAction(i, dummyActionChat))
-                  ? "icon_chat_fill.svg"
-                  : "icon_chat_outline.svg",
-              isSelected: i == actionChat ||
-                  //     i == actionEditDonationBook ||
-                  //     i == actionAddDonationBook ||
-                  checkAction(i, dummyActionChat),
-              isDropDown: false,
-              isListSelected: i == actionChat,
-              // isAddSelected: i == actionAddDonationBook,
-              pressList: () {
-                function(actionChat);
-              },
-              pressAdd: () {
-                // function(actionAddDonationBook);
-              },
-              press: () {
-                function(actionChat);
-                // function(dummyActionAuthor);
-              },
-              index: 10,
-            ),
-
-             DrawerExpansionTile(
-              // key: Key("selected ${selectedIndex}"),
-              title: "Tukar Milik",
-              svgSrc: (i == actionTukarMilik ||
-                      i == actionEditTukarMilik ||
-                  
-                      checkAction(i, dummyActionTukarMilik))
-                  ? "icon_donation_fill.svg"
-                  : "icon_donation_outline.svg",
-              isSelected: i == actionTukarMilik ||
-                  //     i == actionEditDonationBook ||
-                  //     i == actionAddDonationBook ||
-                  checkAction(i, dummyActionTukarMilik),
-              isDropDown: false,
-              isListSelected: i == actionTukarMilik,
-              // isAddSelected: i == actionAddDonationBook,
-              pressList: () {
-                function(actionTukarMilik);
-              },
-              pressAdd: () {
-                // function(actionAddDonationBook);
-              },
-              press: () {
-                function(actionTukarMilik);
                 // function(dummyActionAuthor);
               },
               index: 10,

@@ -154,7 +154,7 @@ class _GenreScreenState extends State<GenreScreen> {
 
                                 return paginationList.length > 0
                                     ? Expanded(
-                                        flex: 1,
+                                        // flex: 1,
                                         child: Column(
                                           children: [
                                             isWeb(context)
@@ -174,6 +174,7 @@ class _GenreScreenState extends State<GenreScreen> {
                                                           context, model);
                                                     })
                                                 : GenreMobileWidget(
+                                                    mainList: list,
                                                     list: paginationList,
                                                     queryText: queryText,
                                                     function: (detail, model) {

@@ -161,8 +161,8 @@ class _TukarMilikScreenState extends State<TukarMilikScreen> {
                                                     list: paginationList,
                                                     queryText: queryText,
                                                     function: (detail, model) {
-                                                      // _showPopupMenu(context,
-                                                      //     detail, model);
+                                                      _showPopupMenu(context,
+                                                          detail, model);
                                                     },
                                                     onTapStatus: (model) {
                                                       // updateStatus(
@@ -174,8 +174,8 @@ class _TukarMilikScreenState extends State<TukarMilikScreen> {
                                                     list: paginationList,
                                                     queryText: queryText,
                                                     function: (detail, model) {
-                                                      // _showPopupMenu(context,
-                                                      //     detail, model);
+                                                      _showPopupMenu(context,
+                                                          detail, model);
                                                     },
                                                     onTapStatus: (model) {
                                                       // updateStatus(
@@ -314,7 +314,7 @@ class _TukarMilikScreenState extends State<TukarMilikScreen> {
   }
 
   _showPopupMenu(
-      BuildContext context, var detail, TukarMilikModel storyModel) async {
+      BuildContext context, var detail, TukarMilikModel tukarMilikModel) async {
     final RenderBox? overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -332,46 +332,46 @@ class _TukarMilikScreenState extends State<TukarMilikScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Edit",
+                title: "Detail",
                 space: 0,
               ),
             ),
             onTap: () {
-              // HomeController homeController = Get.find();
-              // homeController.setDonationBookModel(storyModel);
+              HomeController homeController = Get.find();
+              homeController.setTukarMilikModel(tukarMilikModel);
             },
-            value: 'Edit'),
-        PopupMenuItem<String>(
-            child: Container(
-              child: MenuItem(
-                title: "Hapus",
-                space: 0,
-                visibility: false,
-              ),
-            ),
-            onTap: () {
-              PrefData.checkAccess(
-                  context: context,
-                  function: () {
-                    getCommonDialog(
-                        context: context,
-                        title: 'Apakah ingin menghapus donasi buku ini?',
-                        function: () {
-                          FirebaseData.deleteData(
-                              tableName: KeyTable.donationBook,
-                              doc: storyModel.id!,
-                              function: () {
-                                FirebaseData.deleteBatch(() {
-                                  FirebaseData.refreshStoryData();
-                                  FirebaseData.refreshSliderData();
-                                }, storyModel.id!, KeyTable.sliderList,
-                                    KeyTable.storyId);
-                              });
-                        },
-                        subTitle: 'Hapus');
-                  });
-            },
-            value: 'Hapus'),
+            value: 'Detail'),
+        // PopupMenuItem<String>(
+        //     child: Container(
+        //       child: MenuItem(
+        //         title: "Hapus",
+        //         space: 0,
+        //         visibility: false,
+        //       ),
+        //     ),
+        //     onTap: () {
+        //       // PrefData.checkAccess(
+        //       //     context: context,
+        //       //     function: () {
+        //       //       getCommonDialog(
+        //       //           context: context,
+        //       //           title: 'Apakah ingin menghapus donasi buku ini?',
+        //       //           function: () {
+        //       //             FirebaseData.deleteData(
+        //       //                 tableName: KeyTable.donationBook,
+        //       //                 doc: storyModel.id!,
+        //       //                 function: () {
+        //       //                   FirebaseData.deleteBatch(() {
+        //       //                     FirebaseData.refreshStoryData();
+        //       //                     FirebaseData.refreshSliderData();
+        //       //                   }, storyModel.id!, KeyTable.sliderList,
+        //       //                       KeyTable.storyId);
+        //       //                 });
+        //       //           },
+        //       //           subTitle: 'Hapus');
+        //       //     });
+        //     },
+        //     value: 'Hapus'),
       ],
       elevation: 1,
     );

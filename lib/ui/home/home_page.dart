@@ -22,7 +22,10 @@ import 'package:ebookadminpanel/ui/rating/addRating/add_rating_screen.dart';
 import 'package:ebookadminpanel/ui/rating/rating_screen.dart';
 import 'package:ebookadminpanel/ui/sekilas_info/addSekilasInfo/add_sekilas_info_screen.dart';
 import 'package:ebookadminpanel/ui/sekilas_info/sekilas_info_screen.dart';
+import 'package:ebookadminpanel/ui/tukar_milik/detail_tukar_milik/detail_tukar_milik.dart';
 import 'package:ebookadminpanel/ui/tukar_milik/tukar_milik_screen.dart';
+import 'package:ebookadminpanel/ui/tukar_pinjam/detail_tukar_pinjam/detail_tukar_pinjam.dart';
+import 'package:ebookadminpanel/ui/tukar_pinjam/tukar_pinjam_screen.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -591,6 +594,54 @@ class _HomePage extends State<HomePage> {
           // changeAction(actionAddTukarMilik);
           // onBackClick();
         },
+      );
+    } else if (action == actionEditTukarMilik) {
+      PrefData.setAction(actionEditTukarMilik);
+
+      tukarMilikController.homeController = homeController;
+      tukarMilikController.tukarMilikModel = homeController.tukarMilikModel;
+
+      // if(!tukarMilikController.isBack.value){
+
+      tukarMilikController.setAllDataFromTukarMilikModel(
+          homeController.tukarMilikModel, homeController);
+
+      // }
+      return DetailTukarMilik(
+        function: () {
+          onBackClick();
+          changeAction(actionTukarMilik);
+        },
+        tukarMilikModel: homeController.tukarMilikModel,
+      );
+    } else if (action == actionTukarPinjam) {
+      PrefData.setAction(actionTukarPinjam);
+
+      // donationBookController.clearStoryData();
+      return TukarPinjamScreen(
+        function: () {
+          // changeAction(actionAddTukarMilik);
+          // onBackClick();
+        },
+      );
+    } else if (action == actionEditTukarPinjam) {
+      PrefData.setAction(actionEditTukarPinjam);
+
+      tukarPinjamController.homeController = homeController;
+      tukarPinjamController.tukarPinjamModel = homeController.tukarPinjamModel;
+
+      // if(!tukarPinjamController.isBack.value){
+
+      tukarPinjamController.setAllDataFromTukarPinjamModel(
+          homeController.tukarPinjamModel, homeController);
+
+      // }
+      return DetailTukarPinjam(
+        function: () {
+          onBackClick();
+          changeAction(actionTukarPinjam);
+        },
+        tukarPinjamModel: homeController.tukarPinjamModel,
       );
     }
 

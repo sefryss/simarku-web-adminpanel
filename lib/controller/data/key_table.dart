@@ -3,6 +3,7 @@ class KeyTable {
   static String feedback = 'feedback';
   static String rating = 'rating';
   static String tukarMilik = 'TukarMilik';
+  static String tukarPinjam = 'TukarPinjam';
   static String donationBook = 'donation_books';
   // static String storyList = 'stories';
   static String recentList = 'recent';

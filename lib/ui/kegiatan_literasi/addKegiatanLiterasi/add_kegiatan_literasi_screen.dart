@@ -70,32 +70,197 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    itemSubTitle('Kegiatan Literasi', context),
-                                    getVerticalSpace(context, 10),
-                                    getTextFiledWidget(
-                                        context,
-                                        "Masukkan Judul",
-                                        kegiatanLiterasiController
-                                            .titleController),
-                                    getVerticalSpace(context, 30),
-                                    itemSubTitle('Status', context),
-                                    getVerticalSpace(context, 10),
-                                    Container(
-                                      height: 30.h,
-                                      child: FittedBox(
-                                        fit: BoxFit.fitHeight,
-                                        child: Obx(() => CupertinoSwitch(
-                                            activeColor:
-                                                getPrimaryColor(context),
-                                            value: kegiatanLiterasiController
-                                                .activeStatus.value,
-                                            onChanged: (value) {
-                                              kegiatanLiterasiController
-                                                  .activeStatus.value = value;
-                                            })),
-                                      ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Judul', context),
+                                        getVerticalSpace(context, 10),
+                                        getTextFiledWidget(
+                                            context,
+                                            "Masukkan Judul",
+                                            kegiatanLiterasiController
+                                                .titleController),
+                                      ],
                                     ),
                                     getVerticalSpace(context, 30),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Sumber', context),
+                                        getVerticalSpace(context, 10),
+                                        getTextFiledWidget(
+                                            context,
+                                            "Masukkan sumber...",
+                                            kegiatanLiterasiController
+                                                .sourceController),
+                                      ],
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Tanggal', context),
+                                        getVerticalSpace(context, 10),
+                                        getTextFiledWidget(
+                                            context,
+                                            "Masukkan tanggal...",
+                                            kegiatanLiterasiController
+                                                .dateController),
+                                      ],
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Gambar', context),
+                                        getVerticalSpace(context, 10),
+                                        getTextFiledWidget(
+                                            context,
+                                            "No file chosen",
+                                            kegiatanLiterasiController
+                                                .imageController,
+                                            isEnabled: false,
+                                            child: getCommonChooseFileBtn(
+                                                context, () {
+                                              kegiatanLiterasiController
+                                                  .imgFromGallery();
+                                            })),
+                                      ],
+                                    ),
+                                    getVerticalSpace(context, 10),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Obx(() {
+                                        return (kegiatanLiterasiController
+                                                .isImageOffline.value)
+                                            ? ClipRRect(
+                                                borderRadius: BorderRadius
+                                                    .circular((getResizeRadius(
+                                                        context,
+                                                        35))), //add border radius
+                                                child:
+                                                    (kegiatanLiterasiController
+                                                            .isSvg)
+                                                        ? Image.asset(
+                                                            Constants
+                                                                .placeImage,
+                                                            height: 100.h,
+                                                            width: 100.h,
+                                                            fit: BoxFit.contain,
+                                                          )
+                                                        : Image.memory(
+                                                            kegiatanLiterasiController
+                                                                .webImage,
+                                                            height: 100.h,
+                                                            width: 100.h,
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                              )
+                                            : isEdit
+                                                ? ClipRRect(
+                                                    borderRadius: BorderRadius
+                                                        .circular((getResizeRadius(
+                                                            context,
+                                                            35))), //add border radius
+                                                    child: (widget
+                                                            .kegiatanLiterasiModel!
+                                                            .image!
+                                                            .split(".")
+                                                            .last
+                                                            .startsWith("svg"))
+                                                        ? Image.asset(
+                                                            Constants
+                                                                .placeImage,
+                                                            height: 100.h,
+                                                            width: 100.h,
+                                                            fit: BoxFit.contain,
+                                                          )
+                                                        : Image.network(
+                                                            widget
+                                                                .kegiatanLiterasiModel!
+                                                                .image!,
+                                                            height: 100.h,
+                                                            width: 100.h,
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                                  )
+                                                : Container();
+                                      }),
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Url', context),
+                                        getVerticalSpace(context, 10),
+                                        getTextFiledWidget(
+                                            context,
+                                            "Masukkan url...",
+                                            kegiatanLiterasiController
+                                                .urlController),
+                                      ],
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Deskripsi', context),
+                                        getVerticalSpace(context, 10),
+                                        Container(
+                                          decoration: getDefaultDecoration(
+                                              radius: getDefaultRadius(context),
+                                              bgColor: getCardColor(context),
+                                              // bgColor: getReportColor(context),
+                                              borderColor:
+                                                  getBorderColor(context),
+                                              borderWidth: 1),
+                                          child: Column(
+                                            children: [
+                                              getVerticalSpace(context, 10),
+                                              Container(
+                                                decoration:
+                                                    getDefaultDecoration(
+                                                        radius:
+                                                            getDefaultRadius(
+                                                                context),
+                                                        bgColor: getCardColor(
+                                                            context),
+                                                        borderColor:
+                                                            getBorderColor(
+                                                                context),
+                                                        borderWidth: 1),
+                                                child: QuillToolbar.simple(
+                                                    configurations:
+                                                        QuillSimpleToolbarConfigurations(
+                                                            controller:
+                                                                kegiatanLiterasiController
+                                                                    .descController)),
+                                              ),
+                                              Container(
+                                                child: QuillEditor.basic(
+                                                  configurations:
+                                                      QuillEditorConfigurations(
+                                                          controller:
+                                                              kegiatanLiterasiController
+                                                                  .descController),
+                                                  scrollController:
+                                                      ScrollController(),
+                                                  focusNode: FocusNode(),
+                                                ).paddingSymmetric(
+                                                    vertical: 15.h,
+                                                    horizontal: 15),
+                                              ).marginSymmetric(vertical: 15.h),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 )
                               : Column(

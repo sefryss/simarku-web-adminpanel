@@ -1,33 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/model/story_model.dart';
-import 'package:ebookadminpanel/model/tukar_milik_model.dart';
+import 'package:ebookadminpanel/model/tukar_pinjam_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/theme/app_theme.dart';
-
-import '../../../controller/data/FirebaseData.dart';
 import '../../../controller/data/key_table.dart';
-import '../../../model/category_model.dart';
-
 import '../../../theme/color_scheme.dart';
-import '../../../util/constants.dart';
 import '../../common/common.dart';
 
 // ignore: must_be_immutable
-class MobileWidget extends StatelessWidget {
+class WebWidget extends StatelessWidget {
   var _tapPosition;
-  MobileWidget(
-      {required this.list,
-      required this.queryText,
-      required this.function,
-      required this.onTapStatus,
-      required this.mainList});
+  WebWidget({
+    required this.list,
+    required this.queryText,
+    required this.function,
+    required this.onTapStatus,
+    required this.mainList,
+  });
   final List<DocumentSnapshot> list;
   final List<DocumentSnapshot> mainList;
   final RxString queryText;
-  final Function(Offset, TukarMilikModel) function;
+  final Function(Offset, TukarPinjamModel) function;
   final Function onTapStatus;
 
   @override
@@ -43,12 +39,12 @@ class MobileWidget extends StatelessWidget {
               child: ListView.builder(
                 itemCount: list.length,
                 itemBuilder: (context, index) {
-                  TukarMilikModel tukarMilikModel =
-                      TukarMilikModel.fromFirestore(list[index]);
+                  TukarPinjamModel tukarPinjamModel =
+                      TukarPinjamModel.fromFirestore(list[index]);
 
                   return StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
-                        .collection(KeyTable.tukarMilik)
+                        .collection(KeyTable.tukarPinjam)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -56,7 +52,7 @@ class MobileWidget extends StatelessWidget {
                           bool cell = true;
 
                           if (queryText.value.isNotEmpty &&
-                              !tukarMilikModel.senderId!
+                              !tukarPinjamModel.senderId!
                                   .toLowerCase()
                                   .contains(queryText.value)) {
                             cell = false;
@@ -72,6 +68,45 @@ class MobileWidget extends StatelessWidget {
                                               '${mainList.indexOf(list[index]) + 1}',
                                               context,
                                               50),
+                                          StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance
+                                                .collection(KeyTable.user)
+                                                .snapshots(),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.data == null) {
+                                                return Container();
+                                              } else {
+                                                List<DocumentSnapshot> list =
+                                                    snapshot.data!.docs;
+
+                                                String ownerList =
+                                                    tukarPinjamModel.senderId!;
+                                                List<String> ownerName = [];
+
+                                                for (int i = 0;
+                                                    i < list.length;
+                                                    i++) {
+                                                  if (ownerList
+                                                      .contains(list[i].id)) {
+                                                    ownerName.add(
+                                                        UserModel.fromFirestore(
+                                                                list[i])
+                                                            .fullName);
+                                                  }
+                                                }
+
+                                                print(
+                                                    "ownerName------${ownerName.toString()}------${ownerName.length}");
+
+                                                return getHeaderCell(
+                                                    '${ownerName.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                                    context,
+                                                    130);
+                                              }
+                                            },
+                                          ),
+
+                                          getHorizontalSpace(context, 30),
 
                                           Expanded(
                                             child: StreamBuilder<QuerySnapshot>(
@@ -87,7 +122,7 @@ class MobileWidget extends StatelessWidget {
                                                       snapshot.data!.docs;
 
                                                   String? bookList =
-                                                      tukarMilikModel
+                                                      tukarPinjamModel
                                                           .senderBookId;
                                                   if (bookList == null) {
                                                     return Container(); // handle null case
@@ -119,7 +154,44 @@ class MobileWidget extends StatelessWidget {
                                               },
                                             ),
                                           ),
+                                          getHorizontalSpace(context, 45),
+                                          StreamBuilder<QuerySnapshot>(
+                                            stream: FirebaseFirestore.instance
+                                                .collection(KeyTable.user)
+                                                .snapshots(),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.data == null) {
+                                                return Container();
+                                              } else {
+                                                List<DocumentSnapshot> list =
+                                                    snapshot.data!.docs;
 
+                                                String ownerList =
+                                                    tukarPinjamModel.receiverId!;
+                                                List<String> ownerName = [];
+
+                                                for (int i = 0;
+                                                    i < list.length;
+                                                    i++) {
+                                                  if (ownerList
+                                                      .contains(list[i].id)) {
+                                                    ownerName.add(
+                                                        UserModel.fromFirestore(
+                                                                list[i])
+                                                            .fullName);
+                                                  }
+                                                }
+
+                                                print(
+                                                    "ownerName------${ownerName.toString()}------${ownerName.length}");
+
+                                                return getHeaderCell(
+                                                    '${ownerName.toString().replaceAll('[', '').replaceAll(']', '')}',
+                                                    context,
+                                                    130);
+                                              }
+                                            },
+                                          ),
                                           getHorizontalSpace(context, 30),
                                           Expanded(
                                             child: StreamBuilder<QuerySnapshot>(
@@ -135,7 +207,7 @@ class MobileWidget extends StatelessWidget {
                                                       snapshot.data!.docs;
 
                                                   String? bookList =
-                                                      tukarMilikModel
+                                                      tukarPinjamModel
                                                           .receiverBookId;
                                                   if (bookList == null) {
                                                     return Container(); // handle null case
@@ -168,7 +240,7 @@ class MobileWidget extends StatelessWidget {
                                             ),
                                           ),
                                           getHeaderCell(
-                                              '${tukarMilikModel.status!}',
+                                              '${tukarPinjamModel.status!}',
                                               context,
                                               120),
                                           // getActiveDeActiveCell(context,
@@ -185,7 +257,7 @@ class MobileWidget extends StatelessWidget {
                                                     onTapDown: _storePosition,
                                                     onTap: () {
                                                       function(_tapPosition,
-                                                          tukarMilikModel);
+                                                          tukarPinjamModel);
                                                     },
                                                     child: Icon(
                                                       Icons.more_vert,
@@ -230,7 +302,7 @@ class MobileWidget extends StatelessWidget {
   }
 
   getActiveDeActiveCell(
-      BuildContext context, bool isActive, TukarMilikModel tukarMilikModel) {
+      BuildContext context, bool isActive, TukarPinjamModel tukarMilikModel) {
     return InkWell(
       child: Container(
           width: 120.h,
@@ -268,9 +340,9 @@ class MobileWidget extends StatelessWidget {
         children: [
           getHeaderCell('ID', context, 50),
           // getHeaderCell('Category', context, 110),
-
-          getHeaderCell('Judul Buku Pengirim', context, 215),
-
+          getHeaderCell('Pengirim', context, 175),
+          getHeaderCell('Judul Buku Pengirim', context, 375),
+          getHeaderCell('Penerima', context, 175),
           Expanded(
               flex: 1, child: getHeaderTitle(context, 'Judul Buku Penerima')),
           getHeaderCell('Status', context, 120),

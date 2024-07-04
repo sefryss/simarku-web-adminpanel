@@ -75,31 +75,175 @@ class _AddSekilasInfoScreenState extends State<AddSekilasInfoScreen> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    itemSubTitle('Sekilas Info', context),
+                                    itemSubTitle('Judul', context),
                                     getVerticalSpace(context, 10),
                                     getTextFiledWidget(
                                         context,
                                         "Masukkan Judul",
                                         sekilasInfoController.titleController),
                                     getVerticalSpace(context, 30),
-                                    itemSubTitle('Status', context),
+                                    itemSubTitle('Penulis', context),
                                     getVerticalSpace(context, 10),
-                                    Container(
-                                      height: 30.h,
-                                      child: FittedBox(
-                                        fit: BoxFit.fitHeight,
-                                        child: Obx(() => CupertinoSwitch(
-                                            activeColor:
-                                                getPrimaryColor(context),
-                                            value: sekilasInfoController
-                                                .activeStatus.value,
-                                            onChanged: (value) {
-                                              sekilasInfoController
-                                                  .activeStatus.value = value;
-                                            })),
-                                      ),
+                                    getTextFiledWidget(
+                                        context,
+                                        "Masukkan penulis...",
+                                        sekilasInfoController.authorController),
+                                    getVerticalSpace(context, 30),
+                                    itemSubTitle('Tanggal', context),
+                                    getVerticalSpace(context, 10),
+                                    DateTimePickerWidget(
+                                        context,
+                                        'Masukkan tanggal...',
+                                        sekilasInfoController.dateController),
+                                    getVerticalSpace(context, 30),
+                                    itemSubTitle('Gambar', context),
+                                    getVerticalSpace(context, 10),
+                                    getTextFiledWidget(
+                                        context,
+                                        "No file chosen",
+                                        sekilasInfoController.imageController,
+                                        isEnabled: false,
+                                        child:
+                                            getCommonChooseFileBtn(context, () {
+                                          sekilasInfoController
+                                              .imgFromGallery();
+                                        })),
+                                    getVerticalSpace(context, 10),
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Obx(() {
+                                        return (sekilasInfoController
+                                                .isImageOffline.value)
+                                            ? ClipRRect(
+                                                borderRadius: BorderRadius
+                                                    .circular((getResizeRadius(
+                                                        context,
+                                                        35))), //add border radius
+                                                child: (sekilasInfoController
+                                                        .isSvg)
+                                                    ? Image.asset(
+                                                        Constants.placeImage,
+                                                        height: 100.h,
+                                                        width: 100.h,
+                                                        fit: BoxFit.contain,
+                                                      )
+                                                    : Image.memory(
+                                                        sekilasInfoController
+                                                            .webImage,
+                                                        height: 100.h,
+                                                        width: 100.h,
+                                                        fit: BoxFit.contain,
+                                                      ),
+                                              )
+                                            : isEdit
+                                                ? ClipRRect(
+                                                    borderRadius: BorderRadius
+                                                        .circular((getResizeRadius(
+                                                            context,
+                                                            35))), //add border radius
+                                                    child: (widget
+                                                            .sekilasInfoModel!
+                                                            .image!
+                                                            .split(".")
+                                                            .last
+                                                            .startsWith("svg"))
+                                                        ? Image.asset(
+                                                            Constants
+                                                                .placeImage,
+                                                            height: 100.h,
+                                                            width: 100.h,
+                                                            fit: BoxFit.contain,
+                                                          )
+                                                        : Image.network(
+                                                            widget
+                                                                .sekilasInfoModel!
+                                                                .image!,
+                                                            height: 100.h,
+                                                            width: 100.h,
+                                                            fit: BoxFit.contain,
+                                                          ),
+                                                  )
+                                                : Container();
+                                      }),
                                     ),
                                     getVerticalSpace(context, 30),
+                                    itemSubTitle('Sumber', context),
+                                    getVerticalSpace(context, 10),
+                                    getTextFiledWidget(
+                                        context,
+                                        "Masukkan sumber...",
+                                        sekilasInfoController.sourceController),
+                                    getVerticalSpace(context, 30),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Deskripsi', context),
+                                        getVerticalSpace(context, 10),
+                                        Container(
+                                          decoration: getDefaultDecoration(
+                                              radius: getDefaultRadius(context),
+                                              bgColor: getCardColor(context),
+                                              // bgColor: getReportColor(context),
+                                              borderColor:
+                                                  getBorderColor(context),
+                                              borderWidth: 1),
+                                          child: Column(
+                                            children: [
+                                              getVerticalSpace(context, 10),
+                                              Container(
+                                                decoration:
+                                                    getDefaultDecoration(
+                                                        radius:
+                                                            getDefaultRadius(
+                                                                context),
+                                                        bgColor: getCardColor(
+                                                            context),
+                                                        borderColor:
+                                                            getBorderColor(
+                                                                context),
+                                                        borderWidth: 1),
+                                                child: QuillToolbar.simple(
+                                                    configurations:
+                                                        QuillSimpleToolbarConfigurations(
+                                                            controller:
+                                                                sekilasInfoController
+                                                                    .descController)
+
+                                                    // configurations: QuillToolbarConfigurations(
+                                                    //   // iconTheme: QuillIconTheme(
+                                                    //   //     iconUnselectedFillColor: Colors.transparent
+                                                    //   // ),
+                                                    //   //   controller:
+                                                    //   //   sekilasInfoController.descController
+                                                    // ),
+                                                    ),
+                                              ),
+                                              Container(
+                                                child: QuillEditor.basic(
+                                                  configurations:
+                                                      QuillEditorConfigurations(
+                                                          controller:
+                                                              sekilasInfoController
+                                                                  .descController),
+
+                                                  // configurations: QuillEditorConfigurations(
+                                                  //   readOnly:
+                                                  //   false,
+                                                  //
+                                                  // ),
+                                                  scrollController:
+                                                      ScrollController(),
+                                                  focusNode: FocusNode(),
+                                                ).paddingSymmetric(
+                                                    vertical: 15.h,
+                                                    horizontal: 15),
+                                              ).marginSymmetric(vertical: 15.h),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 )
                               : Column(

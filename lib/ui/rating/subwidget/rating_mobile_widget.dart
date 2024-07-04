@@ -24,100 +24,166 @@ class RatingMobileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
+
     return Expanded(
-      child: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          RateUsModel rateUsModel = RateUsModel.fromFirestore(list[index]);
+        child: Container(
+      child: Column(
+        children: [
+          getHeaderWidget(context),
+          Expanded(
+              child: ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              RateUsModel rateUsModel = RateUsModel.fromFirestore(list[index]);
 
-          bool cell = true;
+              return StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection(KeyTable.rating)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    // RateUsModel rateUsModel =
+                    //     RateUsModel.fromFirestore(snapshot.hasData!);
 
-          if (queryText.value.isNotEmpty &&
-              !rateUsModel.userName
-                  .toLowerCase()
-                  .contains(queryText.value.toLowerCase())) {
-            cell = false;
-          }
+                    return Obx(() {
+                      bool cell = true;
 
-          return cell
-              ? Stack(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 15.w,
-                        vertical: 25.h,
-                      ),
-                      child: Row(
-                        children: [
-                          getSubCell(
-                            '${rateUsModel.userName}',
-                            context,
-                            130,
-                          ),
-                          getHorizontalSpace(context, 20),
-                          getSubCell(
-                            '${rateUsModel.rating}',
-                            context,
-                            200,
-                          ),
-                          getHorizontalSpace(context, 20),
-                          Container(
-                            width: 80.h,
-                            alignment: Alignment.centerLeft,
-                            child: GestureDetector(
-                              onTapDown: _storePosition,
-                              onTap: () {
-                                function(
-                                  _tapPosition,
-                                  rateUsModel,
-                                );
-                              },
-                              child: Icon(
-                                Icons.more_vert,
-                                color: getSubFontColor(context),
-                                size: 25.h,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned.fill(
-                      child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Divider(
-                          height: 0.5,
-                          color: cell
-                              ? getBorderColor(context)
-                              : Colors.transparent,
-                        ).marginSymmetric(vertical: 4.h),
-                      ),
-                    ),
-                  ],
-                )
-              : Container();
-        },
+                      if (queryText.value.isNotEmpty &&
+                          !rateUsModel.userName
+                              .toLowerCase()
+                              .contains(queryText.value.toLowerCase())) {
+                        cell = false;
+                      }
+                      return cell
+                          ? Stack(
+                              children: [
+                                Container(
+                                  padding: padding,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          getHeaderCell(
+                                              '${index + 1}', context, 50),
+                                          getHeaderCell(
+                                              '${rateUsModel.userName}',
+                                              context,
+                                              130),
+                                          getHorizontalSpace(context, 30),
+                                          getHeaderCell('${rateUsModel.rating}',
+                                              context, 200),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Stack(
+                                            children: [
+                                              getMaxLineFont(context, 'Action',
+                                                  50, Colors.transparent, 1,
+                                                  fontWeight: FontWeight.w600,
+                                                  textAlign: TextAlign.start),
+                                              Positioned.fill(
+                                                  child: Center(
+                                                child: GestureDetector(
+                                                    onTapDown: _storePosition,
+                                                    onTap: () {
+                                                      function(
+                                                        _tapPosition,
+                                                        rateUsModel,
+                                                      );
+                                                    },
+                                                    child: Icon(
+                                                      Icons.more_vert,
+                                                      color: getSubFontColor(
+                                                          context),
+                                                    )),
+                                              ))
+                                            ],
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Positioned.fill(
+                                    child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Divider(
+                                    height: 0.5,
+                                    color: cell
+                                        ? getBorderColor(context)
+                                        : Colors.transparent,
+                                  ).marginSymmetric(vertical: 4.h),
+                                ))
+                              ],
+                            )
+                          : Container();
+                    });
+                  }
+                  return Container();
+                },
+              );
+            },
+          ))
+        ],
       ),
-    );
+    ));
   }
 
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
   }
 
-  Widget getSubCell(String title, BuildContext context, double width) {
+  getButton(BuildContext context, String string, Color color, Color bgColor) {
     return Container(
-      width: width.h,
-      alignment: Alignment.centerLeft,
-      child: getMaxLineFont(
-        context,
-        title,
-        45,
-        getFontColor(context),
-        1,
-        fontWeight: FontWeight.w400,
-        textAlign: TextAlign.start,
+      padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 12.h),
+      decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(getResizeRadius(context, 45))),
+      child: getMaxLineFont(context, string, 45, color, 1,
+          fontWeight: FontWeight.w400, textAlign: TextAlign.start),
+    );
+  }
+
+  getHeaderWidget(BuildContext context) {
+    var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
+    var decoration =
+        getDefaultDecoration(bgColor: getReportColor(context), radius: 0);
+    return Container(
+      padding: padding,
+      decoration: decoration,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              getHeaderCell('ID', context, 50),
+              getHeaderCell('Nama Pengguna', context, 155),
+              getHeaderCell('Rating', context, 180),
+            ],
+          ),
+          Row(
+            children: [
+              getHeaderTitle(context, 'Action'),
+            ],
+          )
+        ],
       ),
     );
+  }
+
+  getHeaderCell(String title, BuildContext context, double width) {
+    return Container(
+        width: width.h,
+        alignment: Alignment.centerLeft,
+        child: getHeaderTitle(context, title));
+  }
+
+  getHeaderTitle(BuildContext context, String title) {
+    return getMaxLineFont(context, title, 45, getFontColor(context), 1,
+        fontWeight: FontWeight.w600, textAlign: TextAlign.start);
   }
 }

@@ -694,6 +694,8 @@ getResizeFont(BuildContext context, double font) {
     return (font / 4).sp;
   } else if (Responsive.isTablet(context)) {
     return (font / 2).sp;
+  } else if (Responsive.isMobile(context)) {
+    return (font / 2).sp;
   } else {
     return (font).sp;
   }

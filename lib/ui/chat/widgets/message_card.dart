@@ -273,7 +273,7 @@ class _MessageCardState extends State<MessageCard> {
                 _OptionItem(
                     color: getFontColor(context),
                     icon: const Icon(Icons.edit, color: Colors.blue, size: 26),
-                    name: 'Edit Message',
+                    name: 'Edit Pesan',
                     onTap: () {
                       //for hiding bottom sheet
                       Navigator.pop(context);
@@ -287,7 +287,7 @@ class _MessageCardState extends State<MessageCard> {
                     color: getFontColor(context),
                     icon: const Icon(Icons.delete_forever,
                         color: Colors.red, size: 26),
-                    name: 'Delete Message',
+                    name: 'Hapus Pesan',
                     onTap: () async {
                       await ChatController.deleteMessage(widget.message)
                           .then((value) {

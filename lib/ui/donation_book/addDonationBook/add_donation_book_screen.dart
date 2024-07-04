@@ -51,7 +51,7 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
             children: [
               getTextWidget(
                   context,
-                  isEdit ? 'Edit Donasi Buku' : 'Tambah Donasi Buku',
+                  isEdit ? 'Detail Donasi Buku' : 'Tambah Donasi Buku',
                   75,
                   getFontColor(context),
                   fontWeight: FontWeight.w700),
@@ -307,6 +307,63 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                             : Container();
                                       }),
                                       getVerticalSpace(context, 30),
+
+                                      itemSubTitle('Pilih Pemilik', context),
+                                      getVerticalSpace(context, 10),
+                                      getTextFiledWidget(
+                                          context,
+                                          "Pemilik",
+                                          donationBookController
+                                              .ownerController,
+                                          isEnabled: false,
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await donationBookController
+                                                  .showOwnerDialog(
+                                                context,
+                                              );
+                                              // if (homeController.genreList
+                                              //         .isNotEmpty &&
+                                              //     homeController.genreList
+                                              //             .length >
+                                              //         0) {
+                                              //   donationBookController
+                                              //       .showUserDialog(
+                                              //           context,
+                                              //           homeController);
+                                              // } else {
+                                              //   showCustomToast(
+                                              //       context: context,
+                                              //       message: "No Data");
+                                              // }
+                                            },
+                                            child: Container(
+                                              height: double.infinity,
+                                              alignment: Alignment.center,
+                                              margin:
+                                                  EdgeInsets.only(left: 8.h),
+                                              // margin: EdgeInsets.all(7.h),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10.h,
+                                                  vertical: 5.h),
+                                              decoration: getDefaultDecoration(
+                                                  bgColor:
+                                                      getReportColor(context),
+                                                  borderColor: borderColor,
+                                                  radius: getResizeRadius(
+                                                      context, 10)),
+                                              child: getTextWidget(
+                                                context,
+                                                'Pilih Pemilik',
+                                                40,
+                                                getSubFontColor(context),
+                                                customFont: "",
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          )),
+
+                                      getVerticalSpace(context, 30),
                                       itemSubTitle('Gambar Buku', context),
                                       getVerticalSpace(context, 10),
                                       getTextFiledWidget(
@@ -382,7 +439,7 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                                   : Container();
                                         }),
                                       ),
-                                      // getVerticalSpace(context, 30),
+                                      getVerticalSpace(context, 30),
                                       itemSubTitle('Sinopsis', context),
                                       getVerticalSpace(context, 10),
 
@@ -1210,34 +1267,34 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                           ],
                         ),
                       ),
-                      getVerticalSpace(context, 20),
-                      Row(
-                        children: [
-                          Obx(() => getButtonWidget(
-                                context,
-                                isEdit ? 'Update' : 'Save',
-                                isProgress:
-                                    donationBookController.isLoading.value,
-                                () {
-                                  if (isEdit) {
-                                    donationBookController
-                                        .editStory(homeController, context, () {
-                                      widget.function();
-                                    });
-                                  } else {
-                                    donationBookController
-                                        .addStory(context, homeController, () {
-                                      widget.function();
-                                    });
-                                  }
-                                },
-                                horPadding: 25.h,
-                                horizontalSpace: 0,
-                                verticalSpace: 0,
-                                btnHeight: 50.h,
-                              )),
-                        ],
-                      ),
+                      // getVerticalSpace(context, 20),
+                      // Row(
+                      //   children: [
+                      //     Obx(() => getButtonWidget(
+                      //           context,
+                      //           isEdit ? 'Update' : 'Save',
+                      //           isProgress:
+                      //               donationBookController.isLoading.value,
+                      //           () {
+                      //             if (isEdit) {
+                      //               donationBookController
+                      //                   .editStory(homeController, context, () {
+                      //                 widget.function();
+                      //               });
+                      //             } else {
+                      //               donationBookController
+                      //                   .addStory(context, homeController, () {
+                      //                 widget.function();
+                      //               });
+                      //             }
+                      //           },
+                      //           horPadding: 25.h,
+                      //           horizontalSpace: 0,
+                      //           verticalSpace: 0,
+                      //           btnHeight: 50.h,
+                      //         )),
+                      //   ],
+                      // ),
                       getVerticalSpace(context, 20),
                     ],
                   ),

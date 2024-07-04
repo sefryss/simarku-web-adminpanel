@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/data/key_table.dart';
 import 'package:ebookadminpanel/model/sekilas_info_model.dart';
+import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import '../../common/common.dart';
 
 // ignore: must_be_immutable
 class SekilasInfoMobileWidget extends StatelessWidget {
+  var _tapPosition;
   SekilasInfoMobileWidget({
     required this.list,
     required this.queryText,
@@ -23,116 +25,159 @@ class SekilasInfoMobileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
+
+    // Sort the list by index in ascending order
+    list.sort((a, b) {
+      int indexA = SekilasInfoModel.fromFirestore(a).index ?? 0;
+      int indexB = SekilasInfoModel.fromFirestore(b).index ?? 0;
+      return indexA.compareTo(indexB);
+    });
+
     return Expanded(
-      child: ListView(
+        child: Container(
+      child: Column(
         children: [
-          SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  getHeaderWidget(context),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(list.length, (index) {
-                        SekilasInfoModel sekilasInfoModel = SekilasInfoModel.fromFirestore(list[index]);
-                        bool cell = true;
-                        return StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection(KeyTable.sekilasInfo)
-                              .orderBy(KeyTable.index, descending: true)
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Obx(() {
-                                if (queryText.value.isNotEmpty &&
-                                    !sekilasInfoModel.title!
-                                        .toLowerCase()
-                                        .contains(queryText.value)) {
-                                  cell = false;
-                                }
+          getHeaderWidget(context),
+          Expanded(
+              child: ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              SekilasInfoModel sekilasInfoModel =
+                  SekilasInfoModel.fromFirestore(list[index]);
 
-                                return cell
-                                    ? Stack(
+              return StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection(KeyTable.sekilasInfo)
+                    .orderBy(KeyTable.index, descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Obx(() {
+                      bool cell = true;
+
+                      if (queryText.value.isNotEmpty &&
+                          !sekilasInfoModel.title!
+                              .toLowerCase()
+                              .contains(queryText.value)) {
+                        cell = false;
+                      }
+                      return cell
+                          ? Stack(
+                              children: [
+                                Container(
+                                  padding: padding,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
                                         children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 15.w,
-                                                vertical: 25.h),
-                                            child: Row(
-                                              children: [
-                                                getSubCell(
-                                                    '${sekilasInfoModel.title}',
-                                                    context,
-                                                    130),
-
-                                                getHorizontalSpace(context, 20),
-                                                getActiveDeActiveCell(
-                                                    context,
-                                                    sekilasInfoModel.isActive!,
-                                                    sekilasInfoModel),
-                                                // getActiveDeActiveCell( context, storyModel.isActive!),
-
-                                                Container(
-                                                  width: 80.h,
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: GestureDetector(
-                                                      onTapDown: _storePosition,
-                                                      onTap: () {
-                                                        // function(_tapPosition,
-                                                        //     sekilasInfoModel);
-                                                      },
-                                                      child: Icon(
-                                                        Icons.more_vert,
-                                                        color: getSubFontColor(
-                                                            context),
-                                                        size: 25.h,
-                                                      )),
-                                                )
-                                              ],
+                                          getHeaderCell(
+                                              '${index + 1}', context, 30),
+                                          getHorizontalSpace(context, 10),
+                                          SizedBox(
+                                            width: 80.h,
+                                            child: Container(
+                                              height: 50.h,
+                                              width: 75.h,
+                                              alignment: Alignment.centerLeft,
+                                              child: ClipRRect(
+                                                child: (sekilasInfoModel.image!
+                                                            .isNotEmpty &&
+                                                        sekilasInfoModel.image!
+                                                            .split(".")
+                                                            .last
+                                                            .startsWith("svg"))
+                                                    ? Image.asset(
+                                                        Constants.placeImage)
+                                                    : Image(
+                                                        image: NetworkImage(
+                                                            sekilasInfoModel
+                                                                .image!),
+                                                      ),
+                                              ),
                                             ),
                                           ),
-                                          Positioned.fill(
-                                              child: Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Divider(
-                                              height: 0.5,
-                                              color: cell
-                                                  ? getBorderColor(context)
-                                                  : Colors.transparent,
-                                            ).marginSymmetric(vertical: 4.h),
-                                          ))
+                                          getHorizontalSpace(context, 30),
+                                          getHeaderCell(
+                                              '${sekilasInfoModel.date!}',
+                                              context,
+                                              100),
+                                          getHorizontalSpace(context, 10),
+                                          getHeaderCell(
+                                              '${sekilasInfoModel.title!}',
+                                              context,
+                                              210),
                                         ],
-                                      )
-                                    : Container();
-                              });
-                            }
-                            return Container();
-                          },
-                        );
-                      }))
-                ],
-              ))
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 80.h,
+                                            child: getActiveDeActiveCell(
+                                                context,
+                                                sekilasInfoModel.isActive!,
+                                                sekilasInfoModel),
+                                          ),
+                                          Stack(
+                                            children: [
+                                              getMaxLineFont(context, 'Action',
+                                                  50, Colors.transparent, 1,
+                                                  fontWeight: FontWeight.w600,
+                                                  textAlign: TextAlign.start),
+                                              Positioned.fill(
+                                                  child: Center(
+                                                child: GestureDetector(
+                                                    onTapDown: _storePosition,
+                                                    onTap: () {
+                                                      function(_tapPosition,
+                                                          sekilasInfoModel);
+                                                    },
+                                                    child: Icon(
+                                                      Icons.more_vert,
+                                                      color: getSubFontColor(
+                                                          context),
+                                                    )),
+                                              ))
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Positioned.fill(
+                                    child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Divider(
+                                    height: 0.5,
+                                    color: cell
+                                        ? getBorderColor(context)
+                                        : Colors.transparent,
+                                  ).marginSymmetric(vertical: 4.h),
+                                ))
+                              ],
+                            )
+                          : Container();
+                    });
+                  }
+                  return Container();
+                },
+              );
+            },
+          ))
         ],
       ),
-    );
+    ));
   }
 
   void _storePosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
   }
 
-  getSubCell(String title, BuildContext context, double width,
-      {bool isMaxLine = false}) {
-    return Container(
-        width: width.h,
-        alignment: Alignment.centerLeft,
-        child: (isMaxLine)
-            ? getMaxLineSubTitle(context, title)
-            : getSubTitle(context, title));
-  }
-
-  getActiveDeActiveCell(BuildContext context, bool isActive, SekilasInfoModel sekilasInfoModel) {
+  getActiveDeActiveCell(
+      BuildContext context, bool isActive, SekilasInfoModel sekilasInfoModel) {
     return InkWell(
       child: Container(
           width: 120.h,
@@ -148,16 +193,6 @@ class SekilasInfoMobileWidget extends StatelessWidget {
     );
   }
 
-  getSubTitle(BuildContext context, String title) {
-    return getMaxLineFont(context, title, 45, getFontColor(context), 1,
-        fontWeight: FontWeight.w400, textAlign: TextAlign.start);
-  }
-
-  getMaxLineSubTitle(BuildContext context, String title) {
-    return getMaxLineFont(context, title, 45, getFontColor(context), 3,
-        fontWeight: FontWeight.w400, textAlign: TextAlign.start);
-  }
-
   getButton(BuildContext context, String string, Color color, Color bgColor) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 7.h, horizontal: 12.h),
@@ -170,21 +205,29 @@ class SekilasInfoMobileWidget extends StatelessWidget {
   }
 
   getHeaderWidget(BuildContext context) {
+    var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
     var decoration =
         getDefaultDecoration(bgColor: getReportColor(context), radius: 0);
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 15.w,
-      ),
+      padding: padding,
       decoration: decoration,
-      height: 55.h,
       child: Row(
-        // scrollDirection: Axis.horizontal,
-        // physics: NeverScrollableScrollPhysics(),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          getHeaderCell('Genre', context, 130),
-          getHeaderCell('Status', context, 120),
-          getHeaderCell('Action', context, 80),
+          Row(
+            children: [
+              getHeaderCell('ID', context, 40),
+              getHeaderCell('Gambar', context, 110),
+              getHeaderCell('Tanggal', context, 110),
+              getHeaderCell('Judul', context, 200),
+            ],
+          ),
+          Row(
+            children: [
+              getHeaderCell('Status', context, 70),
+              getHeaderTitle(context, 'Action'),
+            ],
+          )
         ],
       ),
     );

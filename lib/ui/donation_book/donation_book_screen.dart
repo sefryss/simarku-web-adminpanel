@@ -354,7 +354,7 @@ class _DonasiBookScreenState extends State<DonasiBookScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Edit",
+                title: "Detail",
                 space: 0,
               ),
             ),
@@ -362,38 +362,38 @@ class _DonasiBookScreenState extends State<DonasiBookScreen> {
               HomeController homeController = Get.find();
               homeController.setDonationBookModel(storyModel);
             },
-            value: 'Edit'),
-        PopupMenuItem<String>(
-            child: Container(
-              child: MenuItem(
-                title: "Hapus",
-                space: 0,
-                visibility: false,
-              ),
-            ),
-            onTap: () {
-              PrefData.checkAccess(
-                  context: context,
-                  function: () {
-                    getCommonDialog(
-                        context: context,
-                        title: 'Apakah ingin menghapus donasi buku ini?',
-                        function: () {
-                          FirebaseData.deleteData(
-                              tableName: KeyTable.donationBook,
-                              doc: storyModel.id!,
-                              function: () {
-                                FirebaseData.deleteBatch(() {
-                                  FirebaseData.refreshStoryData();
-                                  FirebaseData.refreshSliderData();
-                                }, storyModel.id!, KeyTable.sliderList,
-                                    KeyTable.storyId);
-                              });
-                        },
-                        subTitle: 'Hapus');
-                  });
-            },
-            value: 'Hapus'),
+            value: 'Detail'),
+        // PopupMenuItem<String>(
+        //     child: Container(
+        //       child: MenuItem(
+        //         title: "Hapus",
+        //         space: 0,
+        //         visibility: false,
+        //       ),
+        //     ),
+        //     onTap: () {
+        //       PrefData.checkAccess(
+        //           context: context,
+        //           function: () {
+        //             getCommonDialog(
+        //                 context: context,
+        //                 title: 'Apakah ingin menghapus donasi buku ini?',
+        //                 function: () {
+        //                   FirebaseData.deleteData(
+        //                       tableName: KeyTable.donationBook,
+        //                       doc: storyModel.id!,
+        //                       function: () {
+        //                         FirebaseData.deleteBatch(() {
+        //                           FirebaseData.refreshStoryData();
+        //                           FirebaseData.refreshSliderData();
+        //                         }, storyModel.id!, KeyTable.sliderList,
+        //                             KeyTable.storyId);
+        //                       });
+        //                 },
+        //                 subTitle: 'Hapus');
+        //           });
+        //     },
+        //     value: 'Hapus'),
       ],
       elevation: 1,
     );

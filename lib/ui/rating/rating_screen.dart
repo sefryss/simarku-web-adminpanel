@@ -376,7 +376,7 @@ class _RatingScreenState extends State<RatingScreen> {
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(
-                title: "Edit",
+                title: "Detail",
                 space: 0,
               ),
             ),
@@ -387,7 +387,7 @@ class _RatingScreenState extends State<RatingScreen> {
 
               homeController.setRateUsModel(rateUsModel);
             },
-            value: 'Edit'),
+            value: 'Detail'),
         PopupMenuItem<String>(
             child: Container(
               child: MenuItem(

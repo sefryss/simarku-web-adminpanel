@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ebookadminpanel/model/feedback_model.dart';
-import 'package:ebookadminpanel/ui/feedback/subwidget/feedback_mobile_widget.dart';
-import 'package:ebookadminpanel/ui/feedback/subwidget/feedback_web_widget.dart';
+import 'package:ebookadminpanel/controller/home_controller.dart';
+import 'package:ebookadminpanel/model/tukar_pinjam_model.dart';
+import 'package:ebookadminpanel/ui/tukar_pinjam/subwidget/mobile_widget.dart';
+import 'package:ebookadminpanel/ui/tukar_pinjam/subwidget/web_widget.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,33 +12,33 @@ import 'package:ebookadminpanel/main.dart';
 import 'package:ebookadminpanel/theme/color_scheme.dart';
 import 'package:ebookadminpanel/ui/category/entries_drop_down.dart';
 import 'package:ebookadminpanel/ui/common/common.dart';
+
 import '../../../controller/data/key_table.dart';
-import '../../../controller/home_controller.dart';
 import '../../controller/data/LoginData.dart';
 import '../../util/pref_data.dart';
 
-class FeedbackScreen extends StatefulWidget {
+class TukarPinjamScreen extends StatefulWidget {
   final Function function;
 
-  FeedbackScreen({required this.function});
+  TukarPinjamScreen({required this.function});
 
   @override
-  State<FeedbackScreen> createState() => _FeedbackScreenState();
+  State<TukarPinjamScreen> createState() => _TukarPinjamScreenState();
 }
 
-class _FeedbackScreenState extends State<FeedbackScreen> {
-  RxInt position = 0.obs;
-
-  RxInt totalItem = 10.obs;
-
-  final ScrollController _controller = ScrollController();
-
+class _TukarPinjamScreenState extends State<TukarPinjamScreen> {
   @override
   void initState() {
     super.initState();
 
     LoginData.getDeviceId();
   }
+
+  RxInt position = 0.obs;
+
+  RxInt totalItem = 10.obs;
+
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getTextWidget(context, 'Umpan Balik', 75, getFontColor(context),
+            getTextWidget(context, 'Tukar Pinjam', 75, getFontColor(context),
                 fontWeight: FontWeight.w700),
             getVerticalSpace(context, 35),
             Expanded(
@@ -79,25 +80,23 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                             ),
                             Expanded(
                                 child: getSearchTextFiledWidget(
-                                    context, 'Cari...', textEditingController,
+                                    context, 'Cari..', textEditingController,
                                     onChanged: (value) {
                               queryText(value);
                             })),
                             getHorizontalSpace(context, 15),
                             // getButtonWidget(
                             //   context,
-                            //   'Tambah Kegiatan Literasi',
+                            //   'Tambah Donasi Buku',
                             //   () {
                             //     HomeController homeController =
                             //         Get.find<HomeController>();
 
-                            //     if (homeController.kegiatanLiterasiModel !=
-                            //         null) {
-                            //       homeController.kegiatanLiterasiModel = null;
+                            //     if (homeController.donationBookModel != null) {
+                            //       homeController.donationBookModel = null;
                             //     }
 
-                            //     kegiatanLiterasiController
-                            //         .clearKegiatanLiterasiData();
+                            //     donationBookController.clearStoryData();
 
                             //     widget.function();
                             //   },
@@ -117,7 +116,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         getVerticalSpace(context, 25),
                         StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
-                              .collection(KeyTable.feedback)
+                              .collection(KeyTable.tukarPinjam)
+                              // .orderBy(KeyTable.index, descending: true)
                               .snapshots(),
                           builder: (context1, snapshot) {
                             print("state===${snapshot.connectionState}");
@@ -131,8 +131,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                     ConnectionState.active) {
                               List<DocumentSnapshot> list = snapshot.data!.docs;
 
-                              print("list----${list.length}");
-
                               return Obx(() {
                                 double i = list.length / 10;
 
@@ -142,7 +140,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                 if (d > 0) {
                                   i = i + 1;
                                 }
-
                                 List<DocumentSnapshot> paginationList = [];
 
                                 paginationList = list
@@ -159,37 +156,29 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                                         child: Column(
                                           children: [
                                             isWeb(context)
-                                                ? FeedbackWebWidget(
+                                                ? WebWidget(
+                                                    mainList: list,
                                                     list: paginationList,
                                                     queryText: queryText,
-                                                    function: (
-                                                      detail,
-                                                      feedbackModel,
-                                                    ) {
+                                                    function: (detail,
+                                                        tukarPinjamModel) {
                                                       _showPopupMenu(
-                                                        context,
-                                                        detail,
-                                                        feedbackModel,
-                                                      );
+                                                          context,
+                                                          detail,
+                                                          tukarPinjamModel);
                                                     },
                                                     onTapStatus: (model) {
-                                                      // print(
-                                                      //     "called------update");
                                                       // updateStatus(
                                                       //     context, model);
-                                                    })
-                                                : FeedbackMobileWidget(
+                                                    },
+                                                  )
+                                                : MobileWidget(
+                                                    mainList: list,
                                                     list: paginationList,
                                                     queryText: queryText,
-                                                    function: (
-                                                      detail,
-                                                      model,
-                                                    ) {
-                                                      _showPopupMenu(
-                                                        context,
-                                                        detail,
-                                                        model,
-                                                      );
+                                                    function: (detail, model) {
+                                                      _showPopupMenu(context,
+                                                          detail, model);
                                                     },
                                                     onTapStatus: (model) {
                                                       // updateStatus(
@@ -327,38 +316,8 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     );
   }
 
-  // updateStatus(
-  //     BuildContext context, FeedbackModel feedbackModel) {
-  //   PrefData.checkAccess(
-  //       context: context,
-  //       function: () {
-  //         getCommonDialog(
-  //             context: context,
-  //             title: feedbackModel.isActive!
-  //                 ? 'Apakah ingin menonaktifkan kegiatan literasi ini?'
-  //                 : 'Apakah ingin mengaktifkan kegiatan literasi ini?',
-  //             function: () {
-  //               print("dataupdated");
-  //               FirebaseData.updateData(
-  //                   context: context,
-  //                   map: {
-  //                     'is_active':
-  //                         kegiatanLiterasiModel.isActive! ? false : true
-  //                   },
-  //                   doc: kegiatanLiterasiModel.id!,
-  //                   tableName: KeyTable.kegiatanLiterasi,
-  //                   isToast: false,
-  //                   function: () {});
-  //             },
-  //             subTitle: 'Kegiatan Literasi');
-  //       });
-  // }
-
-  _showPopupMenu(
-    BuildContext context,
-    var detail,
-    FeedbackModel feedbackModel,
-  ) async {
+  _showPopupMenu(BuildContext context, var detail,
+      TukarPinjamModel tukarPinjamModel) async {
     final RenderBox? overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -382,48 +341,40 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
             onTap: () {
               HomeController homeController = Get.find();
-
-              // kegiatanLiterasiController.isStatus = true;
-
-              homeController.setFeedbackModel(feedbackModel);
+              homeController.setTukarPinjamModel(tukarPinjamModel);
             },
             value: 'Detail'),
-        PopupMenuItem<String>(
-            child: Container(
-              child: MenuItem(
-                title: "Hapus",
-                space: 0,
-                visibility: false,
-              ),
-            ),
-            onTap: () {
-              PrefData.checkAccess(
-                  context: context,
-                  function: () {
-                    getCommonDialog(
-                        context: context,
-                        title: 'Apakah ingin menghapus feedback ini?',
-                        function: () async {
-                          await FirebaseData.deleteData(
-                              tableName: KeyTable.feedback,
-                              doc: feedbackModel.id!,
-                              function: () {
-                                FirebaseData.refreshFeedbackData();
-                              });
-
-                          await FirebaseData.deleteBatch(
-                            () {
-                              FirebaseData.refreshFeedbackData();
-                            },
-                            feedbackModel.id!,
-                            KeyTable.feedback,
-                            KeyTable.rating,
-                          );
-                        },
-                        subTitle: 'Hapus');
-                  });
-            },
-            value: 'Hapus'),
+        // PopupMenuItem<String>(
+        //     child: Container(
+        //       child: MenuItem(
+        //         title: "Hapus",
+        //         space: 0,
+        //         visibility: false,
+        //       ),
+        //     ),
+        //     onTap: () {
+        //       // PrefData.checkAccess(
+        //       //     context: context,
+        //       //     function: () {
+        //       //       getCommonDialog(
+        //       //           context: context,
+        //       //           title: 'Apakah ingin menghapus donasi buku ini?',
+        //       //           function: () {
+        //       //             FirebaseData.deleteData(
+        //       //                 tableName: KeyTable.donationBook,
+        //       //                 doc: tukarPinjamModel.id!,
+        //       //                 function: () {
+        //       //                   FirebaseData.deleteBatch(() {
+        //       //                     FirebaseData.refreshStoryData();
+        //       //                     FirebaseData.refreshSliderData();
+        //       //                   }, tukarPinjamModel.id!, KeyTable.sliderList,
+        //       //                       KeyTable.storyId);
+        //       //                 });
+        //       //           },
+        //       //           subTitle: 'Hapus');
+        //       //     });
+        //     },
+        //     value: 'Hapus'),
       ],
       elevation: 1,
     );

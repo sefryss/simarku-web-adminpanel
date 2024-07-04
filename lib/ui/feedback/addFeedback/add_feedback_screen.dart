@@ -42,7 +42,7 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
           children: [
             getTextWidget(
                 context,
-                isEdit ? 'Edit Umpan Balik' : 'Tambah Umpan Balik',
+                isEdit ? 'Detail Umpan Balik' : 'Tambah Umpan Balik',
                 75,
                 getFontColor(context),
                 fontWeight: FontWeight.w700),
@@ -67,32 +67,68 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    itemSubTitle('Umpan Balik ', context),
+                                    itemSubTitle('Nama Pengguna ', context),
                                     getVerticalSpace(context, 10),
-                                    // getTextFiledWidget(
-                                    //     context,
-                                    //     "Masukkan Judul",
-                                    //     kegiatanLiterasiController
-                                    //         .titleController),
-                                    // getVerticalSpace(context, 30),
-                                    // itemSubTitle('Status', context),
-                                    // getVerticalSpace(context, 10),
-                                    // Container(
-                                    //   height: 30.h,
-                                    //   child: FittedBox(
-                                    //     fit: BoxFit.fitHeight,
-                                    //     child: Obx(() => CupertinoSwitch(
-                                    //         activeColor:
-                                    //             getPrimaryColor(context),
-                                    //         value: kegiatanLiterasiController
-                                    //             .activeStatus.value,
-                                    //         onChanged: (value) {
-                                    //           kegiatanLiterasiController
-                                    //               .activeStatus.value = value;
-                                    //         })),
-                                    //   ),
-                                    // ),
-                                    // getVerticalSpace(context, 30),
+                                    getTextFiledWidget(
+                                      context,
+                                      "User",
+                                      feedbackController.userNameController,
+                                      isEnabled: false,
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    itemSubTitle('Umpan Balik', context),
+                                    getVerticalSpace(context, 10),
+                                    Container(
+                                      // margin: EdgeInsets.all(value),
+                                      decoration: getDefaultDecoration(
+                                          radius: getDefaultRadius(context),
+                                          bgColor: getCardColor(context),
+                                          // bgColor: getReportColor(context),
+                                          borderColor: getBorderColor(context),
+                                          borderWidth: 1),
+                                      child: Column(
+                                        children: [
+                                          getVerticalSpace(context, 10),
+                                          Container(
+                                            margin: EdgeInsets.all(8.h),
+                                            decoration: getDefaultDecoration(
+                                                radius:
+                                                    getDefaultRadius(context),
+                                                bgColor: getCardColor(context),
+                                                borderColor:
+                                                    getBorderColor(context),
+                                                borderWidth: 1),
+                                            child: QuillToolbar.simple(
+                                              configurations:
+                                                  QuillSimpleToolbarConfigurations(
+                                                      controller:
+                                                          feedbackController
+                                                              .feedbackController),
+                                              // iconTheme: QuillIconTheme(
+                                              //     iconUnselectedFillColor: Colors.transparent
+                                              // ),
+                                              // controller: donationBookController.descController
+                                            ),
+                                          ),
+                                          Container(
+                                            child: QuillEditor(
+                                              focusNode: FocusNode(),
+                                              scrollController:
+                                                  ScrollController(),
+                                              configurations:
+                                                  QuillEditorConfigurations(
+                                                      // readOnly: false,
+                                                      controller:
+                                                          feedbackController
+                                                              .feedbackController),
+
+                                              // true for view only mode
+                                            ).paddingSymmetric(
+                                                vertical: 15.h, horizontal: 15),
+                                          ).marginSymmetric(vertical: 15.h),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 )
                               : Column(
@@ -101,62 +137,14 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        itemSubTitle('Pilih User', context),
+                                        itemSubTitle('Nama Pengguna', context),
                                         getVerticalSpace(context, 10),
                                         getTextFiledWidget(
-                                            context,
-                                            "User",
-                                            feedbackController
-                                                .userNameController,
-                                            isEnabled: false,
-                                            child: InkWell(
-                                              onTap: () async {
-                                                await feedbackController
-                                                    .showOwnerDialog(
-                                                  context,
-                                                );
-                                                // if (homeController.genreList
-                                                //         .isNotEmpty &&
-                                                //     homeController.genreList
-                                                //             .length >
-                                                //         0) {
-                                                //   donationBookController
-                                                //       .showUserDialog(
-                                                //           context,
-                                                //           homeController);
-                                                // } else {
-                                                //   showCustomToast(
-                                                //       context: context,
-                                                //       message: "No Data");
-                                                // }
-                                              },
-                                              child: Container(
-                                                height: double.infinity,
-                                                alignment: Alignment.center,
-                                                margin:
-                                                    EdgeInsets.only(left: 8.h),
-                                                // margin: EdgeInsets.all(7.h),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.h,
-                                                    vertical: 5.h),
-                                                decoration:
-                                                    getDefaultDecoration(
-                                                        bgColor: getReportColor(
-                                                            context),
-                                                        borderColor:
-                                                            borderColor,
-                                                        radius: getResizeRadius(
-                                                            context, 10)),
-                                                child: getTextWidget(
-                                                  context,
-                                                  'Pilih User',
-                                                  40,
-                                                  getSubFontColor(context),
-                                                  customFont: "",
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            )),
+                                          context,
+                                          "User",
+                                          feedbackController.userNameController,
+                                          isEnabled: false,
+                                        ),
                                       ],
                                     ),
                                     getVerticalSpace(context, 30),
@@ -230,35 +218,35 @@ class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
                         ],
                       ),
                     ),
-                    getVerticalSpace(context, 20),
-                    Row(
-                      children: [
-                        Obx(() => getButtonWidget(
-                              context,
-                              isEdit ? 'Ubah' : 'Simpan',
-                              isProgress: feedbackController.isLoading.value,
-                              () {
-                                if (isEdit) {
-                                  feedbackController.editFeedback(
-                                      homeController, context, () {
-                                    print(
-                                        "edit------${feedbackController.feedbackModel!.feedback}");
-                                    widget.function();
-                                  });
-                                } else {
-                                  feedbackController
-                                      .addFeedback(homeController, context, () {
-                                    widget.function();
-                                  });
-                                }
-                              },
-                              horPadding: 25.h,
-                              horizontalSpace: 0,
-                              verticalSpace: 0,
-                              btnHeight: 40.h,
-                            )),
-                      ],
-                    ),
+                    // getVerticalSpace(context, 20),
+                    // Row(
+                    //   children: [
+                    //     Obx(() => getButtonWidget(
+                    //           context,
+                    //           isEdit ? 'Ubah' : 'Simpan',
+                    //           isProgress: feedbackController.isLoading.value,
+                    //           () {
+                    //             if (isEdit) {
+                    //               feedbackController.editFeedback(
+                    //                   homeController, context, () {
+                    //                 print(
+                    //                     "edit------${feedbackController.feedbackModel!.feedback}");
+                    //                 widget.function();
+                    //               });
+                    //             } else {
+                    //               feedbackController
+                    //                   .addFeedback(homeController, context, () {
+                    //                 widget.function();
+                    //               });
+                    //             }
+                    //           },
+                    //           horPadding: 25.h,
+                    //           horizontalSpace: 0,
+                    //           verticalSpace: 0,
+                    //           btnHeight: 40.h,
+                    //         )),
+                    //   ],
+                    // ),
                     getVerticalSpace(context, 20),
                   ],
                 ),

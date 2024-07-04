@@ -9,6 +9,7 @@ import 'package:ebookadminpanel/model/rate_us_model.dart';
 import 'package:ebookadminpanel/model/sekilas_info_model.dart';
 import 'package:ebookadminpanel/model/story_model.dart';
 import 'package:ebookadminpanel/model/tukar_milik_model.dart';
+import 'package:ebookadminpanel/model/tukar_pinjam_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/controller/data/FirebaseData.dart';
@@ -20,6 +21,7 @@ import 'data/key_table.dart';
 class HomeController extends GetxController {
   FeedbackModel? feedbackModel = null;
   TukarMilikModel? tukarMilikModel = null;
+  TukarPinjamModel? tukarPinjamModel = null;
   RateUsModel? rateUsModel = null;
   StoryModel? storyModel = null;
   DonationBookModel? donationBookModel = null;
@@ -37,6 +39,7 @@ class HomeController extends GetxController {
   RxString story = ''.obs;
   RxString feedback = ''.obs;
   RxString tukarMilik = ''.obs;
+  RxString tukarPinjam = ''.obs;
   RxString donationBook = ''.obs;
   RxString rateUs = ''.obs;
   RxString storyNotification = ''.obs;
@@ -62,6 +65,7 @@ class HomeController extends GetxController {
   RxList<FeedbackModel> feedbackList = <FeedbackModel>[].obs;
   RxList<RateUsModel> ratingList = <RateUsModel>[].obs;
   RxList<TukarMilikModel> tukarMilikList = <TukarMilikModel>[].obs;
+  RxList<TukarPinjamModel> tukarPinjamList = <TukarPinjamModel>[].obs;
   RxList<StoryModel> storyListNotification = <StoryModel>[].obs;
   RxList<String> sliderList = <String>[].obs;
   RxList<String> allStoryList = <String>[].obs;
@@ -69,6 +73,7 @@ class HomeController extends GetxController {
   RxList<String> allFeedbackList = <String>[].obs;
   RxList<String> allRateUsList = <String>[].obs;
   RxList<String> allTukarMilikList = <String>[].obs;
+  RxList<String> allTukarPinjamList = <String>[].obs;
   RxList<String> allStoryListNotification = <String>[].obs;
   RxList<String> sliderIdList = <String>[].obs;
   RxBool isLoading = false.obs;
@@ -84,6 +89,15 @@ class HomeController extends GetxController {
   setDonationBookModel(DonationBookModel donationBookModel) {
     this.donationBookModel = donationBookModel;
     changeAction(actionEditDonationBook);
+  }
+
+  setTukarPinjamModel(TukarPinjamModel tukarPinjamModel) {
+    this.tukarPinjamModel = tukarPinjamModel;
+    changeAction(actionEditTukarPinjam);
+  }
+  setTukarMilikModel(TukarMilikModel tukarMilikModel) {
+    this.tukarMilikModel = tukarMilikModel;
+    changeAction(actionEditTukarMilik);
   }
 
   setAuthorModel(TopAuthors authorModel) {
@@ -136,6 +150,7 @@ class HomeController extends GetxController {
     fetchFeedback();
     fetchRating();
     fetchTukarMilik();
+    fetchTukarPinjam();
     // fetchAdminData();
   }
 
@@ -301,7 +316,7 @@ class HomeController extends GetxController {
   //   try {
   //     // Mengambil data admin dari koleksi "adminData" dengan dokumen tertentu
   //     var snapshot = await FirebaseFirestore.instance.collection('Users').doc('cTO8ePjRXqTyUB7TVxFK').get();
-      
+
   //     if (snapshot.exists) {
   //       // Jika dokumen ada, update nilai adminModel
   //       adminModel.value = AdminModel.fromFirestore(snapshot);
@@ -314,8 +329,6 @@ class HomeController extends GetxController {
   //     print('Error fetching admin data: $e');
   //   }
   // }
-
-  
 
   Future<List<UserModel>> fetchUserData() async {
     try {
@@ -418,6 +431,28 @@ class HomeController extends GetxController {
       }
       isLoading(false);
       tukarMilik((list1[0]).id);
+    } else {
+      isLoading(false);
+    }
+  }
+
+  fetchTukarPinjam() async {
+    isLoading(true);
+    tukarPinjamList.clear();
+    allTukarPinjamList.clear();
+    tukarPinjam("");
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.tukarPinjam).get();
+
+    if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> list1 = querySnapshot.docs;
+      for (var doc in list1) {
+        var tukarPinjam = TukarPinjamModel.fromFirestore(doc);
+        tukarPinjamList.add(tukarPinjam);
+        allTukarPinjamList.add(tukarPinjam.senderBookId!);
+      }
+      isLoading(false);
+      tukarPinjam((list1[0]).id);
     } else {
       isLoading(false);
     }

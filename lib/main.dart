@@ -7,6 +7,8 @@ import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
 import 'package:ebookadminpanel/controller/rating_controller.dart';
 import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
+import 'package:ebookadminpanel/controller/tukar_milik_controller.dart';
+import 'package:ebookadminpanel/controller/tukar_pinjam_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -38,6 +40,8 @@ KegiatanLiterasiController kegiatanLiterasiController =
     Get.put(KegiatanLiterasiController());
 FeedbackController feedbackController = Get.put(FeedbackController());
 RatingController ratingController = Get.put(RatingController());
+TukarPinjamController tukarPinjamController = Get.put(TukarPinjamController());
+TukarMilikController tukarMilikController = Get.put(TukarMilikController());
 
 RxString deviceID = ''.obs;
 Future<void> main() async {

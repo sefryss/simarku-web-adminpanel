@@ -13,111 +13,127 @@ class GenreMobileWidget extends StatelessWidget {
   var _tapPosition;
   GenreMobileWidget({
     required this.list,
+    required this.mainList,
     required this.queryText,
     required this.function,
     required this.onTapStatus,
   });
   final List<DocumentSnapshot> list;
+  final List<DocumentSnapshot> mainList;
   final RxString queryText;
   final Function(Offset, Genre) function;
   final Function onTapStatus;
-
   @override
   Widget build(BuildContext context) {
+    var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
+
     return Expanded(
-      child: ListView(
+        child: Container(
+      child: Column(
         children: [
-          SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  getHeaderWidget(context),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(list.length, (index) {
-                        Genre genreModel = Genre.fromFirestore(list[index]);
-                        bool cell = true;
-                        return StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection(KeyTable.genreList)
-                              .orderBy(KeyTable.refId, descending: true)
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Obx(() {
-                                if (queryText.value.isNotEmpty &&
-                                    !genreModel.genre!
-                                        .toLowerCase()
-                                        .contains(queryText.value)) {
-                                  cell = false;
-                                }
+          getHeaderWidget(context),
+          Expanded(
+              child: ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              Genre genreModel = Genre.fromFirestore(list[index]);
 
-                                return cell
-                                    ? Stack(
+              return StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection(KeyTable.genreList)
+                    .orderBy(KeyTable.refId, descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Obx(() {
+                      bool cell = true;
+
+                      if (queryText.value.isNotEmpty &&
+                          !genreModel.genre!
+                              .toLowerCase()
+                              .contains(queryText.value)) {
+                        cell = false;
+                      }
+                      return cell
+                          ? Stack(
+                              children: [
+                                Container(
+                                  padding: padding,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
                                         children: [
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 15.w,
-                                                vertical: 25.h),
-                                            child: Row(
-                                              children: [
-                                                getSubCell(
-                                                    '${genreModel.genre}',
-                                                    context,
-                                                    130),
-
-                                                getHorizontalSpace(context, 20),
-                                                getActiveDeActiveCell(
-                                                    context,
-                                                    genreModel.isActive!,
-                                                    genreModel),
-                                                // getActiveDeActiveCell( context, storyModel.isActive!),
-
-                                                Container(
-                                                  width: 80.h,
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: GestureDetector(
-                                                      onTapDown: _storePosition,
-                                                      onTap: () {
-                                                        function(_tapPosition,
-                                                            genreModel);
-                                                      },
-                                                      child: Icon(
-                                                        Icons.more_vert,
-                                                        color: getSubFontColor(
-                                                            context),
-                                                        size: 25.h,
-                                                      )),
-                                                )
-                                              ],
-                                            ),
+                                          getHeaderCell(
+                                              '${mainList.indexOf(list[index]) + 1}',
+                                              context,
+                                              50),
+                                          getHorizontalSpace(context, 5),
+                                          getHeaderCell('${genreModel.genre}',
+                                              context, 130),
+                                          getHorizontalSpace(context, 10),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 120.h,
+                                            child: getActiveDeActiveCell(
+                                                context,
+                                                genreModel.isActive!,
+                                                genreModel),
                                           ),
-                                          Positioned.fill(
-                                              child: Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Divider(
-                                              height: 0.5,
-                                              color: cell
-                                                  ? getBorderColor(context)
-                                                  : Colors.transparent,
-                                            ).marginSymmetric(vertical: 4.h),
-                                          ))
+                                          Stack(
+                                            children: [
+                                              getMaxLineFont(context, 'Action',
+                                                  50, Colors.transparent, 1,
+                                                  fontWeight: FontWeight.w600,
+                                                  textAlign: TextAlign.start),
+                                              Positioned.fill(
+                                                  child: Center(
+                                                child: GestureDetector(
+                                                    onTapDown: _storePosition,
+                                                    onTap: () {
+                                                      function(_tapPosition,
+                                                          genreModel);
+                                                    },
+                                                    child: Icon(
+                                                      Icons.more_vert,
+                                                      color: getSubFontColor(
+                                                          context),
+                                                    )),
+                                              ))
+                                            ],
+                                          )
                                         ],
                                       )
-                                    : Container();
-                              });
-                            }
-                            return Container();
-                          },
-                        );
-                      }))
-                ],
-              ))
+                                    ],
+                                  ),
+                                ),
+                                Positioned.fill(
+                                    child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Divider(
+                                    height: 0.5,
+                                    color: cell
+                                        ? getBorderColor(context)
+                                        : Colors.transparent,
+                                  ).marginSymmetric(vertical: 4.h),
+                                ))
+                              ],
+                            )
+                          : Container();
+                    });
+                  }
+                  return Container();
+                },
+              );
+            },
+          ))
         ],
       ),
-    );
+    ));
   }
 
   void _storePosition(TapDownDetails details) {
@@ -172,21 +188,27 @@ class GenreMobileWidget extends StatelessWidget {
   }
 
   getHeaderWidget(BuildContext context) {
+    var padding = EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h);
     var decoration =
         getDefaultDecoration(bgColor: getReportColor(context), radius: 0);
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 15.w,
-      ),
+      padding: padding,
       decoration: decoration,
-      height: 55.h,
       child: Row(
-        // scrollDirection: Axis.horizontal,
-        // physics: NeverScrollableScrollPhysics(),
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          getHeaderCell('Genre', context, 130),
-          getHeaderCell('Status', context, 120),
-          getHeaderCell('Action', context, 80),
+          Row(
+            children: [
+              getHeaderCell('ID', context, 50),
+              getHeaderCell('Genre', context, 130),
+            ],
+          ),
+          Row(
+            children: [
+              getHeaderCell('Status', context, 120),
+              getHeaderTitle(context, 'Action'),
+            ],
+          )
         ],
       ),
     );

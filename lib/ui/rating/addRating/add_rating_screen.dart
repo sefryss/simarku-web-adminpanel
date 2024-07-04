@@ -39,8 +39,8 @@ class _AddRatingScreenState extends State<AddRatingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getTextWidget(context, isEdit ? 'Edit Rating' : 'Tambah Rating', 75,
-                getFontColor(context),
+            getTextWidget(context, isEdit ? 'Detail Rating' : 'Tambah Rating',
+                75, getFontColor(context),
                 fontWeight: FontWeight.w700),
             getVerticalSpace(context, 35),
             Expanded(
@@ -63,93 +63,18 @@ class _AddRatingScreenState extends State<AddRatingScreen> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    itemSubTitle('Rating', context),
-                                    getVerticalSpace(context, 10),
-                                    // getTextFiledWidget(
-                                    //     context,
-                                    //     "Masukkan Judul",
-                                    //     kegiatanLiterasiController
-                                    //         .titleController),
-                                    // getVerticalSpace(context, 30),
-                                    // itemSubTitle('Status', context),
-                                    // getVerticalSpace(context, 10),
-                                    // Container(
-                                    //   height: 30.h,
-                                    //   child: FittedBox(
-                                    //     fit: BoxFit.fitHeight,
-                                    //     child: Obx(() => CupertinoSwitch(
-                                    //         activeColor:
-                                    //             getPrimaryColor(context),
-                                    //         value: kegiatanLiterasiController
-                                    //             .activeStatus.value,
-                                    //         onChanged: (value) {
-                                    //           kegiatanLiterasiController
-                                    //               .activeStatus.value = value;
-                                    //         })),
-                                    //   ),
-                                    // ),
-                                    // getVerticalSpace(context, 30),
-                                  ],
-                                )
-                              : Column(
-                                  children: [
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        itemSubTitle('Pilih User', context),
+                                        itemSubTitle('Nama Pengguna', context),
                                         getVerticalSpace(context, 10),
-                                        getTextFiledWidget(context, "User",
-                                            ratingController.userNameController,
-                                            isEnabled: false,
-                                            child: InkWell(
-                                              onTap: () async {
-                                                await ratingController
-                                                    .showOwnerDialog(
-                                                  context,
-                                                );
-                                                // if (homeController.genreList
-                                                //         .isNotEmpty &&
-                                                //     homeController.genreList
-                                                //             .length >
-                                                //         0) {
-                                                //   donationBookController
-                                                //       .showUserDialog(
-                                                //           context,
-                                                //           homeController);
-                                                // } else {
-                                                //   showCustomToast(
-                                                //       context: context,
-                                                //       message: "No Data");
-                                                // }
-                                              },
-                                              child: Container(
-                                                height: double.infinity,
-                                                alignment: Alignment.center,
-                                                margin:
-                                                    EdgeInsets.only(left: 8.h),
-                                                // margin: EdgeInsets.all(7.h),
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10.h,
-                                                    vertical: 5.h),
-                                                decoration:
-                                                    getDefaultDecoration(
-                                                        bgColor: getReportColor(
-                                                            context),
-                                                        borderColor:
-                                                            borderColor,
-                                                        radius: getResizeRadius(
-                                                            context, 10)),
-                                                child: getTextWidget(
-                                                  context,
-                                                  'Pilih User',
-                                                  40,
-                                                  getSubFontColor(context),
-                                                  customFont: "",
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            )),
+                                        getTextFiledWidget(
+                                          context,
+                                          "User",
+                                          ratingController.userNameController,
+                                          isEnabled: false,
+                                        ),
                                       ],
                                     ),
                                     getVerticalSpace(context, 30),
@@ -159,8 +84,45 @@ class _AddRatingScreenState extends State<AddRatingScreen> {
                                       children: [
                                         itemSubTitle('Rating', context),
                                         getVerticalSpace(context, 10),
-                                        getTextFiledWidget(context, "Rating",
-                                            ratingController.ratingController),
+                                        getTextFiledWidget(
+                                          context,
+                                          "Rating",
+                                          ratingController.ratingController,
+                                          isEnabled: false,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Nama Pengguna', context),
+                                        getVerticalSpace(context, 10),
+                                        getTextFiledWidget(
+                                          context,
+                                          "User",
+                                          ratingController.userNameController,
+                                          isEnabled: false,
+                                        ),
+                                      ],
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle('Rating', context),
+                                        getVerticalSpace(context, 10),
+                                        getTextFiledWidget(
+                                          context,
+                                          "Rating",
+                                          ratingController.ratingController,
+                                          isEnabled: false,
+                                        ),
                                       ],
                                     ),
                                   ],
@@ -168,35 +130,35 @@ class _AddRatingScreenState extends State<AddRatingScreen> {
                         ],
                       ),
                     ),
-                    getVerticalSpace(context, 20),
-                    Row(
-                      children: [
-                        Obx(() => getButtonWidget(
-                              context,
-                              isEdit ? 'Ubah' : 'Simpan',
-                              isProgress: feedbackController.isLoading.value,
-                              () {
-                                if (isEdit) {
-                                  feedbackController.editFeedback(
-                                      homeController, context, () {
-                                    print(
-                                        "edit------${feedbackController.feedbackModel!.feedback}");
-                                    widget.function();
-                                  });
-                                } else {
-                                  feedbackController
-                                      .addFeedback(homeController, context, () {
-                                    widget.function();
-                                  });
-                                }
-                              },
-                              horPadding: 25.h,
-                              horizontalSpace: 0,
-                              verticalSpace: 0,
-                              btnHeight: 40.h,
-                            )),
-                      ],
-                    ),
+                    // getVerticalSpace(context, 20),
+                    // Row(
+                    //   children: [
+                    //     Obx(() => getButtonWidget(
+                    //           context,
+                    //           isEdit ? 'Ubah' : 'Simpan',
+                    //           isProgress: feedbackController.isLoading.value,
+                    //           () {
+                    //             if (isEdit) {
+                    //               feedbackController.editFeedback(
+                    //                   homeController, context, () {
+                    //                 print(
+                    //                     "edit------${feedbackController.feedbackModel!.feedback}");
+                    //                 widget.function();
+                    //               });
+                    //             } else {
+                    //               feedbackController
+                    //                   .addFeedback(homeController, context, () {
+                    //                 widget.function();
+                    //               });
+                    //             }
+                    //           },
+                    //           horPadding: 25.h,
+                    //           horizontalSpace: 0,
+                    //           verticalSpace: 0,
+                    //           btnHeight: 40.h,
+                    //         )),
+                    //   ],
+                    // ),
                     getVerticalSpace(context, 20),
                   ],
                 ),
