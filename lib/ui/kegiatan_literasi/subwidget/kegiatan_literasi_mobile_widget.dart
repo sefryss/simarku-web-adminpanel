@@ -103,7 +103,7 @@ class KegiatanLiterasiMobileWidget extends StatelessWidget {
                                           ),
                                           getHorizontalSpace(context, 5),
                                           getHeaderCell(
-                                              '${kegiatanLiterasiModel.date!}',
+                                              '${kegiatanLiterasiModel.dateStart!} - ${kegiatanLiterasiModel.dateEnd!}',
                                               context,
                                               100),
                                           getHorizontalSpace(context, 10),

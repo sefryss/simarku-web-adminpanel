@@ -6,10 +6,7 @@ import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
 import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
 import 'package:ebookadminpanel/controller/story_controller.dart';
-import 'package:ebookadminpanel/ui/chat/addRating/add_chat_screen.dart';
-import 'package:ebookadminpanel/ui/chat/chat_screen.dart';
 import 'package:ebookadminpanel/ui/chat/subwidget/chat_web_widget.dart';
-import 'package:ebookadminpanel/ui/chat/widgets/detail_chat_screen.dart';
 import 'package:ebookadminpanel/ui/donation_book/addDonationBook/add_donation_book_screen.dart';
 import 'package:ebookadminpanel/ui/donation_book/donation_book_screen.dart';
 import 'package:ebookadminpanel/ui/feedback/addFeedback/add_feedback_screen.dart';
@@ -532,7 +529,7 @@ class _HomePage extends State<HomePage> {
           homeController.kegiatanLiterasiModel;
 
       kegiatanLiterasiController
-          .setAllSekilasInfo(homeController.kegiatanLiterasiModel);
+          .setAllKegiatanLiterasi(homeController.kegiatanLiterasiModel);
 
       return AddKegiatanLiterasiScreen(
         function: () {

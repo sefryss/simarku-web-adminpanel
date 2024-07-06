@@ -106,7 +106,7 @@ class KegiatanLiterasiWebWidget extends StatelessWidget {
                                           ),
                                           getHorizontalSpace(context, 10),
                                           getHeaderCell(
-                                              '${kegiatanLiterasiModel.date!}',
+                                              '${kegiatanLiterasiModel.dateStart!} - ${kegiatanLiterasiModel.dateEnd!}',
                                               context,
                                               200),
                                           getHorizontalSpace(context, 10),

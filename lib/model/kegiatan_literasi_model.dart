@@ -5,7 +5,8 @@ class KegiatanLiterasiModel {
   String? id;
   String? image;
   String? source;
-  String? date;
+  String? dateStart;
+  String? dateEnd;
   String? desc;
   String? url;
 
@@ -17,7 +18,8 @@ class KegiatanLiterasiModel {
     this.id,
     this.image,
     this.source,
-    this.date,
+    this.dateStart,
+    this.dateEnd,
     this.desc,
     this.url,
     this.index = 1,
@@ -30,7 +32,8 @@ class KegiatanLiterasiModel {
     data['id'] = this.id;
     data['image'] = this.image;
     data['source'] = this.source;
-    data['date'] = this.date;
+    data['date_start'] = this.dateStart;
+    data['date_end'] = this.dateEnd;
     data['desc'] = this.desc;
     data['url'] = this.url;
     data['index'] = this.index;
@@ -45,7 +48,8 @@ class KegiatanLiterasiModel {
       title: data['title'] ?? '',
       image: data['image'] ?? '',
       source: data['source'] ?? '',
-      date: data['date'] ?? '',
+      dateStart: data['date_start'] ?? '',
+      dateEnd: data['date_end'] ?? '',
       desc: data['desc'] ?? '',
       url: data['url'] ?? '',
       index: data['index'] ?? 0,

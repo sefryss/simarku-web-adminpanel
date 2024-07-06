@@ -3,12 +3,14 @@ import 'package:ebookadminpanel/model/kegiatan_literasi_model.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/controller/home_controller.dart';
 import 'package:ebookadminpanel/theme/color_scheme.dart';
 import 'package:ebookadminpanel/ui/common/common.dart';
+import 'package:intl/intl.dart';
 import '../../../controller/data/LoginData.dart';
 import '../../../util/responsive.dart';
 
@@ -102,13 +104,28 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        itemSubTitle('Tanggal', context),
+                                        itemSubTitle('Tanggal Mulai', context),
                                         getVerticalSpace(context, 10),
-                                        getTextFiledWidget(
+                                        DateTimePickerWidget(
                                             context,
-                                            "Masukkan tanggal...",
+                                            "Masukkan tanggal mulai...",
                                             kegiatanLiterasiController
-                                                .dateController),
+                                                .dateStartController),
+                                      ],
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        itemSubTitle(
+                                            'Tanggal Selesai', context),
+                                        getVerticalSpace(context, 10),
+                                        DateTimePickerWidget(
+                                            context,
+                                            "Masukkan tanggal selesai...",
+                                            kegiatanLiterasiController
+                                                .dateEndController),
                                       ],
                                     ),
                                     getVerticalSpace(context, 30),
@@ -306,13 +323,53 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              itemSubTitle('Tanggal', context),
+                                              itemSubTitle('Url', context),
                                               getVerticalSpace(context, 10),
                                               getTextFiledWidget(
                                                   context,
-                                                  "Masukkan tanggal...",
+                                                  "Masukkan url...",
                                                   kegiatanLiterasiController
-                                                      .dateController),
+                                                      .urlController),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    getVerticalSpace(context, 30),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle(
+                                                  'Tanggal Mulai', context),
+                                              getVerticalSpace(context, 10),
+                                              DateTimePickerWidget(
+                                                  context,
+                                                  "Masukkan tanggal mulai...",
+                                                  kegiatanLiterasiController
+                                                      .dateStartController),
+                                            ],
+                                          ),
+                                        ),
+                                        getHorizontalSpace(context, 10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle(
+                                                  'Tanggal Selesai', context),
+                                              getVerticalSpace(context, 10),
+                                              DateTimePickerWidget(
+                                                  context,
+                                                  "Masukkan tanggal selesai...",
+                                                  kegiatanLiterasiController
+                                                      .dateEndController),
                                             ],
                                           ),
                                         ),
@@ -423,22 +480,6 @@ class _AddKegiatanLiterasiScreenState extends State<AddKegiatanLiterasiScreen> {
                                                           : Container();
                                                 }),
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        getHorizontalSpace(context, 10),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              itemSubTitle('Url', context),
-                                              getVerticalSpace(context, 10),
-                                              getTextFiledWidget(
-                                                  context,
-                                                  "Masukkan url...",
-                                                  kegiatanLiterasiController
-                                                      .urlController),
                                             ],
                                           ),
                                         ),
@@ -576,5 +617,70 @@ itemSubTitle(String s, BuildContext context, {Color? color}) {
     45,
     color == null ? getFontColor(context) : color,
     fontWeight: FontWeight.w500,
+  );
+}
+
+Widget DateTimePickerWidget(
+    BuildContext context, String hintText, TextEditingController controller) {
+  double radius = getDefaultRadius(context);
+  double fontSize = getResizeFont(context, 40);
+
+  return GestureDetector(
+    onTap: () async {
+      DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2101),
+      );
+      if (pickedDate != null) {
+        controller.text = DateFormat('d MMMM yyyy', 'id_ID').format(pickedDate);
+      }
+    },
+    child: AbsorbPointer(
+      child: TextFormField(
+        controller: controller,
+        style: TextStyle(
+          fontFamily: Constants.fontsFamily,
+          color: getFontColor(context),
+          fontWeight: FontWeight.w400,
+          fontSize: fontSize,
+        ),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(left: 10.h),
+          border: InputBorder.none,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(radius)),
+            borderSide: BorderSide(
+              color: getPrimaryColor(context),
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(radius)),
+            borderSide: BorderSide(
+              color: getBorderColor(context),
+            ),
+          ),
+          errorBorder: InputBorder.none,
+          disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(radius)),
+            borderSide: BorderSide(
+              color: getBorderColor(context),
+            ),
+          ),
+          filled: true,
+          fillColor: getCardColor(context),
+          focusColor: Colors.green,
+          hintText: hintText,
+          hintStyle: TextStyle(
+            fontFamily: Constants.fontsFamily,
+            color: getSubFontColor(context),
+            fontWeight: FontWeight.w400,
+            fontSize: fontSize,
+          ),
+          suffixIcon: Icon(Icons.calendar_today),
+        ),
+      ),
+    ),
   );
 }

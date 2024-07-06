@@ -14,7 +14,8 @@ class KegiatanLiterasiController extends GetxController {
   TextEditingController titleController = TextEditingController();
   TextEditingController imageController = TextEditingController();
   TextEditingController sourceController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
+  TextEditingController dateStartController = TextEditingController();
+  TextEditingController dateEndController = TextEditingController();
   TextEditingController urlController = TextEditingController();
   Uint8List webImage = Uint8List(10);
   QuillController descController = QuillController.basic();
@@ -33,10 +34,10 @@ class KegiatanLiterasiController extends GetxController {
   void onInit() {
     super.onInit();
 
-    setAllSekilasInfo(kegiatanLiterasiModel);
+    setAllKegiatanLiterasi(kegiatanLiterasiModel);
   }
 
-  setAllSekilasInfo(
+  setAllKegiatanLiterasi(
     KegiatanLiterasiModel? kegiatanLiterasi,
   ) {
     if (kegiatanLiterasi != null) {
@@ -50,7 +51,10 @@ class KegiatanLiterasiController extends GetxController {
         titleController.text = kegiatanLiterasiModel!.title!;
         imageController.text = file;
         sourceController.text = kegiatanLiterasiModel!.source!;
-        dateController.text = kegiatanLiterasiModel!.date!;
+   dateStartController.text =
+            kegiatanLiterasiModel!.dateStart!.toString(); // Update as per UI requirement
+        dateEndController.text =
+            kegiatanLiterasiModel!.dateEnd!.toString(); // Update as per UI requirement
         urlController.text = kegiatanLiterasiModel!.url!;
         activeStatus.value = kegiatanLiterasiModel!.isActive ?? true;
         if (kegiatanLiterasiModel!.desc != null &&
@@ -70,7 +74,8 @@ class KegiatanLiterasiController extends GetxController {
     imageController = TextEditingController();
     webImage = Uint8List(10);
     sourceController = TextEditingController();
-    dateController = TextEditingController();
+    dateStartController = TextEditingController();
+    dateEndController = TextEditingController();
     urlController = TextEditingController();
     descController = QuillController.basic();
     isImageOffline.value = false;
@@ -91,7 +96,8 @@ class KegiatanLiterasiController extends GetxController {
       firebaseHistory.title = titleController.text;
       firebaseHistory.image = url;
       firebaseHistory.source = sourceController.text;
-      firebaseHistory.date = dateController.text;
+      firebaseHistory.dateStart = dateStartController.text;
+      firebaseHistory.dateEnd = dateEndController.text;
       firebaseHistory.desc =
           deltaToHtml(descController.document.toDelta().toJson());
       firebaseHistory.url = urlController.text;
@@ -148,7 +154,8 @@ class KegiatanLiterasiController extends GetxController {
 
       kegiatanLiterasiModel!.title = titleController.text;
       kegiatanLiterasiModel!.source = sourceController.text;
-      kegiatanLiterasiModel!.date = dateController.text;
+      kegiatanLiterasiModel!.dateStart = dateStartController.text;
+      kegiatanLiterasiModel!.dateEnd = dateEndController.text;
       kegiatanLiterasiModel!.desc =
           deltaToHtml(descController.document.toDelta().toJson());
       kegiatanLiterasiModel!.url = urlController.text;
