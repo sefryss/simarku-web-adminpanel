@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/model/kegiatan_literasi_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,10 +52,10 @@ class KegiatanLiterasiController extends GetxController {
         titleController.text = kegiatanLiterasiModel!.title!;
         imageController.text = file;
         sourceController.text = kegiatanLiterasiModel!.source!;
-   dateStartController.text =
-            kegiatanLiterasiModel!.dateStart!.toString(); // Update as per UI requirement
-        dateEndController.text =
-            kegiatanLiterasiModel!.dateEnd!.toString(); // Update as per UI requirement
+        dateStartController.text = kegiatanLiterasiModel!.dateStart!
+            .toString(); // Update as per UI requirement
+        dateEndController.text = kegiatanLiterasiModel!.dateEnd!
+            .toString(); // Update as per UI requirement
         urlController.text = kegiatanLiterasiModel!.url!;
         activeStatus.value = kegiatanLiterasiModel!.isActive ?? true;
         if (kegiatanLiterasiModel!.desc != null &&
@@ -87,10 +88,20 @@ class KegiatanLiterasiController extends GetxController {
     // oldCategory = '';
   }
 
+  Future<int> _getCurrentIndex() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(KeyTable.kegiatanLiterasi)
+        .get();
+    return querySnapshot.docs.length;
+  }
+
   addKegiatanLiterasi(BuildContext context, HomeController controller,
       Function function) async {
     if (checkValidation(context)) {
       String url = await uploadFile(pickImage!);
+
+      int currentIndex = await _getCurrentIndex();
+      int newIndex = currentIndex + 1;
 
       KegiatanLiterasiModel firebaseHistory = new KegiatanLiterasiModel();
       firebaseHistory.title = titleController.text;
@@ -101,8 +112,8 @@ class KegiatanLiterasiController extends GetxController {
       firebaseHistory.desc =
           deltaToHtml(descController.document.toDelta().toJson());
       firebaseHistory.url = urlController.text;
-      // firebaseHistory.isFav = false;
       firebaseHistory.isActive = activeStatus.value;
+      firebaseHistory.index = newIndex;
 
       FirebaseData.insertData(
           context: context,

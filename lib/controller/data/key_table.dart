@@ -32,8 +32,8 @@ class KeyTable {
   static String adminData = 'Users';
   static String keyUserName = 'Email';
   static String keyPassword = 'password';
-  static String keyIsAdmin = 'is_admin';
-  static String keyIsAccess = 'isAccess';
+  static String keyIsAdmin = 'IsAdmin';
+  static String keyIsAccess = 'IsAccess';
 
   static String keyCategoryTable = 'category';
   static String keyHomeSliderTable = 'home_slider';

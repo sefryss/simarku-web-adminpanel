@@ -285,6 +285,33 @@ class SideMenu extends StatelessWidget {
             Divider(),
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
+              title: "Pengguna",
+              svgSrc: (i == actionUser ||
+                      i == actionEditUser ||
+                      checkAction(i, dummyActionUser))
+                  ? "user_active.svg"
+                  : "user.svg",
+              isSelected: i == actionUser ||
+                  i == actionEditUser ||
+                  //     i == actionAddDonationBook ||
+                  checkAction(i, dummyActionUser),
+              isDropDown: false,
+              isListSelected: i == actionUser,
+              pressList: () {
+                function(actionUser);
+              },
+              pressAdd: () {
+                // function(actionAddDonationBook);
+              },
+              press: () {
+                function(actionUser);
+                // function(dummyActionAuthor);
+              },
+              index: 10,
+            ),
+
+            DrawerExpansionTile(
+              // key: Key("selected ${selectedIndex}"),
               title: "Pesan",
               svgSrc: (i == actionChat || checkAction(i, dummyActionChat))
                   ? "icon_chat_fill.svg"

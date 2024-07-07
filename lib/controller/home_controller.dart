@@ -95,6 +95,7 @@ class HomeController extends GetxController {
     this.tukarPinjamModel = tukarPinjamModel;
     changeAction(actionEditTukarPinjam);
   }
+
   setTukarMilikModel(TukarMilikModel tukarMilikModel) {
     this.tukarMilikModel = tukarMilikModel;
     changeAction(actionEditTukarMilik);
@@ -330,20 +331,25 @@ class HomeController extends GetxController {
   //   }
   // }
 
-  Future<List<UserModel>> fetchUserData() async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Users') // Assuming the collection is named 'Users'
-          .get();
+  fetchUserData() async {
+    isLoading(true);
+    userList.clear();
+    allUserList.clear();
+    user("");
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(KeyTable.user).get();
 
-      List<UserModel> users = querySnapshot.docs.map((doc) {
-        return UserModel.fromFirestore(doc);
-      }).toList();
-
-      return users;
-    } catch (e) {
-      print('Error fetching user data: $e');
-      return [];
+    if (querySnapshot.size > 0 && querySnapshot.docs.isNotEmpty) {
+      List<DocumentSnapshot> list1 = querySnapshot.docs;
+      for (var doc in list1) {
+        var user = UserModel.fromFirestore(doc);
+        userList.add(user);
+        allUserList.add(user.id!);
+      }
+      isLoading(false);
+      user((list1[0]).id);
+    } else {
+      isLoading(false);
     }
   }
 

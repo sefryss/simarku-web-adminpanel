@@ -72,14 +72,14 @@ class TukarMilikController extends GetxController {
     isLoading.value = false;
   }
 
-  void detailTukarPinjam(HomeController homeController, BuildContext context,
-      Function function) async {
-    tukarMilikModel!.receiverId = receiver.text;
-    tukarMilikModel!.receiverBookId = receiverBook.text;
-    tukarMilikModel!.senderId = sender.text;
-    tukarMilikModel!.senderBookId = senderBook.text;
-    tukarMilikModel!.status = status.text;
-    //     tukarPinjamModel!.loanEndTime = loanEndTime.text;
-    // tukarPinjamModel!.timestamp = timestamp.text.toString();
-  }
+  // void detailTukarPinjam(HomeController homeController, BuildContext context,
+  //     Function function) async {
+  //   tukarMilikModel!.receiverId = receiver.text;
+  //   tukarMilikModel!.receiverBookId = receiverBook.text;
+  //   tukarMilikModel!.senderId = sender.text;
+  //   tukarMilikModel!.senderBookId = senderBook.text;
+  //   tukarMilikModel!.status = status.text;
+  //   //     tukarPinjamModel!.loanEndTime = loanEndTime.text;
+  //   // tukarPinjamModel!.timestamp = timestamp.text.toString();
+  // }
 }

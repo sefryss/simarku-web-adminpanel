@@ -279,7 +279,7 @@ class LoginData {
           .collection(KeyTable.adminData)
           .doc(loginId)
           .update({
-        "isAccess": false
+        "IsAccess": false
 
         // LoginData.keyActive: false,
       });
@@ -332,7 +332,7 @@ class LoginData {
             .collection(KeyTable.adminData)
             .doc(id)
             .update({
-          "isAccess": false
+          "IsAccess": false
 
           // LoginData.keyActive: false,
         });

@@ -6,6 +6,7 @@ import 'package:ebookadminpanel/controller/genre_controller.dart';
 import 'package:ebookadminpanel/controller/kegiatan_literasi_controller.dart';
 import 'package:ebookadminpanel/controller/sekilas_ilmu_controller.dart';
 import 'package:ebookadminpanel/controller/story_controller.dart';
+import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:ebookadminpanel/ui/chat/subwidget/chat_web_widget.dart';
 import 'package:ebookadminpanel/ui/donation_book/addDonationBook/add_donation_book_screen.dart';
 import 'package:ebookadminpanel/ui/donation_book/donation_book_screen.dart';
@@ -23,6 +24,8 @@ import 'package:ebookadminpanel/ui/tukar_milik/detail_tukar_milik/detail_tukar_m
 import 'package:ebookadminpanel/ui/tukar_milik/tukar_milik_screen.dart';
 import 'package:ebookadminpanel/ui/tukar_pinjam/detail_tukar_pinjam/detail_tukar_pinjam.dart';
 import 'package:ebookadminpanel/ui/tukar_pinjam/tukar_pinjam_screen.dart';
+import 'package:ebookadminpanel/ui/user/detail_user/detail_user.dart';
+import 'package:ebookadminpanel/ui/user/user_screen.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,9 +62,13 @@ class _HomePage extends State<HomePage> {
 
   HomeController homeController = Get.put(HomeController());
 
+  UserModel? currentUser;
+
   @override
   void initState() {
     super.initState();
+
+    fetchCurrentUser();
 
     LoginData.getDeviceId();
     SystemChannels.lifecycle.setMessageHandler((message) {
@@ -80,13 +87,23 @@ class _HomePage extends State<HomePage> {
     });
   }
 
+  Future<void> fetchCurrentUser() async {
+    try {
+      UserModel user = await UserModel.fetchCurrentUser();
+      setState(() {
+        currentUser = user;
+      });
+    } catch (e) {
+      print('Error fetching current user: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     LoginData.getDeviceId();
     setScreenSize(context);
 
     themeController.setThemeStatusBar(context);
-    // ignore: deprecated_member_use
     return WillPopScope(
         child: CommonPage(
             widget: Container(
@@ -99,9 +116,6 @@ class _HomePage extends State<HomePage> {
                     changeAction(value);
 
                     _key.currentState!.openEndDrawer();
-
-                    // onTap(value);
-                    // Navigator.pop(context);
                   }),
             backgroundColor: getBackgroundColor(context),
             appBar: AppBar(
@@ -166,23 +180,37 @@ class _HomePage extends State<HomePage> {
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 15.h),
                 ),
-
-                // buildPopupMenuButton((value) {
-                //   handleClick(value);
-                // }).marginSymmetric(horizontal: 20.h),
-
                 GestureDetector(
                   onTap: () {
                     _showPopupMenu();
                   },
                   child: Container(
                           alignment: Alignment.center,
-                          child: imageAsset(
-                              themeController.checkDarkTheme()
-                                  ? 'profile_dark.png'
-                                  : 'profile.png',
-                              height: 40.h,
-                              width: 40.h))
+                          child: currentUser != null &&
+                                  currentUser!.profilePicture.isNotEmpty
+                              ? Container(
+                                  width: 40.h,
+                                  height: 40.h,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: getPrimaryColor(context),
+                                        width: 2.0),
+                                  ),
+                                  child: ClipOval(
+                                    child: Image.network(
+                                      currentUser!.profilePicture,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : imageAsset(
+                                  themeController.checkDarkTheme()
+                                      ? 'profile_dark.png'
+                                      : 'profile.png',
+                                  height: 40.h,
+                                  width: 40.h,
+                                ))
                       .marginSymmetric(horizontal: 20.h),
                 )
               ],
@@ -611,7 +639,9 @@ class _HomePage extends State<HomePage> {
         },
         tukarMilikModel: homeController.tukarMilikModel,
       );
-    } else if (action == actionTukarPinjam) {
+    } 
+    
+    else if (action == actionTukarPinjam) {
       PrefData.setAction(actionTukarPinjam);
 
       // donationBookController.clearStoryData();
@@ -642,6 +672,36 @@ class _HomePage extends State<HomePage> {
       );
     }
 
+       else if (action == actionUser) {
+      PrefData.setAction(actionUser);
+
+      // donationBookController.clearStoryData();
+      return UserScreen(
+        function: () {
+          // changeAction(actionAddTukarMilik);
+          // onBackClick();
+        },
+      );
+    } else if (action == actionEditUser) {
+      PrefData.setAction(actionEditUser);
+
+      userController.homeController = homeController;
+      userController.userModel = homeController.userModel;
+
+      // if(!userController.isBack.value){
+
+      userController.setAllDataFromUserModel(
+          homeController.userModel, homeController);
+
+      // }
+      return DetailUser(
+        function: () {
+          onBackClick();
+          changeAction(actionUser);
+        },
+        userModel: homeController.userModel,
+      );
+    }
     // else if (action == actionDetailChat) {
     //   PrefData.setAction(actionDetailChat);
     //   return DetailChatScreen(
@@ -786,7 +846,7 @@ class _HomePage extends State<HomePage> {
             child: Container(
               width: width,
               child: DrawerListTile(
-                title: "Log Out",
+                title: "Keluar",
                 iconData: Icons.account_circle_sharp,
                 space: 0,
                 color: Colors.red,

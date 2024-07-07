@@ -7,7 +7,7 @@ class UserModel {
   String nikNumber;
   String phoneNumber;
   String address;
-  final String email;
+  String email;
   String profilePicture;
   bool isOnline;
   String lastActive;
@@ -143,8 +143,8 @@ class UserModel {
     Map data = doc.data() as Map;
     return UserModel(
       id: doc.id,
-      address: data['address'] ?? '',
-      email: data['email'] ?? '',
+      address: data['Address'] ?? '',
+      email: data['Email'] ?? '',
       fullName: data['FullName'] ?? '',
       phoneNumber: data['PhoneNumber'] ?? '',
       profilePicture: data['ProfilePicture'] ?? '',
