@@ -6,7 +6,6 @@ import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ebookadminpanel/controller/data/FirebaseData.dart';
 import 'package:ebookadminpanel/main.dart';
 import 'package:ebookadminpanel/theme/color_scheme.dart';
 import 'package:ebookadminpanel/ui/category/entries_drop_down.dart';
@@ -15,7 +14,6 @@ import 'package:ebookadminpanel/ui/common/common.dart';
 import '../../../controller/data/key_table.dart';
 import '../../../controller/home_controller.dart';
 import '../../controller/data/LoginData.dart';
-import '../../util/pref_data.dart';
 
 class TukarMilikScreen extends StatefulWidget {
   final Function function;

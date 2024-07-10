@@ -320,7 +320,7 @@ class LoginData {
 
       deviceID.value = await getDeviceIdentifier();
 
-      isData = (adminModel.deviceId! == deviceID.value) ? true : false;
+      isData = (adminModel.deviceId == deviceID.value) ? true : false;
 
       print(
           "device----11-----${adminModel.deviceId}---${adminModel.email}-----${deviceID.value}");

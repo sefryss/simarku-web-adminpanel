@@ -406,7 +406,7 @@ class _RatingScreenState extends State<RatingScreen> {
                         function: () async {
                           await FirebaseData.deleteData(
                               tableName: KeyTable.rating,
-                              doc: rateUsModel.id!,
+                              doc: rateUsModel.id,
                               function: () {
                                 FirebaseData.refreshRatingData();
                               });
@@ -415,7 +415,7 @@ class _RatingScreenState extends State<RatingScreen> {
                             () {
                               FirebaseData.refreshRatingData();
                             },
-                            rateUsModel.id!,
+                            rateUsModel.id,
                             KeyTable.feedback,
                             KeyTable.rating,
                           );

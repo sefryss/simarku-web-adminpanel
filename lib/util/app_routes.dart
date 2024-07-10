@@ -1,4 +1,3 @@
-import 'package:ebookadminpanel/ui/chat/widgets/detail_chat_screen.dart';
 
 import '../ui/home/home_page.dart';
 import '../ui/login/login_page.dart';

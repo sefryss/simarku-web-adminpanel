@@ -327,7 +327,6 @@ class _MessageCardState extends State<MessageCard> {
   //dialog for updating message content
   void _showMessageUpdateDialog() {
     String updatedMsg = widget.message.msg;
-    final Color color;
 
     showDialog(
         context: context,

@@ -406,7 +406,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         function: () async {
                           await FirebaseData.deleteData(
                               tableName: KeyTable.feedback,
-                              doc: feedbackModel.id!,
+                              doc: feedbackModel.id,
                               function: () {
                                 FirebaseData.refreshFeedbackData();
                               });
@@ -415,7 +415,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                             () {
                               FirebaseData.refreshFeedbackData();
                             },
-                            feedbackModel.id!,
+                            feedbackModel.id,
                             KeyTable.feedback,
                             KeyTable.rating,
                           );

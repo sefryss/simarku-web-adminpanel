@@ -1,18 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/model/story_model.dart';
-import 'package:ebookadminpanel/model/tukar_milik_model.dart';
 import 'package:ebookadminpanel/model/tukar_pinjam_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/theme/app_theme.dart';
 
-import '../../../controller/data/FirebaseData.dart';
 import '../../../controller/data/key_table.dart';
-import '../../../model/category_model.dart';
 
 import '../../../theme/color_scheme.dart';
-import '../../../util/constants.dart';
 import '../../common/common.dart';
 
 // ignore: must_be_immutable
@@ -57,7 +53,7 @@ class MobileWidget extends StatelessWidget {
                           bool cell = true;
 
                           if (queryText.value.isNotEmpty &&
-                              !tukarPinjamModel.senderId!
+                              !tukarPinjamModel.senderId
                                   .toLowerCase()
                                   .contains(queryText.value)) {
                             cell = false;
@@ -90,9 +86,6 @@ class MobileWidget extends StatelessWidget {
                                                   String? bookList =
                                                       tukarPinjamModel
                                                           .senderBookId;
-                                                  if (bookList == null) {
-                                                    return Container(); // handle null case
-                                                  }
 
                                                   List<String> bookName = [];
 
@@ -138,9 +131,6 @@ class MobileWidget extends StatelessWidget {
                                                   String? bookList =
                                                       tukarPinjamModel
                                                           .receiverBookId;
-                                                  if (bookList == null) {
-                                                    return Container(); // handle null case
-                                                  }
 
                                                   List<String> bookName = [];
 
@@ -169,7 +159,7 @@ class MobileWidget extends StatelessWidget {
                                             ),
                                           ),
                                           getHeaderCell(
-                                              '${tukarPinjamModel.status!}',
+                                              '${tukarPinjamModel.status}',
                                               context,
                                               120),
                                           // getActiveDeActiveCell(context,

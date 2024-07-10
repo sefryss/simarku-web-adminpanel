@@ -1,13 +1,11 @@
 import 'package:ebookadminpanel/main.dart';
 import 'package:ebookadminpanel/model/feedback_model.dart';
-import 'package:ebookadminpanel/theme/app_theme.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ebookadminpanel/controller/home_controller.dart';
 import 'package:ebookadminpanel/theme/color_scheme.dart';
 import 'package:ebookadminpanel/ui/common/common.dart';
 import '../../../controller/data/LoginData.dart';
@@ -28,7 +26,7 @@ class AddFeedbackScreen extends StatefulWidget {
 class _AddFeedbackScreenState extends State<AddFeedbackScreen> {
   @override
   Widget build(BuildContext context) {
-    HomeController homeController = Get.find();
+    Get.find();
 
     bool isEdit = widget.feedbackModel != null;
     return SafeArea(

@@ -48,7 +48,7 @@ class WebWidget extends StatelessWidget {
                           bool cell = true;
 
                           if (queryText.value.isNotEmpty &&
-                              !userModel.id
+                              !userModel.fullName
                                   .toLowerCase()
                                   .contains(queryText.value)) {
                             cell = false;
@@ -70,7 +70,7 @@ class WebWidget extends StatelessWidget {
                                               60),
                                           getHorizontalSpace(context, 30),
                                           getHeaderCell(
-                                              '${userModel.fullName!}',
+                                              '${userModel.fullName}',
                                               context,
                                               180),
                                           getHorizontalSpace(context, 30),

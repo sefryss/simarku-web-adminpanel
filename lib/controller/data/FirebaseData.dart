@@ -3,7 +3,6 @@ import 'package:ebookadminpanel/model/genre_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:ebookadminpanel/util/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';

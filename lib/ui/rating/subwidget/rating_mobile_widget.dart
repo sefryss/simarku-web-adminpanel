@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../theme/color_scheme.dart';
 import '../../common/common.dart';
 
+// ignore: must_be_immutable
 class RatingMobileWidget extends StatelessWidget {
   var _tapPosition;
 

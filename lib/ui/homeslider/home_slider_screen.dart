@@ -33,7 +33,6 @@ class _HomeSliderScreenState extends State<HomeSliderScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     
     LoginData.getDeviceId();

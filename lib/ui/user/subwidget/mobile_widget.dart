@@ -3,7 +3,6 @@ import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:ebookadminpanel/theme/app_theme.dart';
 import '../../../controller/data/key_table.dart';
 import '../../../theme/color_scheme.dart';
 import '../../common/common.dart';
@@ -49,7 +48,7 @@ class MobileWidget extends StatelessWidget {
                           bool cell = true;
 
                           if (queryText.value.isNotEmpty &&
-                              !userModel.id!
+                              !userModel.fullName
                                   .toLowerCase()
                                   .contains(queryText.value)) {
                             cell = false;

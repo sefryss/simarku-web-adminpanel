@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ebookadminpanel/model/admin_model.dart';
 import 'package:ebookadminpanel/model/authors_model.dart';
 import 'package:ebookadminpanel/model/donation_book_model.dart';
 import 'package:ebookadminpanel/model/feedback_model.dart';
@@ -344,7 +343,7 @@ class HomeController extends GetxController {
       for (var doc in list1) {
         var user = UserModel.fromFirestore(doc);
         userList.add(user);
-        allUserList.add(user.id!);
+        allUserList.add(user.id);
       }
       isLoading(false);
       user((list1[0]).id);
@@ -389,7 +388,7 @@ class HomeController extends GetxController {
       for (var doc in list1) {
         var feedback = FeedbackModel.fromFirestore(doc);
         feedbackList.add(feedback);
-        allFeedbackList.add(feedback.userName!);
+        allFeedbackList.add(feedback.userName);
       }
       isLoading(false);
       feedback((list1[0]).id);
@@ -411,7 +410,7 @@ class HomeController extends GetxController {
       for (var doc in list1) {
         var rating = RateUsModel.fromFirestore(doc);
         ratingList.add(rating);
-        allRateUsList.add(rating.userName!);
+        allRateUsList.add(rating.userName);
       }
       isLoading(false);
       rateUs((list1[0]).id);
@@ -433,7 +432,7 @@ class HomeController extends GetxController {
       for (var doc in list1) {
         var tukarMilik = TukarMilikModel.fromFirestore(doc);
         tukarMilikList.add(tukarMilik);
-        allTukarMilikList.add(tukarMilik.senderBookId!);
+        allTukarMilikList.add(tukarMilik.senderBookId);
       }
       isLoading(false);
       tukarMilik((list1[0]).id);
@@ -455,7 +454,7 @@ class HomeController extends GetxController {
       for (var doc in list1) {
         var tukarPinjam = TukarPinjamModel.fromFirestore(doc);
         tukarPinjamList.add(tukarPinjam);
-        allTukarPinjamList.add(tukarPinjam.senderBookId!);
+        allTukarPinjamList.add(tukarPinjam.senderBookId);
       }
       isLoading(false);
       tukarPinjam((list1[0]).id);

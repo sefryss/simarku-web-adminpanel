@@ -52,7 +52,7 @@ class WebWidget extends StatelessWidget {
                           bool cell = true;
 
                           if (queryText.value.isNotEmpty &&
-                              !tukarMilikModel.senderId!
+                              !tukarMilikModel.senderBookId
                                   .toLowerCase()
                                   .contains(queryText.value)) {
                             cell = false;
@@ -80,7 +80,7 @@ class WebWidget extends StatelessWidget {
                                                     snapshot.data!.docs;
 
                                                 String ownerList =
-                                                    tukarMilikModel.senderId!;
+                                                    tukarMilikModel.senderId;
                                                 List<String> ownerName = [];
 
                                                 for (int i = 0;
@@ -124,9 +124,6 @@ class WebWidget extends StatelessWidget {
                                                   String? bookList =
                                                       tukarMilikModel
                                                           .senderBookId;
-                                                  if (bookList == null) {
-                                                    return Container(); // handle null case
-                                                  }
 
                                                   List<String> bookName = [];
 
@@ -167,7 +164,7 @@ class WebWidget extends StatelessWidget {
                                                     snapshot.data!.docs;
 
                                                 String ownerList =
-                                                    tukarMilikModel.receiverId!;
+                                                    tukarMilikModel.receiverId;
                                                 List<String> ownerName = [];
 
                                                 for (int i = 0;
@@ -209,9 +206,6 @@ class WebWidget extends StatelessWidget {
                                                   String? bookList =
                                                       tukarMilikModel
                                                           .receiverBookId;
-                                                  if (bookList == null) {
-                                                    return Container(); // handle null case
-                                                  }
 
                                                   List<String> bookName = [];
 
@@ -240,7 +234,7 @@ class WebWidget extends StatelessWidget {
                                             ),
                                           ),
                                           getHeaderCell(
-                                              '${tukarMilikModel.status!}',
+                                              '${tukarMilikModel.status}',
                                               context,
                                               120),
                                           // getActiveDeActiveCell(context,

@@ -5,8 +5,6 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ebookadminpanel/controller/home_controller.dart';
-import 'package:ebookadminpanel/model/story_model.dart';
-import 'package:ebookadminpanel/theme/app_theme.dart';
 import 'package:ebookadminpanel/theme/color_scheme.dart';
 import 'package:ebookadminpanel/ui/common/common.dart';
 import 'package:intl/intl.dart';
@@ -61,12 +59,6 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                   context: context,
                   verSpace: 0,
                   horSpace: isWeb(context) ? null : 15.h,
-
-                  // width: double.infinity,
-                  // height: double.infinity,
-                  // decoration: getDefaultDecoration(
-                  //     bgColor: getCardColor(context), radius: radius),
-                  // padding: EdgeInsets.all(padding),
                   child: Column(
                     children: [
                       Expanded(
@@ -75,27 +67,10 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                           // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             getVerticalSpace(context, 30),
-
                             getCommonBackIcon(context, onTap: () {
                               changeAction(actionDonationBook);
                             }),
-
                             getVerticalSpace(context, 30),
-
-                            // Row(
-                            //   children: [
-                            //     Expanded(
-                            //       child: getTextWidget(
-                            //           context,
-                            //           isEdit ? 'Edit Book' : 'Add Book',
-                            //           75,
-                            //           getFontColor(context),
-                            //           fontWeight: FontWeight.w700),
-                            //       flex: 1,
-                            //     ),
-                            //   ],
-                            // ),
-                            // getVerticalSpace(context, 40),
                             Responsive.isMobile(context)
                                 ? Column(
                                     crossAxisAlignment:
@@ -105,95 +80,96 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                       getVerticalSpace(context, 10),
                                       getTextFiledWidget(
                                           context,
+                                          isEnabled: false,
                                           "Masukkan judul...",
                                           donationBookController
                                               .nameController),
-                                      // getVerticalSpace(context, 30),
-                                      // itemSubTitle('Pilih Kategori', context),
-                                      // getVerticalSpace(context, 10),
-                                      // Obx(() {
-                                      //   return homeController
-                                      //           .categoryList.isNotEmpty
-                                      //       ? homeController
-                                      //                   .categoryList.length ==
-                                      //               1
-                                      //           ? getDisableDropDownWidget(
-                                      //               context,
-                                      //               homeController
-                                      //                   .categoryList[0].name,
-                                      //             )
-                                      //           : CategoryDropDown(
-                                      //               homeController,
-                                      //               value: homeController
-                                      //                   .category.value,
-                                      //               onChanged: (value) {
-                                      //                 print(
-                                      //                     "value--------${homeController.category.value}");
-                                      //                 if (value !=
-                                      //                     homeController
-                                      //                         .category.value) {
-                                      //                   homeController.category
-                                      //                       .value = value;
-                                      //                 }
-                                      //               },
-                                      //             )
-                                      //       : getDisableTextFiledWidget(
-                                      //           context,
-                                      //           homeController.isLoading.value
-                                      //               ? "Loading.."
-                                      //               : "No Data",
-                                      //         );
-                                      // }),
                                       getVerticalSpace(context, 30),
-                                      itemSubTitle('Pilih Genre', context),
+                                      itemSubTitle('Genre Buku', context),
                                       getVerticalSpace(context, 10),
                                       getTextFiledWidget(
-                                          context,
-                                          "Genre",
-                                          donationBookController
-                                              .genreController,
-                                          isEnabled: false,
-                                          child: InkWell(
-                                            onTap: () {
-                                              if (homeController
-                                                      .genreList.isNotEmpty &&
-                                                  homeController
-                                                          .genreList.length >
-                                                      0) {
-                                                donationBookController
-                                                    .showGenreDialog(context,
-                                                        homeController);
-                                              } else {
-                                                showCustomToast(
-                                                    context: context,
-                                                    message: "No Data");
-                                              }
-                                            },
-                                            child: Container(
-                                              height: double.infinity,
-                                              alignment: Alignment.center,
-                                              margin:
-                                                  EdgeInsets.only(left: 8.h),
-                                              // margin: EdgeInsets.all(7.h),
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.h,
-                                                  vertical: 5.h),
-                                              decoration: getDefaultDecoration(
-                                                  bgColor:
-                                                      getReportColor(context),
-                                                  borderColor: borderColor,
-                                                  radius: getResizeRadius(
-                                                      context, 10)),
-                                              child: getTextWidget(
-                                                context,
-                                                'Pilih Genre',
-                                                40,
-                                                getSubFontColor(context),
-                                                customFont: "",
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
+                                        context,
+                                        "Genre",
+                                        donationBookController.genreController,
+                                        isEnabled: false,
+                                      ),
+                                      getVerticalSpace(context, 30),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                              child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle(
+                                                  'Penulis Buku', context),
+                                              getVerticalSpace(context, 10),
+                                              getTextFiledWidget(
+                                                  context,
+                                                  isEnabled: false,
+                                                  "Masukkan penulis...",
+                                                  donationBookController
+                                                      .authorController),
+                                            ],
                                           )),
+                                          getHorizontalSpace(context, 10),
+                                          Expanded(
+                                              child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle(
+                                                  'Penerbit Buku', context),
+                                              getVerticalSpace(context, 10),
+                                              getTextFiledWidget(
+                                                  context,
+                                                  isEnabled: false,
+                                                  "Masukkan penerbit...",
+                                                  donationBookController
+                                                      .publisherController),
+                                            ],
+                                          )),
+                                          getHorizontalSpace(context, 10),
+                                        ],
+                                      ),
+                                      getVerticalSpace(context, 30),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                itemSubTitle(
+                                                    'Tanggal Rilis', context),
+                                                getVerticalSpace(context, 10),
+                                                DateTimePickerWidget(
+                                                    context,
+                                                    'Masukkan tanggal...',
+                                                    donationBookController
+                                                        .releaseDateController),
+                                              ],
+                                            ),
+                                          ),
+                                          getHorizontalSpace(context, 10),
+                                          Expanded(
+                                              child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              itemSubTitle(
+                                                  'Jumlah Halaman', context),
+                                              getVerticalSpace(context, 10),
+                                              getTextFiledWidget(
+                                                  context,
+                                                  isEnabled: false,
+                                                  "Masukkan halaman...",
+                                                  donationBookController
+                                                      .pageController),
+                                            ],
+                                          )),
+                                        ],
+                                      ),
                                       getVerticalSpace(context, 30),
                                       itemSubTitle('Jenis Buku', context),
                                       getVerticalSpace(context, 10),
@@ -212,33 +188,6 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                           },
                                         );
                                       }),
-                                      getVerticalSpace(context, 30),
-                                      Obx(() {
-                                        return (homeController.bookType.value ==
-                                                BookType.physichBook)
-                                            ? Text('')
-                                            : itemSubTitle(
-                                                'Upload PDF', context);
-                                      }),
-                                      getVerticalSpace(context, 10),
-                                      Obx(
-                                        () => (homeController.bookType.value ==
-                                                BookType.physichBook)
-                                            ? Container()
-                                            : getTextFiledWidget(
-                                                context,
-                                                "No file chosen",
-                                                TextEditingController(
-                                                    text: donationBookController
-                                                        .pdfUrl.value),
-                                                isEnabled: false,
-                                                child: getCommonChooseFileBtn(
-                                                    context, () {
-                                                  donationBookController
-                                                      .openFile();
-                                                }),
-                                              ),
-                                      ),
                                       Obx(() {
                                         return (donationBookController
                                                 .pdfUrl.value.isNotEmpty)
@@ -307,76 +256,23 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                             : Container();
                                       }),
                                       getVerticalSpace(context, 30),
-
-                                      itemSubTitle('Pilih Pemilik', context),
+                                      itemSubTitle('Pemilik', context),
                                       getVerticalSpace(context, 10),
                                       getTextFiledWidget(
-                                          context,
-                                          "Pemilik",
-                                          donationBookController
-                                              .ownerController,
-                                          isEnabled: false,
-                                          child: InkWell(
-                                            onTap: () async {
-                                              await donationBookController
-                                                  .showOwnerDialog(
-                                                context,
-                                              );
-                                              // if (homeController.genreList
-                                              //         .isNotEmpty &&
-                                              //     homeController.genreList
-                                              //             .length >
-                                              //         0) {
-                                              //   donationBookController
-                                              //       .showUserDialog(
-                                              //           context,
-                                              //           homeController);
-                                              // } else {
-                                              //   showCustomToast(
-                                              //       context: context,
-                                              //       message: "No Data");
-                                              // }
-                                            },
-                                            child: Container(
-                                              height: double.infinity,
-                                              alignment: Alignment.center,
-                                              margin:
-                                                  EdgeInsets.only(left: 8.h),
-                                              // margin: EdgeInsets.all(7.h),
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.h,
-                                                  vertical: 5.h),
-                                              decoration: getDefaultDecoration(
-                                                  bgColor:
-                                                      getReportColor(context),
-                                                  borderColor: borderColor,
-                                                  radius: getResizeRadius(
-                                                      context, 10)),
-                                              child: getTextWidget(
-                                                context,
-                                                'Pilih Pemilik',
-                                                40,
-                                                getSubFontColor(context),
-                                                customFont: "",
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          )),
-
+                                        context,
+                                        "Pemilik",
+                                        donationBookController.ownerController,
+                                        isEnabled: false,
+                                      ),
                                       getVerticalSpace(context, 30),
                                       itemSubTitle('Gambar Buku', context),
                                       getVerticalSpace(context, 10),
                                       getTextFiledWidget(
-                                          context,
-                                          "No file chosen",
-                                          donationBookController
-                                              .imageController,
-                                          isEnabled: false,
-                                          child: getCommonChooseFileBtn(context,
-                                              () {
-                                            donationBookController
-                                                .imgFromGallery();
-                                          })),
+                                        context,
+                                        "No file chosen",
+                                        donationBookController.imageController,
+                                        isEnabled: false,
+                                      ),
                                       getVerticalSpace(context, 30),
                                       Align(
                                         alignment: Alignment.topLeft,
@@ -442,7 +338,6 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                       getVerticalSpace(context, 30),
                                       itemSubTitle('Sinopsis', context),
                                       getVerticalSpace(context, 10),
-
                                       Container(
                                         // margin: EdgeInsets.all(value),
                                         decoration: getDefaultDecoration(
@@ -471,10 +366,6 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                                         controller:
                                                             donationBookController
                                                                 .descController),
-                                                // iconTheme: QuillIconTheme(
-                                                //     iconUnselectedFillColor: Colors.transparent
-                                                // ),
-                                                // controller: donationBookController.descController
                                               ),
                                             ),
                                             Container(
@@ -497,43 +388,6 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                           ],
                                         ),
                                       ),
-
-                                      // getVerticalSpace(context, 30),
-                                      // itemSubTitle('Is Popular?', context),
-                                      // getVerticalSpace(context, 10),
-                                      // Container(
-                                      //   height: 30.h,
-                                      //   child: FittedBox(
-                                      //     fit: BoxFit.fitHeight,
-                                      //     child: Obx(() => CupertinoSwitch(
-                                      //         activeColor:
-                                      //             getPrimaryColor(context),
-                                      //         value: donationBookController
-                                      //             .isPopular.value,
-                                      //         onChanged: (value) {
-                                      //           donationBookController
-                                      //               .isPopular.value = value;
-                                      //         })),
-                                      //   ),
-                                      // ),
-                                      // getVerticalSpace(context, 30),
-                                      // itemSubTitle('Is Recommended?', context),
-                                      // getVerticalSpace(context, 10),
-                                      // Container(
-                                      //   height: 30.h,
-                                      //   child: FittedBox(
-                                      //     fit: BoxFit.fitHeight,
-                                      //     child: Obx(() => CupertinoSwitch(
-                                      //         activeColor:
-                                      //             getPrimaryColor(context),
-                                      //         value: donationBookController
-                                      //             .isFeatured.value,
-                                      //         onChanged: (value) {
-                                      //           donationBookController
-                                      //               .isFeatured.value = value;
-                                      //         })),
-                                      //   ),
-                                      // ),
                                     ],
                                   )
                                 : Column(
@@ -550,67 +404,13 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                               getVerticalSpace(context, 10),
                                               getTextFiledWidget(
                                                   context,
+                                                  isEnabled: false,
                                                   "Masukkan Judul...",
                                                   donationBookController
                                                       .nameController),
                                             ],
                                           )),
                                           // getHorizontalSpace(context, 10),
-                                          // Expanded(
-                                          //   child: Column(
-                                          //     crossAxisAlignment:
-                                          //         CrossAxisAlignment.start,
-                                          //     children: [
-                                          //       itemSubTitle(
-                                          //           'Pilih Kategori', context),
-                                          //       getVerticalSpace(context, 10),
-                                          //       Obx(() {
-                                          //         return homeController
-                                          //                 .categoryList
-                                          //                 .isNotEmpty
-                                          //             ? homeController
-                                          //                         .categoryList
-                                          //                         .length ==
-                                          //                     1
-                                          //                 ? getDisableDropDownWidget(
-                                          //                     context,
-                                          //                     homeController
-                                          //                         .categoryList[
-                                          //                             0]
-                                          //                         .name,
-                                          //                   )
-                                          //                 : CategoryDropDown(
-                                          //                     homeController,
-                                          //                     value:
-                                          //                         homeController
-                                          //                             .category
-                                          //                             .value,
-                                          //                     onChanged:
-                                          //                         (value) {
-                                          //                       print(
-                                          //                           "value--------${homeController.category.value}");
-                                          //                       if (value !=
-                                          //                           homeController
-                                          //                               .category
-                                          //                               .value) {
-                                          //                         homeController
-                                          //                             .category
-                                          //                             .value = value;
-                                          //                       }
-                                          //                     },
-                                          //                   )
-                                          //             : getDisableTextFiledWidget(
-                                          //                 context,
-                                          //                 homeController
-                                          //                         .isLoading
-                                          //                         .value
-                                          //                     ? "Loading.."
-                                          //                     : "No Data",
-                                          //               );
-                                          //       }),
-                                          //     ],
-                                          //   ),
-                                          // ),
                                           getHorizontalSpace(context, 10),
                                           Expanded(
                                               child: Column(
@@ -618,67 +418,14 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               itemSubTitle(
-                                                  'Pilih Genre', context),
+                                                  'Genre Buku', context),
                                               getVerticalSpace(context, 10),
                                               getTextFiledWidget(
                                                   context,
-                                                  "Genre",
-                                                  donationBookController
-                                                      .genreController,
                                                   isEnabled: false,
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      if (homeController
-                                                              .genreList
-                                                              .isNotEmpty &&
-                                                          homeController
-                                                                  .genreList
-                                                                  .length >
-                                                              0) {
-                                                        donationBookController
-                                                            .showGenreDialog(
-                                                                context,
-                                                                homeController);
-                                                      } else {
-                                                        showCustomToast(
-                                                            context: context,
-                                                            message: "No Data");
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      height: double.infinity,
-                                                      alignment:
-                                                          Alignment.center,
-                                                      margin: EdgeInsets.only(
-                                                          left: 8.h),
-                                                      // margin: EdgeInsets.all(7.h),
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              horizontal: 10.h,
-                                                              vertical: 5.h),
-                                                      decoration:
-                                                          getDefaultDecoration(
-                                                              bgColor:
-                                                                  getReportColor(
-                                                                      context),
-                                                              borderColor:
-                                                                  borderColor,
-                                                              radius:
-                                                                  getResizeRadius(
-                                                                      context,
-                                                                      10)),
-                                                      child: getTextWidget(
-                                                        context,
-                                                        'Pilih Genre',
-                                                        40,
-                                                        getSubFontColor(
-                                                            context),
-                                                        customFont: "",
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  )),
+                                                  "Masukkan Genre...",
+                                                  donationBookController
+                                                      .genreController),
                                             ],
                                           )),
                                         ],
@@ -696,6 +443,7 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                               getVerticalSpace(context, 10),
                                               getTextFiledWidget(
                                                   context,
+                                                  isEnabled: false,
                                                   "Masukkan penulis...",
                                                   donationBookController
                                                       .authorController),
@@ -712,6 +460,7 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                               getVerticalSpace(context, 10),
                                               getTextFiledWidget(
                                                   context,
+                                                  isEnabled: false,
                                                   "Masukkan penerbit...",
                                                   donationBookController
                                                       .publisherController),
@@ -745,6 +494,7 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                               getVerticalSpace(context, 10),
                                               getTextFiledWidget(
                                                   context,
+                                                  isEnabled: false,
                                                   "Masukkan halaman...",
                                                   donationBookController
                                                       .pageController),
@@ -789,39 +539,16 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Obx(() {
-                                                return (homeController
-                                                            .bookType.value ==
-                                                        BookType.physichBook)
-                                                    ? Text('')
-                                                    : itemSubTitle(
-                                                        'Upload PDF', context);
-                                              }),
+                                              itemSubTitle('Pemilik', context),
                                               getVerticalSpace(context, 10),
-                                              Obx(
-                                                () => (homeController
-                                                            .bookType.value ==
-                                                        BookType.physichBook)
-                                                    ? Container()
-                                                    : getTextFiledWidget(
-                                                        context,
-                                                        "No file chosen",
-                                                        TextEditingController(
-                                                            text:
-                                                                donationBookController
-                                                                    .pdfUrl
-                                                                    .value),
-                                                        isEnabled: false,
-                                                        child:
-                                                            getCommonChooseFileBtn(
-                                                                context, () {
-                                                          donationBookController
-                                                              .openFile();
-                                                        }),
-                                                      ),
-                                              ),
+                                              getTextFiledWidget(
+                                                  context,
+                                                  isEnabled: false,
+                                                  "Masukkan pemilik...",
+                                                  donationBookController
+                                                      .ownerController),
                                             ],
-                                          ))
+                                          )),
                                         ],
                                       ),
                                       Obx(() {
@@ -903,16 +630,12 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                                   'Gambar Buku', context),
                                               getVerticalSpace(context, 10),
                                               getTextFiledWidget(
-                                                  context,
-                                                  "No file chosen",
-                                                  donationBookController
-                                                      .imageController,
-                                                  isEnabled: false,
-                                                  child: getCommonChooseFileBtn(
-                                                      context, () {
-                                                    donationBookController
-                                                        .imgFromGallery();
-                                                  })),
+                                                context,
+                                                "No file chosen",
+                                                donationBookController
+                                                    .imageController,
+                                                isEnabled: false,
+                                              ),
                                             ],
                                           )),
                                           getHorizontalSpace(context, 10),
@@ -1003,78 +726,6 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                               ],
                                             ),
                                           ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                itemSubTitle(
-                                                    'Pilih Pemilik', context),
-                                                getVerticalSpace(context, 10),
-                                                getTextFiledWidget(
-                                                    context,
-                                                    "Pemilik",
-                                                    donationBookController
-                                                        .ownerController,
-                                                    isEnabled: false,
-                                                    child: InkWell(
-                                                      onTap: () async {
-                                                        await donationBookController
-                                                            .showOwnerDialog(
-                                                          context,
-                                                        );
-                                                        // if (homeController.genreList
-                                                        //         .isNotEmpty &&
-                                                        //     homeController.genreList
-                                                        //             .length >
-                                                        //         0) {
-                                                        //   donationBookController
-                                                        //       .showUserDialog(
-                                                        //           context,
-                                                        //           homeController);
-                                                        // } else {
-                                                        //   showCustomToast(
-                                                        //       context: context,
-                                                        //       message: "No Data");
-                                                        // }
-                                                      },
-                                                      child: Container(
-                                                        height: double.infinity,
-                                                        alignment:
-                                                            Alignment.center,
-                                                        margin: EdgeInsets.only(
-                                                            left: 8.h),
-                                                        // margin: EdgeInsets.all(7.h),
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    10.h,
-                                                                vertical: 5.h),
-                                                        decoration: getDefaultDecoration(
-                                                            bgColor:
-                                                                getReportColor(
-                                                                    context),
-                                                            borderColor:
-                                                                borderColor,
-                                                            radius:
-                                                                getResizeRadius(
-                                                                    context,
-                                                                    10)),
-                                                        child: getTextWidget(
-                                                          context,
-                                                          'Pilih Pemilik',
-                                                          40,
-                                                          getSubFontColor(
-                                                              context),
-                                                          customFont: "",
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    )),
-                                              ],
-                                            ),
-                                          ),
                                         ],
                                       ),
                                       Row(
@@ -1122,16 +773,7 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                                               QuillSimpleToolbarConfigurations(
                                                                   controller:
                                                                       donationBookController
-                                                                          .descController)
-
-                                                          // configurations: QuillToolbarConfigurations(
-                                                          //   // iconTheme: QuillIconTheme(
-                                                          //   //     iconUnselectedFillColor: Colors.transparent
-                                                          //   // ),
-                                                          //   //   controller:
-                                                          //   //   donationBookController.descController
-                                                          // ),
-                                                          ),
+                                                                          .descController)),
                                                     ),
                                                     Container(
                                                       child: QuillEditor.basic(
@@ -1140,12 +782,6 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                                                 controller:
                                                                     donationBookController
                                                                         .descController),
-
-                                                        // configurations: QuillEditorConfigurations(
-                                                        //   readOnly:
-                                                        //   false,
-                                                        //
-                                                        // ),
                                                         scrollController:
                                                             ScrollController(),
                                                         focusNode: FocusNode(),
@@ -1159,142 +795,13 @@ class _AddDonationBookScreenState extends State<AddDonationBookScreen> {
                                               ),
                                             ],
                                           )),
-                                          // Expanded(
-                                          //   child: Row(
-                                          //     children: [
-                                          //       Expanded(
-                                          //           child: Column(
-                                          //         children: [
-                                          //           itemSubTitle(
-                                          //               'Is Popular?', context),
-                                          //           getVerticalSpace(
-                                          //               context, 10),
-                                          //           Container(
-                                          //             height: 30.h,
-                                          //             child: FittedBox(
-                                          //               fit: BoxFit.fitHeight,
-                                          //               child: Obx(() =>
-                                          //                   CupertinoSwitch(
-                                          //                       activeColor:
-                                          //                           getPrimaryColor(
-                                          //                               context),
-                                          //                       value:
-                                          //                           donationBookController
-                                          //                               .isPopular
-                                          //                               .value,
-                                          //                       onChanged:
-                                          //                           (value) {
-                                          //                         donationBookController
-                                          //                             .isPopular
-                                          //                             .value = value;
-                                          //                       })),
-                                          //             ),
-                                          //           ),
-                                          //         ],
-                                          //       )),
-                                          //       Expanded(
-                                          //           child: Column(
-                                          //         children: [
-                                          //           itemSubTitle(
-                                          //               'Is Recommended?',
-                                          //               context),
-                                          //           getVerticalSpace(
-                                          //               context, 10),
-                                          //           Container(
-                                          //             height: 30.h,
-                                          //             child: FittedBox(
-                                          //               fit: BoxFit.fitHeight,
-                                          //               child: Obx(() =>
-                                          //                   CupertinoSwitch(
-                                          //                       activeColor:
-                                          //                           getPrimaryColor(
-                                          //                               context),
-                                          //                       value: donationBookController
-                                          //                           .isFeatured
-                                          //                           .value,
-                                          //                       onChanged:
-                                          //                           (value) {
-                                          //                         donationBookController
-                                          //                             .isFeatured
-                                          //                             .value = value;
-                                          //                       })),
-                                          //             ),
-                                          //           ),
-                                          //         ],
-                                          //       )),
-                                          //       Expanded(
-                                          //         child: Column(
-                                          //           children: [
-                                          //             itemSubTitle(
-                                          //                 'Is Available?',
-                                          //                 context),
-                                          //             getVerticalSpace(
-                                          //                 context, 10),
-                                          //             Container(
-                                          //               height: 30.h,
-                                          //               child: FittedBox(
-                                          //                 fit: BoxFit.fitHeight,
-                                          //                 child: Obx(() =>
-                                          //                     CupertinoSwitch(
-                                          //                         activeColor:
-                                          //                             getPrimaryColor(
-                                          //                                 context),
-                                          //                         value: donationBookController
-                                          //                             .isAvailable
-                                          //                             .value,
-                                          //                         onChanged:
-                                          //                             (value) {
-                                          //                           donationBookController
-                                          //                               .isAvailable
-                                          //                               .value = value;
-                                          //                         })),
-                                          //               ),
-                                          //             ),
-                                          //           ],
-                                          //         ),
-                                          //       )
-                                          //     ],
-                                          //   ),
-                                          // ),
                                         ],
                                       ),
                                     ],
                                   ),
-
-                            // Obx(() => controller.isLoading.value
-                            //     ? getProgressWidget(context)
-                            //     : Container())
                           ],
                         ),
                       ),
-                      // getVerticalSpace(context, 20),
-                      // Row(
-                      //   children: [
-                      //     Obx(() => getButtonWidget(
-                      //           context,
-                      //           isEdit ? 'Update' : 'Save',
-                      //           isProgress:
-                      //               donationBookController.isLoading.value,
-                      //           () {
-                      //             if (isEdit) {
-                      //               donationBookController
-                      //                   .editStory(homeController, context, () {
-                      //                 widget.function();
-                      //               });
-                      //             } else {
-                      //               donationBookController
-                      //                   .addStory(context, homeController, () {
-                      //                 widget.function();
-                      //               });
-                      //             }
-                      //           },
-                      //           horPadding: 25.h,
-                      //           horizontalSpace: 0,
-                      //           verticalSpace: 0,
-                      //           btnHeight: 50.h,
-                      //         )),
-                      //   ],
-                      // ),
                       getVerticalSpace(context, 20),
                     ],
                   ),
@@ -1337,6 +844,7 @@ Widget DateTimePickerWidget(
     },
     child: AbsorbPointer(
       child: TextFormField(
+        enabled: false,
         controller: controller,
         style: TextStyle(
           fontFamily: Constants.fontsFamily,

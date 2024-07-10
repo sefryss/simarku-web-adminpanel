@@ -9,7 +9,6 @@ import 'package:ebookadminpanel/util/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../model/feedback_model.dart';
 import '../ui/common/common.dart';
 
 class RatingController extends GetxController {

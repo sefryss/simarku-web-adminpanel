@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebookadminpanel/controller/data/FirebaseData.dart';
 import 'package:ebookadminpanel/controller/home_controller.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:ebookadminpanel/ui/user/subwidget/mobile_widget.dart';
 import 'package:ebookadminpanel/ui/user/subwidget/web_widget.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
+import 'package:ebookadminpanel/util/pref_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -83,26 +85,6 @@ class _UserScreenState extends State<UserScreen> {
                               queryText(value);
                             })),
                             getHorizontalSpace(context, 15),
-                            // getButtonWidget(
-                            //   context,
-                            //   'Tambah Donasi Buku',
-                            //   () {
-                            //     HomeController homeController =
-                            //         Get.find<HomeController>();
-
-                            //     if (homeController.donationBookModel != null) {
-                            //       homeController.donationBookModel = null;
-                            //     }
-
-                            //     donationBookController.clearStoryData();
-
-                            //     widget.function();
-                            //   },
-                            //   horPadding: 25.h,
-                            //   horizontalSpace: 0,
-                            //   verticalSpace: 0,
-                            //   btnHeight: 42.h,
-                            // )
                           ],
                         ),
                         isWeb(context)
@@ -168,19 +150,18 @@ class _UserScreenState extends State<UserScreen> {
                                                       //     context, model);
                                                     },
                                                   )
-                                                : 
-                                            MobileWidget(
-                                                mainList: list,
-                                                list: paginationList,
-                                                queryText: queryText,
-                                                function: (detail, model) {
-                                                  _showPopupMenu(context,
-                                                      detail, model);
-                                                },
-                                                onTapStatus: (model) {
-                                                  // updateStatus(
-                                                  //     context, model);
-                                                }),
+                                                : MobileWidget(
+                                                    mainList: list,
+                                                    list: paginationList,
+                                                    queryText: queryText,
+                                                    function: (detail, model) {
+                                                      _showPopupMenu(context,
+                                                          detail, model);
+                                                    },
+                                                    onTapStatus: (model) {
+                                                      // updateStatus(
+                                                      //     context, model);
+                                                    }),
                                             getVerticalSpace(
                                                 context,
                                                 (getCommonPadding(context) /
@@ -349,26 +330,26 @@ class _UserScreenState extends State<UserScreen> {
               ),
             ),
             onTap: () {
-              // PrefData.checkAccess(
-              //     context: context,
-              //     function: () {
-              //       getCommonDialog(
-              //           context: context,
-              //           title: 'Apakah ingin menghapus donasi buku ini?',
-              //           function: () {
-              //             FirebaseData.deleteData(
-              //                 tableName: KeyTable.donationBook,
-              //                 doc: tukarPinjamModel.id!,
-              //                 function: () {
-              //                   FirebaseData.deleteBatch(() {
-              //                     FirebaseData.refreshStoryData();
-              //                     FirebaseData.refreshSliderData();
-              //                   }, tukarPinjamModel.id!, KeyTable.sliderList,
-              //                       KeyTable.storyId);
-              //                 });
-              //           },
-              //           subTitle: 'Hapus');
-              //     });
+              PrefData.checkAccess(
+                  context: context,
+                  function: () {
+                    getCommonDialog(
+                        context: context,
+                        title: 'Apakah ingin menghapus pengguna ini?',
+                        function: () {
+                          FirebaseData.deleteData(
+                              tableName: KeyTable.user,
+                              doc: userModel.id,
+                              function: () {
+                                FirebaseData.deleteBatch(() {
+                                  FirebaseData.refreshStoryData();
+                                  FirebaseData.refreshSliderData();
+                                }, userModel.id, KeyTable.sliderList,
+                                    userModel.id);
+                              });
+                        },
+                        subTitle: 'Hapus');
+                  });
             },
             value: 'Hapus'),
       ],

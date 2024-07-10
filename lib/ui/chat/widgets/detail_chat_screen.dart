@@ -1,25 +1,15 @@
-import 'dart:developer';
-import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/chat_controller.dart';
 import 'package:ebookadminpanel/model/chat_model.dart';
 import 'package:ebookadminpanel/model/user_model.dart';
 import 'package:ebookadminpanel/theme/color_scheme.dart';
-import 'package:ebookadminpanel/ui/chat/chat_screen.dart';
-import 'package:ebookadminpanel/ui/chat/subwidget/chat_web_widget.dart';
-import 'package:ebookadminpanel/ui/chat/widgets/date_format_widget.dart';
 import 'package:ebookadminpanel/ui/chat/widgets/widgets.dart';
 import 'package:ebookadminpanel/ui/common/common.dart';
-import 'package:ebookadminpanel/ui/home/home_page.dart';
 import 'package:ebookadminpanel/util/app_colors.dart';
 import 'package:ebookadminpanel/util/app_text_style.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
-import 'package:ebookadminpanel/util/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+
 
 class DetailChatScreen extends StatefulWidget {
   final UserModel user;

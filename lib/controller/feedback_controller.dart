@@ -38,11 +38,10 @@ class FeedbackController extends GetxController {
   setAllDataFromFeedbackModel(FeedbackModel? feedback) {
     userIdController.text = feedback!.userId;
     userNameController.text = feedback.userName;
-    if (feedbackModel!.feedback != null &&
-        feedbackModel!.feedback!.isNotEmpty) {
+    if (feedbackModel!.feedback.isNotEmpty) {
       // Delta delta = new Delta()..insert(decode(feedbackModel!.feedback!));
       // final doc = Document.fromDelta(delta);
-      final doc = Document()..insert(0, decode(feedbackModel!.feedback ?? ""));
+      final doc = Document()..insert(0, decode(feedbackModel!.feedback));
 
       feedbackController = QuillController(
           document: doc, selection: TextSelection.collapsed(offset: 0));

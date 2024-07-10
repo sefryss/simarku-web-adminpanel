@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebookadminpanel/controller/data/key_table.dart';
 import 'package:ebookadminpanel/model/feedback_model.dart';
