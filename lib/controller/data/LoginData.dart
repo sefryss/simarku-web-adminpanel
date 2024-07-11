@@ -90,6 +90,7 @@ class LoginData {
               map: {
                 KeyTable.keyDeviceId: deviceID.value,
                 'PushToken': pushToken,
+                'IsAccess': true,
               },
               tableName: KeyTable.adminData,
               doc: element.id,
@@ -193,7 +194,7 @@ class LoginData {
   }
 
   static Future<bool?> createAdmin(
-      {username, password, context, function}) async {
+      {username, password, fullName, context, function}) async {
     print("isRegister===fgfgfg");
 
     bool isRegister = await registerUsingEmailPassword(context,
@@ -203,6 +204,7 @@ class LoginData {
 
     if (isRegister) {
       FirebaseData.createUser(
+          fullName: fullName,
           isAdmin: true,
           isAccess: true,
           password: password,
@@ -332,7 +334,7 @@ class LoginData {
             .collection(KeyTable.adminData)
             .doc(id)
             .update({
-          "IsAccess": false
+          "IsAccess": true
 
           // LoginData.keyActive: false,
         });

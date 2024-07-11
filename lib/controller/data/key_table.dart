@@ -22,8 +22,8 @@ class KeyTable {
   static String genreId = 'genre_id';
   static String sekilasInfoId = 'uid';
   static String kegiatanLiterasiId = 'uid';
-  static String keyDeviceId = 'device_id';
-  static String keyUid = '_uid';
+  static String keyDeviceId = 'DeviceId';
+  static String keyUid = 'id';
 
   static String isPopular = 'is_popular';
   static String isFeatured = 'is_featured';

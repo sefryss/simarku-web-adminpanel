@@ -92,9 +92,9 @@ class AdminModel {
       'IsOnline': isOnline,
       'LastActive': lastActive,
       'PushToken': pushToken,
-      'isAccess': isAccess,
-      'is_admin': isAdmin,
-      'device_id': deviceId,
+      'IsAccess': isAccess,
+      'IsAdmin': isAdmin,
+      'DeviceId': deviceId,
     };
   }
 
@@ -115,9 +115,9 @@ class AdminModel {
         isOnline: data['IsOnline'] ?? false,
         lastActive: data['LastActive'] ?? '',
         pushToken: data['PushToken'] ?? '',
-        isAccess: data['isAccess'] ?? false,
-        isAdmin: data['is_admin'] ?? false,
-        deviceId: data['device_id'] ?? '',
+        isAccess: data['IsAccess'] ?? false,
+        isAdmin: data['IsAdmin'] ?? false,
+        deviceId: data['DeviceId'] ?? '',
       );
     } else {
       // Handle the case where the document data is null
@@ -130,8 +130,8 @@ class AdminModel {
     Map data = doc.data() as Map;
     return AdminModel(
       id: doc.id,
-      address: data['address'] ?? '',
-      email: data['email'] ?? '',
+      address: data['Address'] ?? '',
+      email: data['Email'] ?? '',
       fullName: data['FullName'] ?? '',
       phoneNumber: data['PhoneNumber'] ?? '',
       profilePicture: data['ProfilePicture'] ?? '',
@@ -139,9 +139,9 @@ class AdminModel {
       isOnline: data['IsOnline'] ?? false,
       lastActive: data['LastActive'] ?? '',
       pushToken: data['PushToken'] ?? '',
-      isAccess: data['isAccess'] ?? false,
-      isAdmin: data['is_admin'] ?? false,
-      deviceId: data['device_id'] ?? '',
+      isAccess: data['IsAccess'] ?? false,
+      isAdmin: data['IsAdmin'] ?? false,
+      deviceId: data['DeviceId'] ?? '',
     );
   }
 }

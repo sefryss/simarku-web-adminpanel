@@ -25,10 +25,11 @@ class FirebaseData {
       required bool isAccess,
       required String password,
       required String username,
+      required String fullName,
       required Function function}) {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     FirebaseFirestore.instance.collection(KeyTable.adminData).doc(uid).set({
-      'FullName': 'Mimin SiMarKu',
+      'FullName': fullName,
       'ProfilePicture': '',
       'NIKNumber': '',
       'PhoneNumber': '',

@@ -7,7 +7,7 @@ class UserModel {
   String nikNumber;
   String phoneNumber;
   String address;
-  String email;
+  final String email;
   String profilePicture;
   bool isOnline;
   String lastActive;
@@ -82,6 +82,7 @@ class UserModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'FullName': fullName,
       'NIKNumber': nikNumber,
       'PhoneNumber': phoneNumber,

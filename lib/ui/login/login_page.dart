@@ -23,6 +23,7 @@ class _LoginPage extends State<LoginPage> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController confirmPasswordController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
+  TextEditingController fullNameController = new TextEditingController();
   RxBool isProgress = false.obs;
   RxBool isSignUp = false.obs;
 
@@ -266,6 +267,16 @@ class _LoginPage extends State<LoginPage> {
               getVerticalSpace(context, 30),
               getTextWidget(
                 context,
+                'Nama',
+                40,
+                getFontColor(context),
+                fontWeight: FontWeight.w500,
+              ),
+              getVerticalSpace(context, 15),
+              getDefaultTextFiledWidget(context, "Nama", fullNameController),
+              getVerticalSpace(context, 30),
+              getTextWidget(
+                context,
                 'Email',
                 40,
                 getFontColor(context),
@@ -428,6 +439,7 @@ class _LoginPage extends State<LoginPage> {
   void signUp() async {
     if (checkValidation()) {
       await LoginData.createAdmin(
+          fullName: fullNameController.text,
           password: passwordController.text,
           username: emailController.text,
           context: context,

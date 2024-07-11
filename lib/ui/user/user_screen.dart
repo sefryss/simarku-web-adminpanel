@@ -6,6 +6,7 @@ import 'package:ebookadminpanel/ui/user/subwidget/mobile_widget.dart';
 import 'package:ebookadminpanel/ui/user/subwidget/web_widget.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
 import 'package:ebookadminpanel/util/pref_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -305,9 +306,9 @@ class _UserScreenState extends State<UserScreen> {
           Offset.zero & overlay!.size // Bigger rect, the entire screen
           ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-      color: themeController.checkDarkTheme()
-          ? getBackgroundColor(context)
-          : getCardColor(context),
+      color: Theme.of(context).brightness == Brightness.dark
+          ? Colors.black
+          : Colors.white,
       items: [
         PopupMenuItem<String>(
             child: Container(
@@ -341,11 +342,7 @@ class _UserScreenState extends State<UserScreen> {
                               tableName: KeyTable.user,
                               doc: userModel.id,
                               function: () {
-                                FirebaseData.deleteBatch(() {
-                                  FirebaseData.refreshStoryData();
-                                  FirebaseData.refreshSliderData();
-                                }, userModel.id, KeyTable.sliderList,
-                                    userModel.id);
+                                _deleteUser(userModel);
                               });
                         },
                         subTitle: 'Hapus');
@@ -355,6 +352,26 @@ class _UserScreenState extends State<UserScreen> {
       ],
       elevation: 1,
     );
+  }
+
+  void _deleteUser(UserModel userModel) async {
+    try {
+      // Step 1: Delete user data from Firestore
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userModel.id)
+          .delete();
+
+      // Step 2: Delete user from Firebase Authentication using admin privileges
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        await user.delete();
+      }
+    } catch (e) {
+      print("Error deleting user: $e");
+      // Handle errors here
+    }
   }
 
   getEntryWidget(BuildContext context) {
