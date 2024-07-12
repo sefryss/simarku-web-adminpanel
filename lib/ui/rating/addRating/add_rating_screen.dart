@@ -1,3 +1,4 @@
+import 'package:ebookadminpanel/controller/home_controller.dart';
 import 'package:ebookadminpanel/main.dart';
 import 'package:ebookadminpanel/model/rate_us_model.dart';
 import 'package:ebookadminpanel/util/common_blank_page.dart';
@@ -25,7 +26,7 @@ class AddRatingScreen extends StatefulWidget {
 class _AddRatingScreenState extends State<AddRatingScreen> {
   @override
   Widget build(BuildContext context) {
-    Get.find();
+    HomeController homeController = Get.find();
 
     bool isEdit = widget.rateUsModel != null;
     return SafeArea(
@@ -128,35 +129,6 @@ class _AddRatingScreenState extends State<AddRatingScreen> {
                         ],
                       ),
                     ),
-                    // getVerticalSpace(context, 20),
-                    // Row(
-                    //   children: [
-                    //     Obx(() => getButtonWidget(
-                    //           context,
-                    //           isEdit ? 'Ubah' : 'Simpan',
-                    //           isProgress: feedbackController.isLoading.value,
-                    //           () {
-                    //             if (isEdit) {
-                    //               feedbackController.editFeedback(
-                    //                   homeController, context, () {
-                    //                 print(
-                    //                     "edit------${feedbackController.feedbackModel!.feedback}");
-                    //                 widget.function();
-                    //               });
-                    //             } else {
-                    //               feedbackController
-                    //                   .addFeedback(homeController, context, () {
-                    //                 widget.function();
-                    //               });
-                    //             }
-                    //           },
-                    //           horPadding: 25.h,
-                    //           horizontalSpace: 0,
-                    //           verticalSpace: 0,
-                    //           btnHeight: 40.h,
-                    //         )),
-                    //   ],
-                    // ),
                     getVerticalSpace(context, 20),
                   ],
                 ),

@@ -225,51 +225,6 @@ class LoginData {
       showCustomToast(message: "Something wrong", context: context);
     }
 
-    // print("username===$username === $password");
-    //
-    // try {
-    //   UserCredential userCredential = await FirebaseAuth.instance
-    //       .createUserWithEmailAndPassword(email: username, password: password);
-    //
-    //   if (userCredential.user != null) {
-    //     await FirebaseFirestore.instance.collection(KeyTable.adminData).add({
-    //       KeyTable.keyPassword: password,
-    //       KeyTable.keyUserName: username,
-    //
-    //     });
-    //
-    //
-    //     return await login(
-    //         context, password: password, username: username);
-    //   }
-    //
-    //   showCustomToast(context: context, message: 'Config Data');
-    //
-    //   return null;
-    // } on FirebaseAuthException catch (e) {
-    //   print("3===${e.code}");
-    //   if (e.code == 'invalid-email') {
-    //     print('Invalid email');
-    //
-    //     showCustomToast(context: context, message: 'Invalid email');
-    //   }
-    //   if (e.code == 'weak-password') {
-    //     showCustomToast(
-    //         context: context, message: 'The password provided is too weak.');
-    //
-    //     // print('The password provided is too weak.');
-    //   } else if (e.code == 'email-already-in-use') {
-    //     showCustomToast(
-    //         context: context,
-    //         message: 'The account already exists for that email.');
-    //
-    //     // print('The account already exists for that email.');
-    //   }
-    //   return null;
-    // } catch (e) {
-    //   print(e);
-    // }
-
     return false;
   }
 

@@ -595,9 +595,6 @@ class _HomePage extends State<HomePage> {
       PrefData.setAction(actionEditSekilasInfo);
 
       sekilasInfoController.sekilasInfoModel = homeController.sekilasInfoModel;
-
-      sekilasInfoController.sekilasInfoModel = homeController.sekilasInfoModel;
-
       sekilasInfoController.setAllSekilasInfo(homeController.sekilasInfoModel);
 
       return AddSekilasInfoScreen(

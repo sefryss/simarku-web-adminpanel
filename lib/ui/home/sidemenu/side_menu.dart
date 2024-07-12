@@ -400,12 +400,13 @@ class SideMenu extends StatelessWidget {
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
               title: "Umpan Balik",
-              svgSrc:
-                  (i == actionFeedback || checkAction(i, dummyActionFeedback))
-                      ? "icon_feedback_fill.svg"
-                      : "icon_feedback_outline.svg",
+              svgSrc: (i == actionFeedback ||
+                      i == actionEditFeedback ||
+                      checkAction(i, dummyActionFeedback))
+                  ? "icon_feedback_fill.svg"
+                  : "icon_feedback_outline.svg",
               isSelected: i == actionFeedback ||
-                  //     i == actionEditDonationBook ||
+                  i == actionEditFeedback ||
                   //     i == actionAddDonationBook ||
                   checkAction(i, dummyActionFeedback),
               isDropDown: false,
@@ -427,11 +428,13 @@ class SideMenu extends StatelessWidget {
             DrawerExpansionTile(
               // key: Key("selected ${selectedIndex}"),
               title: "Rating",
-              svgSrc: (i == actionRating || checkAction(i, dummyActionRating))
+              svgSrc: (i == actionRating ||
+                      i == actionEditRating ||
+                      checkAction(i, dummyActionRating))
                   ? "icon_rating_fill.svg"
                   : "icon_rating_outline.svg",
               isSelected: i == actionRating ||
-                  //     i == actionEditDonationBook ||
+                  i == actionEditRating ||
                   //     i == actionAddDonationBook ||
                   checkAction(i, dummyActionRating),
               isDropDown: false,

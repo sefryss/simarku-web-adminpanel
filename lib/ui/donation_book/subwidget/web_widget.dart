@@ -68,10 +68,6 @@ class WebWidget extends StatelessWidget {
                                               '${mainList.indexOf(list[index]) + 1}',
                                               context,
                                               50),
-                                          // getHeaderCell(
-                                          //     '${getCategoryString(storyModel.category!)}',
-                                          //     context,
-                                          //     100),
                                           getHorizontalSpace(context, 10),
                                           SizedBox(
                                             width: 80.h,
@@ -96,12 +92,11 @@ class WebWidget extends StatelessWidget {
                                             ),
                                           ),
                                           getHorizontalSpace(context, 10),
+                                          getHeaderCell('${storyModel.name!}',
+                                              context, 140),
+                                          getHorizontalSpace(context, 10),
                                           Expanded(
-                                              flex: 1,
-                                              child: getHeaderTitle(context,
-                                                  '${storyModel.name!}')),
-                                          Expanded(
-                                            flex: 2,
+                                            flex: 1,
                                             child: StreamBuilder<QuerySnapshot>(
                                               stream: FirebaseFirestore.instance
                                                   .collection(KeyTable.user)
@@ -237,10 +232,11 @@ class WebWidget extends StatelessWidget {
         children: [
           getHeaderCell('ID', context, 50),
           // getHeaderCell('Category', context, 110),
-          getHeaderCell('Gambar', context, 100),
-          Expanded(flex: 1, child: getHeaderTitle(context, 'Judul Buku')),
+          getHeaderCell('Gambar', context, 105),
+          getHeaderCell('Judul Buku', context, 155),
+
           Expanded(
-            flex: 2,
+            flex: 1,
             child: getHeaderCell('Pemilik', context, 100),
           ),
           getHeaderCell('Status', context, 120),

@@ -69,13 +69,14 @@ class WebWidget extends StatelessWidget {
                                               context,
                                               60),
                                           getHorizontalSpace(context, 30),
-                                          getHeaderCell(
-                                              '${userModel.fullName}',
-                                              context,
-                                              180),
+                                          getHeaderCell('${userModel.fullName}',
+                                              context, 180),
                                           getHorizontalSpace(context, 30),
                                           Expanded(
-                                            child: Text('${userModel.email}'),
+                                            child: getHeaderCell(
+                                                '${userModel.email}',
+                                                context,
+                                                180),
                                           ),
                                           Stack(
                                             children: [

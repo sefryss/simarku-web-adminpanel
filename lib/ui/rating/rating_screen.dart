@@ -402,7 +402,7 @@ class _RatingScreenState extends State<RatingScreen> {
                   function: () {
                     getCommonDialog(
                         context: context,
-                        title: 'Apakah ingin menghapus feedback ini?',
+                        title: 'Apakah ingin menghapus rating ini?',
                         function: () async {
                           await FirebaseData.deleteData(
                               tableName: KeyTable.rating,

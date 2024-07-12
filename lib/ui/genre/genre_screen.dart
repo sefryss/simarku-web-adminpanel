@@ -387,7 +387,7 @@ class _GenreScreenState extends State<GenreScreen> {
                         title: 'Apakah ingin menghapus genre ini?',
                         function: () async {
                           await FirebaseData.deleteData(
-                              tableName: KeyTable.authorList,
+                              tableName: KeyTable.genreList,
                               doc: genreModel.id!,
                               function: () {
                                 FirebaseData.refreshGenreData();

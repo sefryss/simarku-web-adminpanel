@@ -44,6 +44,12 @@ TukarMilikController tukarMilikController = Get.put(TukarMilikController());
 UserController userController = Get.put(UserController());
 
 RxString deviceID = ''.obs;
+
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp();
+//   print('Handling a background message ${message.messageId}');
+// }
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -51,14 +57,23 @@ Future<void> main() async {
   await initFirebase();
 
   deviceID.value = await LoginData.getDeviceIdentifier();
-
   print("deviceid------------${deviceID.value}");
-
   selectedAction.value = await PrefData.getAction();
-  // setPathUrlStrategy();
 
-  // configureApp();
-    await ChatController.initializeUserModel();
+  // await FirebaseMessaging.instance.requestPermission();  await FirebaseMessaging.instance.requestPermission();
+
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   RemoteNotification? notification = message.notification;
+  //   AndroidNotification? android = message.notification?.android;
+  //   if (notification != null && android != null) {
+  //     print('Received foreground message: ${notification.title}');
+  //     // Add custom handling here, if needed
+  //   }
+  // });
+
+  await ChatController.initializeUserModel();
 
   runApp(MyApp());
 }
